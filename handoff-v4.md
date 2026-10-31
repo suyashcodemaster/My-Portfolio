@@ -1,35 +1,45 @@
-# Project Handoff Document v5.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v6.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v5.md`  
-**Version:** 5.0 (All 5 Final Polish Updates Implemented)  
+**Document Name:** `handoff-v6.md`  
+**Version:** 6.0 (All 11 Final Refinements + Security Hardening Implemented)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 5 Changes Implemented in v5.0
+## 1. Summary of All 11 Refinements & Security Fixes in v6.0
 
-1. **Longer, Smoother Initial Loading Screen (`scripts/main.js`, `styles/main.css`)**:
-   - Adjusted the initial preloader (`#loader-overlay`) progression to step in `1%–2%` increments every `42ms` with a `420ms` hold at `100%` (~3.0 seconds total) before smoothly lifting the curtain.
-2. **Smaller, Philosophical Quote Typography + Botanical Leaves on Left & Right Ends + Tight Spacing Under Helen Keller Quote (`index.html`, `styles/main.css`)**:
-   - Styled all quotes in italic `'Cormorant Garamond'` (`clamp(1.15rem, 1.78vw, 1.48rem)`, `font-weight: 300`, `letter-spacing: 0.03em`).
-   - Added peaceful botanical leaf branch SVGs (`.quote-leaf.leaf-left` and `.quote-leaf.leaf-right`) flanking the left and right ends of each quote.
-   - Reduced the bottom padding beneath the Helen Keller quote (`.quote-interlude.helen-keller-quote`) to `0.35rem` and tightened `#section-projects` top padding (`1.1rem`) so there is no dead gap before Projects.
-3. **Refined 3D Laptop (Closed-to-Open Start, Compact Gaps, Front-Facing Unobstructed Touchpad, Complex Motherboard with Wiring, Ejecting RAM Sticks, Storage Module, Smaller Languages Heading & Badges) (`scripts/laptop3d.js`, `data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
-   - **Opens from Closed Position**: The lid pivots from its rear hinge starting completely closed flat (`display.rotation.x = Math.PI / 2`) at `progress = 0` and hinges open smoothly before separating.
-   - **Smaller Vertical Gaps & Front-Facing Rotation**: Tightened vertical separation distances so all 6 subsystems fit comfortably in the viewport simultaneously, and kept `root.rotation.y` in a front-facing isometric range (`+0.28` to `-0.24` rad, ending at `+0.16` rad) so the laptop never turns its back to the camera and the detached **Touchpad** + **Download CV** button remain 100% visible and unobstructed at the end.
-   - **Motherboard (with Wiring & Circuitry)**: Renamed `Logic Board` to **`Motherboard`** and added gold/copper circuit traces, 3D arched insulated wiring cables (`THREE.TubeGeometry`), VRM choke coils, capacitors, copper heatpipes, and dual spinning cooling fans.
-   - **RAM Sticks (Sliding Out While Scrolling)**: Replaced `Speakers` with dual DDR5 **`RAM Sticks`** (with gold edge pins and 4 memory ICs per stick) that visibly unclip and slide/eject outward from the laptop while scrolling.
-   - **Storage**: Replaced `Battery` with **`Storage`** (dual NVMe M.2 SSD modules with finned heatsinks and gold connectors over the lower unibody base).
-   - **Smaller *Languages I Know* Heading + *Badges* Subsection**: Reduced the *Languages I Know* heading size (`.small-stage-title`) and added a **`Badges`** row directly beneath the GitHub contribution graph with the temporary text **`Yet to earn`**.
-4. **Template Repository Horizontal Overlapping Project Card Stack (Hovering Moves Card to Center) (`index.html`, `styles/main.css`, `scripts/main.js`)**:
-   - Replaced the side-by-side accordion with the template repository's 8-card **horizontal 3D overlapping stack** (`.template-horizontal-stack`, `margin: 0 -115px`, `rotateY(-24deg)`).
-   - Hovering the active project card (`01 — SanitX`) smoothly translates it horizontally to the exact center of the stage (`translateX(var(--center-shift)) translateZ(130px) rotateY(0deg) scale(1.04)`) while parting the remaining 7 non-interactive grey-framed cards (`02`–`08`).
-5. **Julian Garnier (`https://juliangarnier.com/`) Chat-Form *Contact Me* Section (No Buttons, No Phone Number) (`index.html`, `styles/main.css`, `scripts/main.js`, `data/portfolioData.js`)**:
-   - Kept the seamless transition into the minimalist warm-white (`#f7f6f2`) section titled simply **`Contact Me`**.
-   - Removed all interactive prompt buttons and removed the phone number.
-   - When scrolled into view, the messages automatically type out in sequence (`•••` typing indicator morphing into each chat bubble: *"Hey there 👋"*, *"I'm Suyash — a first-year CSE student at VIT Vellore."*, email link, LinkedIn & GitHub links, and CV download link).
+1. **Slower Initial Loading Screen (+1s), Removed Name from Loader & Added Landing Page Typewriter Effect (`index.html`, `styles/main.css`, `scripts/main.js`)**:
+   - Removed `SUYASH SHARMA` from `#loader-overlay` and slowed the counter by 1 second (~4.1s total duration).
+   - Once the loading screen finishes, `SUYASH` and `SHARMA` automatically type out character-by-character on the landing page (`runHeroTypewriter`) with a blinking cursor (non-scrollable).
+2. **100% Flush-Closed Laptop at Start & Removed 3D Arched Wires (`scripts/laptop3d.js`)**:
+   - Aligned the rear hinge pivot (`(0, 0.00, -1.00)`) and lid geometry (`z = -0.03`) with the top face of the base (`y = 0.00`) so when `display.rotation.x = Math.PI / 2` at `progress = 0`, the laptop is **100% flush-closed** with zero gap.
+   - Kept internal boards hidden inside the closed clamshell until the lid hinges open past `openRatio > 0.12` so zero wires or parts ever poke out before disassembly begins.
+   - Removed the 3D `TubeGeometry` arched wires while preserving the flat embedded PCB circuit lines and the dual spinning cooling fans.
+3. **Steeply Angled Project Stack + Hover Pulls Card Forward to Exact Center + Blurs Website & Other Tabs (`index.html`, `styles/main.css`, `scripts/main.js`)**:
+   - Angled the 8 horizontal cards more steeply (`rotateY(-40deg) rotateX(4deg)`) with `overflow: hidden` and clean internal spacing so text never spills out when angled.
+   - On hovering Card `01` (*SanitX*), it computes the exact pixel distance to the viewport center and glides forward in 3D to the center (`translate3d(var(--center-shift), -16px, 220px) rotateY(0deg) scale(1.08)`) while blurring out the rest of the tabs (`.blurred-left` / `.blurred-right`) and the entire website (`#projects-focus-backdrop` with `backdrop-filter: blur(10px)`).
+4. **Longer, Slower (~6s) *Contact Me* Bubble Stream Without Redundant Intro Messages (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
+   - Removed the *"I'm Suyash..."* and *"I love building..."* bubbles.
+   - Increased vertical spacing between bubbles and set the typing/reveal cadence to `1150ms` typing + `350ms` pause per bubble across the 4 bubbles (`6.0 seconds` total animation duration).
+5. **Halved Vertical Space After the First Quote (`styles/main.css`, `scripts/main.js`)**:
+   - Reduced `.first-quote-interlude` bottom padding to `0.4rem` and halved `.laptop-intro-stage` height from `118vh` to `55vh` without breaking any scroll physics or subsequent sections.
+6. **Futuristic Curved Dome Keycap Pop-Out (`scripts/laptop3d.js`)**:
+   - As the laptop disassembles, all 44 individual keycaps levitate upward and outward in a smooth 3D parabolic dome curve (`domeHeight = Math.max(0, 1 - (nx*nx*0.62 + nz*nz*0.62))`) with subtle radial tilt.
+7. **Moved `"If it doesn't challenge you, it won't change you."` Outside the *Languages I Know* Card (`scripts/main.js`, `styles/main.css`)**:
+   - Rendered the quote in a standalone `.stage-outside-quote-wrap` block flanked by botanical leaf sprigs directly below `<article class="stage-bento-panel">`.
+8. **Scroll-Triggered Illumination for Frame `01A` (*Building Human Connections*) (`scripts/main.js`, `styles/main.css`)**:
+   - Started all 8 camera reel cards (including Frame `01A — Building Human Connections`) unlit/dimmed so Frame `01A` lights up (`revealed`) after scrolling into `#section-reel` (`self.progress >= 0.04`) just like the other cards.
+9. **Added `"yet to build😝"` Inside Empty Grey Project Tabs (`02`–`08`) (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
+   - Displayed `yet to build😝` centered inside `.grey-photo-frame` on Layers `02` through `08`.
+10. **Darker Matte Laptop Finish + Sharper 3D Part Outlines (`scripts/laptop3d.js`)**:
+    - Deepened all laptop materials to a stealth matte obsidian/carbon finish (`color: 0x0c0e14` to `0x1f2433`, `roughness: 0.68–0.88`, low metalness) with high-contrast edge outlines (`#e2e8f0` / `#cbd5e1` at `0.88–1.0` opacity) while keeping the dual spinning fans.
+11. **Security Audit & Fixes (`server.js`, `vercel.json`, `index.html`, `scripts/main.js`)**:
+    - Fixed directory traversal (`../`) and dotfile exposure (`.git`, `.env`) in `server.js` using `path.resolve` + `path.relative` boundary validation.
+    - Wrapped `decodeURIComponent` in `try/catch` and blocked null bytes (`\0`) in `server.js` to prevent `URIError` DoS crashes on malformed URLs.
+    - Replaced wildcard CORS (`Access-Control-Allow-Origin: *`) in `vercel.json` and `server.js` with `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy`.
+    - Replaced inline `onerror="..."` HTML attribute injection with programmatic `addEventListener('error', ...)` and enforced `rel="noopener noreferrer"` and `referrerpolicy="no-referrer"` across external resources.
 
 ---
 
@@ -145,7 +155,7 @@ export const PORTFOLIO_DATA = {
       githubUsername: "suyashcodemaster",
       badgesTitle: "Badges",
       badgesPlaceholder: "Yet to earn",
-      stageQuote: "If it doesn't challenge you, it won't change you."
+      outsideQuote: "If it doesn't challenge you, it won't change you."
     },
     {
       id: "achievements",
@@ -190,7 +200,7 @@ export const PORTFOLIO_DATA = {
     { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center like template repo)
+  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center & blurs background)
   projects: [
     {
       slot: "01",
@@ -206,23 +216,21 @@ export const PORTFOLIO_DATA = {
         "Contributed across the stack: ideation, FastAPI backend, Next.js frontend, and designing and presenting the system architecture."
       ]
     },
-    { slot: "02", isPlaceholder: true },
-    { slot: "03", isPlaceholder: true },
-    { slot: "04", isPlaceholder: true },
-    { slot: "05", isPlaceholder: true },
-    { slot: "06", isPlaceholder: true },
-    { slot: "07", isPlaceholder: true },
-    { slot: "08", isPlaceholder: true }
+    { slot: "02", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "03", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "04", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "05", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "07", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "08", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
-  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (No buttons, no phone number)
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)
   contactMessages: [
     "Hey there 👋",
-    "I'm Suyash — a first-year CSE student at VIT Vellore.",
-    "I love building things from scratch and exploring C++, Data Structures & Algorithms, and AI.",
     "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",
-    "Or find me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener\">GitHub ↗</a>",
-    "Looking for my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
+    "Or connect with me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener noreferrer\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub ↗</a>",
+    "Need a copy of my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
   ]
 };
 ```
@@ -241,16 +249,15 @@ export const PORTFOLIO_DATA = {
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
 <body class="is-loading">
-  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Smooth Progression) -->
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (No Name on Loader, ~4.1s Smooth Duration) -->
   <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
     <div class="loader-inner">
-      <span class="loader-brand">SUYASH SHARMA</span>
       <div class="loader-counter-wrap">
         <span id="loader-count" class="loader-count">000</span>
         <span class="loader-percent">%</span>
@@ -263,15 +270,18 @@ export const PORTFOLIO_DATA = {
 
   <div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- 1. HERO SECTION -->
+  <!-- Full-Viewport Blur Backdrop when Focusing a Project Card in Center -->
+  <div id="projects-focus-backdrop" class="projects-focus-backdrop" aria-hidden="true"></div>
+
+  <!-- 1. HERO SECTION (Typewriter Name Effect After Loading Completes) -->
   <section id="section-hero" class="hero-section">
     <div class="hero-center">
       <h1 class="hero-title">
-        <span id="hero-first">SUYASH</span>
+        <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
         <span class="hero-photo-frame">
           <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
         </span>
-        <span id="hero-last">SHARMA</span>
+        <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
       </h1>
     </div>
 
@@ -287,8 +297,8 @@ export const PORTFOLIO_DATA = {
     </div>
   </section>
 
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (With Peaceful Botanical Leaves on Left & Right Ends) -->
-  <div class="quote-interlude">
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (Halved Bottom Space) -->
+  <div class="quote-interlude first-quote-interlude">
     <div class="quote-frame">
       <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
@@ -327,7 +337,7 @@ export const PORTFOLIO_DATA = {
       <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
       <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
 
-      <!-- Detached 3D Touchpad "Download CV" Button (Appears directly on the unobstructed touchpad when scroll finishes) -->
+      <!-- Detached 3D Touchpad "Download CV" Button -->
       <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
         <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
           <span class="touchpad-btn-dot"></span>
@@ -340,7 +350,7 @@ export const PORTFOLIO_DATA = {
       </div>
     </div>
 
-    <!-- Scroll Stages: Closed-to-Open Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
+    <!-- Scroll Stages: Flush-Closed Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
 
@@ -425,7 +435,7 @@ export const PORTFOLIO_DATA = {
     </div>
   </div>
 
-  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Template Repo Style: Hovering Moves Card to Center) -->
+  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Steeper Angle + Hover Pulls Forward to Exact Center & Blurs Website) -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
       <h2 class="section-heading">Projects</h2>
@@ -436,7 +446,7 @@ export const PORTFOLIO_DATA = {
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (No Buttons, No Phone Number) -->
+  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (~6s Slow Stream, No Buttons, No Phone) -->
   <section id="section-contact" class="minimal-white-contact">
     <div class="minimal-contact-inner">
       <h2 class="contact-me-title">Contact Me</h2>
@@ -457,7 +467,7 @@ export const PORTFOLIO_DATA = {
 ```css
 :root {
   --bg-dark: #09090d;
-  --bg-panel: rgba(16, 17, 23, 0.84);
+  --bg-panel: rgba(15, 16, 22, 0.86);
   --text-main: #f4f1ea;
   --text-muted: #9ca3af;
   --border-subtle: rgba(244, 241, 234, 0.12);
@@ -473,7 +483,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Deliberate Load Time)
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (No Name, ~4.1s Smooth Duration)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -498,22 +508,16 @@ body.is-loading { overflow: hidden; }
   gap: 1rem;
 }
 
-.loader-brand {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  color: var(--text-muted);
-}
-
 .loader-counter-wrap {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 0.2rem;
 }
 
 .loader-count {
   font-family: var(--font-display);
-  font-size: clamp(3.8rem, 8vw, 5.5rem);
+  font-size: clamp(4rem, 8.5vw, 5.8rem);
   line-height: 1;
   color: var(--text-main);
 }
@@ -554,7 +558,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   1. HERO SECTION — Clean like template repo, single-line name + perfect photo
+   1. HERO SECTION — Typewriter Name Effect After Loading + Single Line
    ========================================================================== */
 .hero-section {
   position: relative;
@@ -587,6 +591,39 @@ body.is-loading { overflow: hidden; }
   white-space: nowrap;
   gap: clamp(0.18em, 2.2vw, 0.34em);
   width: 100%;
+}
+
+.hero-word-slot {
+  display: inline-flex;
+  align-items: center;
+  min-width: 3.1em;
+}
+
+.hero-word-slot:first-child {
+  justify-content: flex-end;
+}
+
+.hero-word-slot:last-child {
+  justify-content: flex-start;
+}
+
+.typewriter-word {
+  display: inline-block;
+  position: relative;
+}
+
+.typewriter-word.typing::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 2px;
+  color: #f59e0b;
+  font-weight: 300;
+  animation: cursorBlink 0.65s steps(2, start) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .hero-photo-frame {
@@ -677,7 +714,7 @@ body.is-loading { overflow: hidden; }
    PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 4.2rem 5vw;
+  padding: 3.6rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -686,9 +723,14 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
+/* Halved space after the first quote without breaking scroll animations */
+.quote-interlude.first-quote-interlude {
+  padding: 2.2rem 5vw 0.4rem;
+}
+
 /* Remove majority of space beneath the Helen Keller quote */
 .quote-interlude.helen-keller-quote {
-  padding: 3.2rem 5vw 0.35rem;
+  padding: 3rem 5vw 0.25rem;
 }
 
 .quote-frame {
@@ -697,7 +739,7 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   gap: clamp(0.85rem, 2vw, 1.65rem);
   max-width: 820px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.5rem;
 }
 
 .quote-leaf {
@@ -722,7 +764,7 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.15rem, 1.78vw, 1.48rem);
+  font-size: clamp(1.12rem, 1.72vw, 1.44rem);
   line-height: 1.5;
   letter-spacing: 0.03em;
   color: #d6d3cd;
@@ -730,10 +772,10 @@ body.is-loading { overflow: hidden; }
 
 .interlude-cite {
   display: block;
-  margin-top: 0.45rem;
+  margin-top: 0.42rem;
   font-family: var(--font-philo);
   font-style: normal;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8c8881;
@@ -754,7 +796,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.13) 0%, rgba(30, 41, 59, 0.06) 40%, transparent 70%);
+  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
 }
 
 #laptop-canvas {
@@ -834,7 +876,7 @@ body.is-loading { overflow: hidden; }
   color: #f4f1ea;
 }
 
-/* 3D Part Hover Tooltip — Strictly visible only when hovering directly on a 3D laptop mesh */
+/* 3D Part Hover Tooltip */
 .part-hover-tooltip {
   position: fixed;
   left: 0;
@@ -947,18 +989,20 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Opening Lead-In Stage: Laptop starts closed & centered, opens up, and glides left while disassembling before About Me starts */
+/* Halved Opening Lead-In Stage so there isn't excessive space after the first quote */
 .laptop-stage.laptop-intro-stage {
-  min-height: 118vh;
+  min-height: 55vh;
   pointer-events: none;
 }
 
 .laptop-stage {
-  min-height: 102vh;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 3.5rem 4.5vw;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 3rem 4.5vw;
+  gap: 1.5rem;
 }
 
 /* Shorter, well-proportioned height for Languages I Know stage */
@@ -969,7 +1013,7 @@ body.is-loading { overflow: hidden; }
 
 /* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
 .laptop-stage.final-disassembly-hold {
-  min-height: 110vh;
+  min-height: 108vh;
   pointer-events: none;
 }
 
@@ -989,8 +1033,19 @@ body.is-loading { overflow: hidden; }
 }
 
 .stage-bento-panel.compact-panel {
-  padding: 1.75rem 2.1rem;
-  gap: 0.95rem;
+  padding: 1.7rem 2.05rem;
+  gap: 0.9rem;
+}
+
+/* Standalone Quote Outside the Languages I Know Card */
+.stage-outside-quote-wrap {
+  width: min(50vw, 660px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 0.6rem 1rem;
+  pointer-events: none;
 }
 
 .stage-part-chip {
@@ -1014,9 +1069,8 @@ body.is-loading { overflow: hidden; }
   line-height: 1.05;
 }
 
-/* Smaller heading specifically for Languages I Know */
 .stage-title.small-stage-title {
-  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
+  font-size: clamp(1.4rem, 2.05vw, 1.8rem);
 }
 
 .stage-paragraphs {
@@ -1075,7 +1129,6 @@ body.is-loading { overflow: hidden; }
   color: var(--stage-accent);
 }
 
-/* Compact Languages Row + Embedded GitHub Contribution Graph + Badges + Philosophical Quote */
 .compact-lang-row {
   display: flex;
   flex-wrap: wrap;
@@ -1146,7 +1199,6 @@ body.is-loading { overflow: hidden; }
   filter: contrast(1.08);
 }
 
-/* Badges Subsection under Contribution Graph */
 .github-badges-row {
   display: flex;
   align-items: center;
@@ -1172,18 +1224,10 @@ body.is-loading { overflow: hidden; }
   border: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-.stage-mini-quote-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  padding-top: 0.2rem;
-}
-
 .mini-leaf {
-  width: 24px;
+  width: 28px;
   height: auto;
-  opacity: 0.75;
+  opacity: 0.8;
   flex-shrink: 0;
 }
 
@@ -1191,8 +1235,8 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: 1.08rem;
-  letter-spacing: 0.025em;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
   color: #d6d3cd;
   text-align: center;
 }
@@ -1350,9 +1394,9 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  opacity: 0.18;
+  opacity: 0.16;
   transform: scale(0.92) translateY(16px);
-  filter: grayscale(0.85) brightness(0.5);
+  filter: grayscale(0.88) brightness(0.45);
   transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, box-shadow 0.45s ease;
 }
 
@@ -1400,25 +1444,47 @@ body.is-loading { overflow: hidden; }
 }
 
 .reel-progress-fill {
-  width: 12.5%;
+  width: 0%;
   height: 100%;
   background: linear-gradient(90deg, #f43f5e, #f59e0b, #10b981, #38bdf8, #a855f7);
   transition: width 0.12s linear;
 }
 
 /* ==========================================================================
-   4. TEMPLATE REPO HORIZONTAL OVERLAPPING CARD STACK (Hover Moves Card to Center)
+   4. STEEPLY ANGLED HORIZONTAL PROJECT STACK (Hover Pulls Card to Exact Center + Blurs Website)
    ========================================================================== */
+.projects-focus-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: rgba(6, 7, 11, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.projects-focus-backdrop.active {
+  opacity: 1;
+}
+
 .projects-section {
-  padding: 1.1rem 4.5vw 7rem;
+  padding: 0.9rem 4.5vw 7rem;
   position: relative;
-  z-index: 5;
-  overflow: hidden;
+  z-index: 50;
+  overflow: visible;
 }
 
 .section-header-wrap {
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   text-align: center;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.projects-section.has-focused-card .section-header-wrap {
+  filter: blur(5px);
+  opacity: 0.35;
 }
 
 .template-horizontal-stack {
@@ -1429,63 +1495,109 @@ body.is-loading { overflow: hidden; }
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  perspective: 1600px;
+  perspective: 1500px;
   padding: 2rem 0;
 }
 
-.stack-card {
-  width: clamp(290px, 32vw, 390px);
-  height: 470px;
-  border-radius: 18px;
-  margin: 0 -115px;
+.stack-card-slot {
   position: relative;
-  transform-style: preserve-3d;
-  transform: translateX(0px) translateY(0px) translateZ(0px) rotateY(-24deg) scale(0.94);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, border-color 0.35s ease, opacity 0.4s ease;
-  box-shadow: -18px 14px 38px rgba(0, 0, 0, 0.78);
+  margin: 0 -118px;
   flex-shrink: 0;
+  transform-style: preserve-3d;
 }
 
-/* When a card is hovered/focused, it glides horizontally to the center of the stage and rotates flat! */
+.stack-card-slot.slot-focused::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  bottom: -30px;
+  left: -30px;
+  right: -520px;
+  z-index: 1;
+}
+
+.stack-card {
+  width: clamp(285px, 30vw, 370px);
+  height: 465px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  /* Steeper 3D angle like books/plates in the template repository */
+  transform: translate3d(0px, 0px, 0px) rotateY(-40deg) rotateX(4deg) scale(0.92);
+  transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, filter 0.45s ease, opacity 0.45s ease;
+  box-shadow: -22px 16px 42px rgba(0, 0, 0, 0.82);
+}
+
+/* When hovered, the card moves forward in 3D and translates to the exact horizontal center of the viewport! */
 .stack-card.is-centered {
-  transform: translateX(var(--center-shift, 0px)) translateY(-12px) translateZ(130px) rotateY(0deg) scale(1.04);
-  z-index: 60 !important;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.88), 0 0 42px rgba(16, 185, 129, 0.25);
+  transform: translate3d(var(--center-shift, 0px), -16px, 220px) rotateY(0deg) rotateX(0deg) scale(1.08);
+  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 48px rgba(16, 185, 129, 0.32);
+  filter: none !important;
+  opacity: 1 !important;
 }
 
-.stack-card.pushed-left {
-  transform: translateX(-145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
-  opacity: 0.72;
+/* Other tabs blur out and part away when a card is focused in the center */
+.stack-card.blurred-left {
+  transform: translate3d(-150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  filter: blur(6px) brightness(0.42);
+  opacity: 0.55;
 }
 
-.stack-card.pushed-right {
-  transform: translateX(145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
-  opacity: 0.72;
+.stack-card.blurred-right {
+  transform: translate3d(150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  filter: blur(6px) brightness(0.42);
+  opacity: 0.55;
 }
 
-/* Layer 01: Active Project Card (SanitX) */
+/* Layer 01: Active Project Card (SanitX) — Strictly contained so text never overflows when angled */
 .stack-card.active-project-card {
-  background: linear-gradient(155deg, rgba(18, 36, 31, 0.98), rgba(14, 15, 22, 0.99));
+  background: linear-gradient(155deg, rgba(16, 32, 28, 0.98), rgba(12, 13, 19, 0.99));
   border: 1.5px solid #10b981;
-  padding: 1.65rem;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.9rem;
+  gap: 0.65rem;
   cursor: pointer;
 }
 
 .stack-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.stack-card-title-wrap {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stack-card-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 400;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+.stack-card-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #f59e0b;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stack-slot-num {
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #10b981;
+  flex-shrink: 0;
 }
 
 .project-logo-link {
@@ -1493,9 +1605,9 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.85rem;
   border-radius: 12px;
-  background: rgba(9, 9, 13, 0.8);
+  background: rgba(9, 9, 13, 0.82);
   border: 1px solid rgba(16, 185, 129, 0.4);
   text-decoration: none;
   color: #fff;
@@ -1508,28 +1620,29 @@ body.is-loading { overflow: hidden; }
 }
 
 .project-logo-caption {
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: #10b981;
 }
 
 .project-bullets {
-  padding-left: 1rem;
+  padding-left: 0.95rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.28rem;
   color: #d1d5db;
-  font-size: 0.78rem;
-  line-height: 1.42;
+  font-size: 0.73rem;
+  line-height: 1.36;
+  overflow: hidden;
 }
 
-/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards */
+/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards with "yet to build😝" */
 .stack-card.grey-layer-card {
-  background: linear-gradient(160deg, #1d1e26 0%, #13141a 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 1.35rem;
+  background: linear-gradient(160deg, #1a1b23 0%, #111218 100%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1544,26 +1657,29 @@ body.is-loading { overflow: hidden; }
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.75rem;
+  margin-top: 0.7rem;
   border-radius: 12px;
-  background: linear-gradient(145deg, #2a2b34 0%, #1e1f27 100%);
+  background: linear-gradient(145deg, #272832 0%, #1c1d25 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.55);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
-.grey-photo-frame::after {
-  content: '';
-  position: absolute;
-  inset: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.015);
+.yet-to-build-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #8e929f;
+  letter-spacing: 0.06em;
+  text-align: center;
 }
 
 /* ==========================================================================
    5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION
-      (Minimalist White, Sequential Chat Bubbles, No Buttons, No Phone Number)
+      (Longer Stream, ~6s Slow Cadence, No Intro Fluff, No Buttons, No Phone)
    ========================================================================== */
 .dark-to-white-transition {
   width: 100%;
@@ -1574,27 +1690,27 @@ body.is-loading { overflow: hidden; }
 .minimal-white-contact {
   background: #f7f6f2;
   color: #141413;
-  min-height: 82vh;
+  min-height: 86vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5rem 5vw 4rem;
+  padding: 6rem 5vw 4.5rem;
   position: relative;
   z-index: 10;
 }
 
 .minimal-contact-inner {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.4rem;
 }
 
 .contact-me-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  font-size: clamp(2.5rem, 4.4vw, 3.6rem);
   color: #141413;
   letter-spacing: -0.01em;
 }
@@ -1603,25 +1719,26 @@ body.is-loading { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.75rem;
-  min-height: 290px;
+  gap: 1.25rem;
+  min-height: 360px;
+  padding: 0.5rem 0;
 }
 
 .minimal-bubble {
   max-width: 88%;
-  padding: 0.9rem 1.3rem;
-  border-radius: 22px;
+  padding: 1.05rem 1.45rem;
+  border-radius: 24px;
   border-bottom-left-radius: 6px;
   background: #e9e7e0;
   color: #141413;
-  font-size: 1.02rem;
-  line-height: 1.52;
+  font-size: 1.06rem;
+  line-height: 1.56;
   letter-spacing: -0.01em;
-  animation: minimalFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: minimalFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes minimalFadeUp {
-  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -1637,13 +1754,12 @@ body.is-loading { overflow: hidden; }
   opacity: 0.6;
 }
 
-/* Julian Garnier ••• typing indicator pill */
 .minimal-typing {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 0.95rem 1.2rem;
-  border-radius: 22px;
+  padding: 1.05rem 1.3rem;
+  border-radius: 24px;
   border-bottom-left-radius: 6px;
   background: #e9e7e0;
 }
@@ -1685,9 +1801,10 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel { width: 92vw; }
+  .stage-bento-panel, .stage-outside-quote-wrap { width: 92vw; }
   .part-link-callout { display: none; }
-  .stack-card { width: 270px; height: 440px; margin: 0 -95px; }
+  .stack-card-slot { margin: 0 -100px; }
+  .stack-card { width: 265px; height: 445px; }
 }
 ```
 
@@ -1697,51 +1814,52 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 1.55, 6.2);
-  camera.lookAt(0, 0.15, 0);
+  camera.lookAt(0, 0.12, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.28;
+  renderer.toneMappingExposure = 1.22;
 
-  // Studio Multi-Point Lighting for Sleek Black-Grey / Brushed Gunmetal Contrast
-  const ambient = new THREE.AmbientLight(0xffffff, 0.98);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.3);
+  // Directional Studio Lighting for Deep Matte Finish + Crisp 3D Silhouette
+  const ambient = new THREE.AmbientLight(0xffffff, 0.9);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.1);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.85);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.7);
   rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x64748b, 1.15);
+  const bottomFill = new THREE.DirectionalLight(0x475569, 1.0);
   bottomFill.position.set(0, -5, 4);
-  const accentLight = new THREE.PointLight(0x38bdf8, 1.9, 16);
+  const accentLight = new THREE.PointLight(0x38bdf8, 1.8, 16);
   accentLight.position.set(-2.0, 2.2, 4.2);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  root.position.set(0, -0.1, 0);
+  root.position.set(0, -0.08, 0);
   root.rotation.set(0.24, 0.28, 0);
   scene.add(root);
 
-  // Materials
-  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x303440, metalness: 0.76, roughness: 0.24 });
-  const matBezel = new THREE.MeshStandardMaterial({ color: 0x12141c, metalness: 0.4, roughness: 0.2 });
-  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x0f172a, emissive: 0x1e293b, emissiveIntensity: 0.55, roughness: 0.12 });
-  const matMotherboardPcb = new THREE.MeshStandardMaterial({ color: 0x1c212b, metalness: 0.55, roughness: 0.34 });
-  const matCpuPackage = new THREE.MeshStandardMaterial({ color: 0x646d80, emissive: 0x475569, emissiveIntensity: 0.35, metalness: 0.88, roughness: 0.16 });
-  const matCopperPipe = new THREE.MeshStandardMaterial({ color: 0xb45309, emissive: 0x78350f, emissiveIntensity: 0.22, metalness: 0.85, roughness: 0.2 });
-  const matGoldContacts = new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xd97706, emissiveIntensity: 0.3, metalness: 0.9, roughness: 0.18 });
-  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x262a35, metalness: 0.68, roughness: 0.3 });
-  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x14161d, roughness: 0.38 });
-  const matRamSpreader = new THREE.MeshStandardMaterial({ color: 0x282d3a, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.8, roughness: 0.22 });
-  const matRamChip = new THREE.MeshStandardMaterial({ color: 0x111318, metalness: 0.5, roughness: 0.3 });
-  const matStoragePcb = new THREE.MeshStandardMaterial({ color: 0x1e2433, metalness: 0.65, roughness: 0.28 });
-  const matStorageSink = new THREE.MeshStandardMaterial({ color: 0x3b4254, metalness: 0.82, roughness: 0.2 });
-  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x262b38, emissive: 0x334155, emissiveIntensity: 0.4, roughness: 0.14, metalness: 0.62 });
+  // Darker, Deep Matte Stealth Carbon / Obsidian Materials (High Roughness, Low Metalness)
+  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x161820, metalness: 0.22, roughness: 0.82 });
+  const matBezel = new THREE.MeshStandardMaterial({ color: 0x0d0f14, metalness: 0.15, roughness: 0.85 });
+  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x0b101d, emissive: 0x172554, emissiveIntensity: 0.45, roughness: 0.35 });
+  const matMotherboardPcb = new THREE.MeshStandardMaterial({ color: 0x11141c, metalness: 0.25, roughness: 0.78 });
+  const matCpuPackage = new THREE.MeshStandardMaterial({ color: 0x262b38, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.45, roughness: 0.55 });
+  const matCopperPipe = new THREE.MeshStandardMaterial({ color: 0x92400e, emissive: 0x451a03, emissiveIntensity: 0.2, metalness: 0.55, roughness: 0.48 });
+  const matGoldContacts = new THREE.MeshStandardMaterial({ color: 0xd97706, emissive: 0x92400e, emissiveIntensity: 0.25, metalness: 0.65, roughness: 0.4 });
+  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x141720, metalness: 0.2, roughness: 0.84 });
+  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x0c0e14, metalness: 0.12, roughness: 0.88 });
+  const matRamSpreader = new THREE.MeshStandardMaterial({ color: 0x181c26, emissive: 0x0f172a, emissiveIntensity: 0.25, metalness: 0.35, roughness: 0.72 });
+  const matRamChip = new THREE.MeshStandardMaterial({ color: 0x0b0d12, metalness: 0.2, roughness: 0.82 });
+  const matStoragePcb = new THREE.MeshStandardMaterial({ color: 0x131722, metalness: 0.28, roughness: 0.76 });
+  const matStorageSink = new THREE.MeshStandardMaterial({ color: 0x1f2433, metalness: 0.38, roughness: 0.68 });
+  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x171a24, emissive: 0x1e293b, emissiveIntensity: 0.32, roughness: 0.65, metalness: 0.25 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
 
-  function addCrispEdges(mesh, partKey, edgeColor = 0x8b95a9, opacity = 0.65) {
+  // Sharper, Higher-Contrast Edge Outlines so Every Part Looks Strongly 3D
+  function addCrispEdges(mesh, partKey, edgeColor = 0xcbd5e1, opacity = 0.88) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
     const lineMat = new THREE.LineBasicMaterial({ color: edgeColor, transparent: true, opacity });
     const line = new THREE.LineSegments(edges, lineMat);
@@ -1751,79 +1869,82 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   // =========================================================================
-  // 1. DISPLAY (Pivots from rear hinge so it starts 100% CLOSED flat at progress = 0)
+  // 1. DISPLAY (Mathematically Flush-Closed at progress = 0: rests at y = 0.00)
   // =========================================================================
   const display = new THREE.Group();
-  // Rear hinge pivot at y = 0.14, z = -0.98
-  display.position.set(0, 0.14, -0.98);
+  // Rear hinge pivot sits on the exact top-rear edge of the base (y = 0.00, z = -1.00)
+  display.position.set(0, 0.00, -1.00);
 
-  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 1.96, 0.065), matOuterChassis);
-  lidMesh.position.set(0, 0.98, 0);
-  addCrispEdges(lidMesh, 'display', 0x94a3b8, 0.8);
+  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.06), matOuterChassis);
+  // Offset z = -0.03 so when rotated +90 deg (Math.PI / 2), bottom face rests flush at y = 0.00!
+  lidMesh.position.set(0, 1.00, -0.03);
+  addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.92);
 
-  const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.86), matBezel);
-  bezelMesh.position.set(0, 0.98, 0.034);
+  const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.88), matBezel);
+  bezelMesh.position.set(0, 1.00, 0.002);
 
-  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.68), matScreenPanel);
-  lcdMesh.position.set(0, 0.98, 0.036);
-  addCrispEdges(lcdMesh, 'display', 0x64748b, 0.55);
+  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.70), matScreenPanel);
+  lcdMesh.position.set(0, 1.00, 0.004);
+  addCrispEdges(lcdMesh, 'display', 0x94a3b8, 0.75);
 
-  // Subtle glowing code/UI bars on the screen
-  const uiBarMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.35 });
+  const uiBarMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.38 });
   for (let i = 0; i < 5; i++) {
     const barW = 0.8 + (i % 3) * 0.45;
-    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.045), uiBarMat);
-    bar.position.set(-1.1 + barW / 2, 1.42 - i * 0.16, 0.038);
+    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.042), uiBarMat);
+    bar.position.set(-1.1 + barW / 2, 1.44 - i * 0.16, 0.006);
     display.add(bar);
   }
 
-  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.45, 16), matOuterChassis);
+  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 16), matOuterChassis);
   hingeL.rotation.z = Math.PI / 2;
-  hingeL.position.set(-0.85, 0, 0);
+  hingeL.position.set(-0.85, 0, -0.03);
+  addCrispEdges(hingeL, 'display', 0x94a3b8, 0.7);
   const hingeR = hingeL.clone();
-  hingeR.position.set(0.85, 0, 0);
+  hingeR.position.set(0.85, 0, -0.03);
 
   const displayAnchor = new THREE.Object3D();
-  displayAnchor.position.set(0, 0.98, 0.04);
+  displayAnchor.position.set(0, 1.00, 0.01);
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. MOTHERBOARD (Complex PCB + Gold Wiring Traces + Braided Wires + Dual Fans + VRM)
+  // 2. MOTHERBOARD (Embedded Flat PCB Line Wiring + Dual Spinning Fans + VRM — No 3D Tube Wires)
   // =========================================================================
   const motherboard = new THREE.Group();
-  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.055, 1.58), matMotherboardPcb);
-  addCrispEdges(pcb, 'motherboard', 0x94a3b8, 0.82);
+  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.045, 1.58), matMotherboardPcb);
+  addCrispEdges(pcb, 'motherboard', 0xcbd5e1, 0.92);
   motherboard.add(pcb);
 
-  // CPU Socket & Die
-  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.07, 0.76), matOuterChassis);
-  cpuSocket.position.set(0, 0.035, -0.08);
-  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.1, 0.54), matCpuPackage);
-  cpuDie.position.set(0, 0.055, -0.08);
-  addCrispEdges(cpuDie, 'motherboard', 0xcbd5e1, 0.92);
+  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.055, 0.76), matOuterChassis);
+  cpuSocket.position.set(0, 0.025, -0.08);
+  addCrispEdges(cpuSocket, 'motherboard', 0x94a3b8, 0.8);
+  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.075, 0.54), matCpuPackage);
+  cpuDie.position.set(0, 0.04, -0.08);
+  addCrispEdges(cpuDie, 'motherboard', 0xf8fafc, 0.96);
   motherboard.add(cpuSocket, cpuDie);
 
-  // Twin Copper Heatpipes
-  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.035, 0.11), matCopperPipe);
-  pipe1.position.set(0, 0.065, -0.42);
-  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.035, 0.08), matCopperPipe);
-  pipe2.position.set(0, 0.065, -0.26);
-  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.75);
+  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.028, 0.11), matCopperPipe);
+  pipe1.position.set(0, 0.048, -0.42);
+  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.028, 0.08), matCopperPipe);
+  pipe2.position.set(0, 0.048, -0.26);
+  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.85);
+  addCrispEdges(pipe2, 'motherboard', 0xf59e0b, 0.75);
   motherboard.add(pipe1, pipe2);
 
-  // Dual Multi-Blade Cooling Fans
+  // Dual Multi-Blade Cooling Fans (Kept and highlighted with crisp outlines)
   function createCoolingFan(xPos) {
     const fanGroup = new THREE.Group();
-    fanGroup.position.set(xPos, 0.045, -0.38);
-    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.06, 24), matOuterChassis);
-    addCrispEdges(shroud, 'motherboard', 0x94a3b8, 0.7);
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.075, 16), matCpuPackage);
+    fanGroup.position.set(xPos, 0.036, -0.38);
+    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.048, 24), matOuterChassis);
+    addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.9);
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.058, 16), matCpuPackage);
+    addCrispEdges(hub, 'motherboard', 0xcbd5e1, 0.85);
     fanGroup.add(shroud, hub);
     for (let b = 0; b < 8; b++) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.035), matKeyCap);
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.032, 0.032), matKeyCap);
       const angle = (b / 8) * Math.PI * 2;
-      blade.position.set(Math.cos(angle) * 0.18, 0.02, Math.sin(angle) * 0.18);
+      blade.position.set(Math.cos(angle) * 0.18, 0.012, Math.sin(angle) * 0.18);
       blade.rotation.y = -angle + 0.4;
+      addCrispEdges(blade, 'motherboard', 0x94a3b8, 0.65);
       fanGroup.add(blade);
     }
     return fanGroup;
@@ -1832,107 +1953,112 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const fanR = createCoolingFan(0.82);
   motherboard.add(fanL, fanR);
 
-  // VRM Choke Coils & Capacitors Array
   for (let v = 0; v < 6; v++) {
-    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.08, 0.11), matStorageSink);
-    vrm.position.set(-0.38 + v * 0.15, 0.045, -0.62);
-    addCrispEdges(vrm, 'motherboard', 0x94a3b8, 0.6);
+    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.06, 0.11), matStorageSink);
+    vrm.position.set(-0.38 + v * 0.15, 0.035, -0.62);
+    addCrispEdges(vrm, 'motherboard', 0xcbd5e1, 0.8);
     motherboard.add(vrm);
   }
   for (let c = 0; c < 5; c++) {
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.085, 12), matGoldContacts);
-    cap.position.set(-1.12, 0.045, -0.2 + c * 0.16);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.06, 12), matGoldContacts);
+    cap.position.set(-1.12, 0.035, -0.2 + c * 0.16);
+    addCrispEdges(cap, 'motherboard', 0xf59e0b, 0.75);
     motherboard.add(cap);
   }
 
-  // Gold & Copper PCB Circuit Traces + 3D Wiring Harness on Motherboard
+  // Embedded Flat PCB Line Wiring Traces Coming Out of the Logic Core on the Motherboard
   const tracePoints = [];
   const traceCoords = [
-    [-1.1, 0.032, 0.55, -0.4, 0.032, 0.55],
-    [-0.4, 0.032, 0.55, -0.15, 0.032, 0.25],
-    [1.1, 0.032, 0.55, 0.4, 0.032, 0.55],
-    [0.4, 0.032, 0.55, 0.15, 0.032, 0.25],
-    [-0.95, 0.032, 0.35, -0.35, 0.032, 0.35],
-    [0.95, 0.032, 0.35, 0.35, 0.032, 0.35],
-    [-0.25, 0.032, 0.68, 0.25, 0.032, 0.68],
-    [-0.6, 0.032, -0.08, -0.38, 0.032, -0.08],
-    [0.38, 0.032, -0.08, 0.6, 0.032, -0.08]
+    [-1.15, 0.026, 0.56, -0.38, 0.026, 0.56],
+    [-0.38, 0.026, 0.56, -0.14, 0.026, 0.24],
+    [1.15, 0.026, 0.56, 0.38, 0.026, 0.56],
+    [0.38, 0.026, 0.56, 0.14, 0.026, 0.24],
+    [-1.05, 0.026, 0.42, -0.32, 0.026, 0.42],
+    [-0.32, 0.026, 0.42, -0.08, 0.026, 0.22],
+    [1.05, 0.026, 0.42, 0.32, 0.026, 0.42],
+    [0.32, 0.026, 0.42, 0.08, 0.026, 0.22],
+    [-0.95, 0.026, 0.28, -0.35, 0.026, 0.28],
+    [0.95, 0.026, 0.28, 0.35, 0.026, 0.28],
+    [-0.32, 0.026, 0.68, 0.32, 0.026, 0.68],
+    [-0.62, 0.026, -0.08, -0.38, 0.026, -0.08],
+    [0.38, 0.026, -0.08, 0.62, 0.026, -0.08],
+    [0, 0.026, 0.24, 0, 0.026, 0.72],
+    [-0.18, 0.026, -0.46, -0.18, 0.026, -0.72],
+    [0.18, 0.026, -0.46, 0.18, 0.026, -0.72]
   ];
   traceCoords.forEach(([x1, y1, z1, x2, y2, z2]) => {
     tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
   });
   const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
-  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.78 });
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.88 });
   motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
 
-  // 3D Arched Wiring Cables connecting motherboard subsystems
-  function addWireArc(p1, p2, midHeight, hexColor) {
-    const mid = new THREE.Vector3((p1.x + p2.x) * 0.5, midHeight, (p1.z + p2.z) * 0.5);
-    const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
-    const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.016, 8, false);
-    const tubeMat = new THREE.MeshStandardMaterial({ color: hexColor, metalness: 0.5, roughness: 0.3 });
-    motherboard.add(new THREE.Mesh(tubeGeo, tubeMat));
-  }
-  addWireArc(new THREE.Vector3(-1.1, 0.04, 0.45), new THREE.Vector3(-0.35, 0.05, -0.05), 0.16, 0x38bdf8);
-  addWireArc(new THREE.Vector3(-1.05, 0.04, 0.52), new THREE.Vector3(-0.35, 0.05, 0.02), 0.14, 0xf59e0b);
-  addWireArc(new THREE.Vector3(1.1, 0.04, 0.45), new THREE.Vector3(0.35, 0.05, -0.05), 0.16, 0xa855f7);
-  addWireArc(new THREE.Vector3(1.05, 0.04, 0.52), new THREE.Vector3(0.35, 0.05, 0.02), 0.14, 0x10b981);
-
   const motherboardAnchor = new THREE.Object3D();
-  motherboardAnchor.position.set(0, 0.07, 0);
+  motherboardAnchor.position.set(0, 0.05, 0);
   motherboard.add(motherboardAnchor);
 
   // =========================================================================
-  // 3. KEYBOARD (Technical Skills)
+  // 3. KEYBOARD (With Futuristic Curved Dome Keycap Pop-Out During Disassembly!)
   // =========================================================================
   const keyboard = new THREE.Group();
-  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.72, 0.038, 1.18), matKeyDeck);
-  deckPlate.position.set(0, 0.08, -0.14);
-  addCrispEdges(deckPlate, 'keyboard', 0x94a3b8, 0.78);
+  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.72, 0.03, 1.18), matKeyDeck);
+  deckPlate.position.set(0, 0.02, -0.14);
+  addCrispEdges(deckPlate, 'keyboard', 0xcbd5e1, 0.9);
   keyboard.add(deckPlate);
-  for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 11; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.05, 0.19), matKeyCap);
-      key.position.set(-1.0 + c * 0.2, 0.115, -0.52 + r * 0.24);
-      addCrispEdges(key, 'keyboard', 0x64748b, 0.45);
+
+  const domeKeys = [];
+  const rows = 4;
+  const cols = 11;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.036, 0.185), matKeyCap);
+      const baseX = -1.0 + c * 0.2;
+      const baseY = 0.042;
+      const baseZ = -0.50 + r * 0.24;
+      key.position.set(baseX, baseY, baseZ);
+      addCrispEdges(key, 'keyboard', 0x94a3b8, 0.78);
       keyboard.add(key);
+
+      // Normalized (-1..1) coordinates for curved dome elevation & outward fan
+      const nx = (c - (cols - 1) / 2) / ((cols - 1) / 2);
+      const nz = (r - (rows - 1) / 2) / ((rows - 1) / 2);
+      const domeHeight = Math.max(0, 1 - (nx * nx * 0.62 + nz * nz * 0.62));
+      domeKeys.push({ mesh: key, baseX, baseY, baseZ, nx, nz, domeHeight });
     }
   }
   const keyboardAnchor = new THREE.Object3D();
-  keyboardAnchor.position.set(0, 0.12, -0.14);
+  keyboardAnchor.position.set(0, 0.18, -0.14);
   keyboard.add(keyboardAnchor);
 
   // =========================================================================
-  // 4. RAM STICKS (Dual DDR5 Modules that Visibly Slide/Eject Out While Scrolling!)
+  // 4. RAM STICKS (Dual DDR5 Modules that Visibly Slide Out While Scrolling)
   // =========================================================================
   const ram = new THREE.Group();
   function createRamStick(side) {
     const stickGroup = new THREE.Group();
-    const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.045, 0.32), matRamSpreader);
-    addCrispEdges(board, 'ram', 0xf59e0b, 0.85);
+    const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.038, 0.32), matRamSpreader);
+    addCrispEdges(board, 'ram', 0xf59e0b, 0.92);
     stickGroup.add(board);
 
-    // Gold Edge Connector Pins
-    const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.048, 0.045), matGoldContacts);
+    const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.04, 0.045), matGoldContacts);
     goldStrip.position.set(0, 0, side > 0 ? -0.145 : 0.145);
     stickGroup.add(goldStrip);
 
-    // 4 Memory IC Packages per stick
     for (let m = 0; m < 4; m++) {
-      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.06, 0.16), matRamChip);
-      chip.position.set(-0.255 + m * 0.17, 0.01, 0);
-      addCrispEdges(chip, 'ram', 0x94a3b8, 0.7);
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.05, 0.16), matRamChip);
+      chip.position.set(-0.255 + m * 0.17, 0.008, 0);
+      addCrispEdges(chip, 'ram', 0xcbd5e1, 0.85);
       stickGroup.add(chip);
     }
     return stickGroup;
   }
   const ramL = createRamStick(-1);
   const ramR = createRamStick(1);
-  ramL.position.set(-0.62, 0.055, 0.22);
-  ramR.position.set(0.62, 0.055, 0.22);
+  ramL.position.set(-0.62, 0.02, 0.22);
+  ramR.position.set(0.62, 0.02, 0.22);
 
   const ramAnchor = new THREE.Object3D();
-  ramAnchor.position.set(0, 0.05, 0);
+  ramAnchor.position.set(0, 0.04, 0);
   ramR.add(ramAnchor);
   ram.add(ramL, ramR);
 
@@ -1940,20 +2066,20 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   // 5. STORAGE (NVMe M.2 Solid-State Array & Lower Unibody Base)
   // =========================================================================
   const storage = new THREE.Group();
-  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.11, 2.02), matOuterChassis);
-  baseMesh.position.y = -0.14;
-  addCrispEdges(baseMesh, 'storage', 0x94a3b8, 0.72);
+  // Top face of baseMesh sits at y = 0.00 so closed lid at y = 0.00 seals 100% flush!
+  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.11, 2.00), matOuterChassis);
+  baseMesh.position.set(0, -0.055, 0);
+  addCrispEdges(baseMesh, 'storage', 0xe2e8f0, 0.92);
 
-  // Dual NVMe M.2 SSD Modules with Finned Heatsinks & NAND Chips
   function createNvmeSsd(xOffset) {
     const ssdGroup = new THREE.Group();
-    ssdGroup.position.set(xOffset, -0.02, 0.38);
-    const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.05, 0.42), matStoragePcb);
-    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.85);
-    const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.075, 0.36), matStorageSink);
-    heatsink.position.set(-0.06, 0.02, 0);
-    addCrispEdges(heatsink, 'storage', 0xcbd5e1, 0.8);
-    const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.052, 0.34), matGoldContacts);
+    ssdGroup.position.set(xOffset, -0.03, 0.38);
+    const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.04, 0.42), matStoragePcb);
+    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.92);
+    const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.06, 0.36), matStorageSink);
+    heatsink.position.set(-0.06, 0.015, 0);
+    addCrispEdges(heatsink, 'storage', 0xe2e8f0, 0.9);
+    const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.042, 0.34), matGoldContacts);
     connector.position.set(0.48, 0, 0);
     ssdGroup.add(ssdPcb, heatsink, connector);
     return ssdGroup;
@@ -1961,7 +2087,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const ssd1 = createNvmeSsd(-0.64);
   const ssd2 = createNvmeSsd(0.64);
   const storageAnchor = new THREE.Object3D();
-  storageAnchor.position.set(0, 0.04, 0.38);
+  storageAnchor.position.set(0, 0.02, 0.38);
   storage.add(baseMesh, ssd1, ssd2, storageAnchor);
 
   // =========================================================================
@@ -1969,16 +2095,16 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   // =========================================================================
   const touchpad = new THREE.Group();
   const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.08, 0.045, 0.68),
-    new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.82, roughness: 0.2 })
+    new THREE.BoxGeometry(1.08, 0.036, 0.66),
+    new THREE.MeshStandardMaterial({ color: 0x262b38, metalness: 0.35, roughness: 0.68 })
   );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.055, 0.62), matTouchpadSurface);
-  padRim.position.set(0, 0.1, 0.62);
-  padMesh.position.set(0, 0.105, 0.62);
-  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.9);
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.042, 0.60), matTouchpadSurface);
+  padRim.position.set(0, 0.02, 0.60);
+  padMesh.position.set(0, 0.024, 0.60);
+  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.95);
   padMesh.userData.isTouchpad = true;
   const touchpadAnchor = new THREE.Object3D();
-  touchpadAnchor.position.set(0, 0.12, 0.62);
+  touchpadAnchor.position.set(0, 0.04, 0.60);
   touchpad.add(padRim, padMesh, touchpadAnchor);
 
   const parts = { display, motherboard, keyboard, ram, touchpad, storage };
@@ -2011,10 +2137,15 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     root.add(group);
   });
 
-  // Initialize in closed state at progress = 0
+  // Start 100% flush-closed with internal boards tucked inside the sealed clamshell
   display.rotation.x = Math.PI / 2;
+  motherboard.visible = false;
+  keyboard.visible = false;
+  ram.visible = false;
+  touchpad.visible = false;
+  ssd1.visible = false;
+  ssd2.visible = false;
 
-  // Strictly Scoped Raycaster on #laptop-canvas Only
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2(-999, -999);
   let currentActiveKey = 'display';
@@ -2026,7 +2157,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   canvas.addEventListener('pointermove', (e) => {
-    if (e.target !== canvas || currentProgress <= 0.005 || currentProgress >= 0.995) {
+    if (e.target !== canvas || currentProgress <= 0.01 || currentProgress >= 0.995) {
       clearHover();
       return;
     }
@@ -2039,7 +2170,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
 
-    const hits = raycaster.intersectObjects(pickableMeshes, false);
+    const visiblePickables = pickableMeshes.filter((m) => m.visible && (!m.parent || m.parent.visible));
+    const hits = raycaster.intersectObjects(visiblePickables, false);
     if (hits.length > 0) {
       const hitMesh = hits[0].object;
       canvas.style.cursor = hitMesh.userData.partKey === 'touchpad' ? 'pointer' : 'crosshair';
@@ -2071,76 +2203,90 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     };
   }
 
-  // Disassembly Choreography:
-  // 1. Starts 100% CLOSED flat in the center (progress = 0)
-  // 2. Opens lid smoothly & shifts left (0.00 -> 0.16)
-  // 3. Explodes with compact vertical gaps so ALL parts + ejecting RAM sticks remain simultaneously visible
-  // 4. Never rotates its back to the camera — at completion (progress >= 0.80), faces front-three-quarter with Touchpad front-and-center!
   function setDisassemblyState(progress, activeKey, hexAccent) {
     currentProgress = progress;
     currentActiveKey = activeKey;
 
-    // Lid Hinge Opening: 0.00 -> 0.14 opens lid from flat closed (Math.PI / 2) to open viewing angle (-0.22)
-    const openRatio = Math.min(1, progress / 0.14);
-    const smoothOpen = 1 - Math.pow(1 - openRatio, 2.5);
+    // Phase 1 (0.00 -> 0.11): Lid opens cleanly from 100% flush-closed (Math.PI / 2) to open angle (-0.22)
+    const openRatio = Math.min(1, progress / 0.11);
+    const smoothOpen = 1 - Math.pow(1 - openRatio, 2.4);
     const closedAngle = Math.PI / 2;
     const openAngle = -0.22;
 
-    // Explosion Spread starts after the lid begins opening (0.08 -> 0.82)
-    const rawSpread = Math.max(0, Math.min(1, (progress - 0.08) / 0.72));
+    // Reveal internal assemblies only once the lid has hinged open enough (openRatio > 0.12) so nothing ever pokes through when closed!
+    const showInternals = openRatio > 0.12;
+    motherboard.visible = showInternals;
+    keyboard.visible = showInternals;
+    ram.visible = showInternals;
+    touchpad.visible = showInternals;
+    ssd1.visible = showInternals;
+    ssd2.visible = showInternals;
+
+    // Phase 2 (0.08 -> 0.78): Disassembly spread
+    const rawSpread = Math.max(0, Math.min(1, (progress - 0.08) / 0.70));
     const spread = 1 - Math.pow(1 - rawSpread, 1.8);
 
-    // Shift to left as About Me arrives
-    const leftShift = Math.max(0, Math.min(1, (progress - 0.05) / 0.13));
+    // Smooth shift to the left as About Me arrives
+    const leftShift = Math.max(0, Math.min(1, (progress - 0.04) / 0.10));
     const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    // Final Touchpad Detach stage (progress >= 0.80)
+    // Phase 3 (progress >= 0.79): Touchpad detaches forward in front view
     const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.79) / 0.18));
 
-    // Compact vertical gaps so every single part fits comfortably inside the viewport at the same time
-    display.position.set(0, 0.14 + spread * 1.12, -0.98 - spread * 0.42);
+    // Display hinges open from (0, 0.00, -1.00) and then rises smoothly
+    display.position.set(0, spread * 1.18, -1.00 - spread * 0.38);
     display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.14) * smoothOpen;
 
+    // Keyboard Deck & Futuristic Curved Dome Keycap Pop-Out
     keyboard.position.set(0, spread * 0.62, spread * 0.08);
+    const keyDomeFactor = Math.max(0, Math.min(1, (progress - 0.12) / 0.45));
+    domeKeys.forEach(({ mesh, baseX, baseY, baseZ, nx, nz, domeHeight }) => {
+      mesh.position.set(
+        baseX + nx * keyDomeFactor * 0.15,
+        baseY + keyDomeFactor * (0.08 + domeHeight * 0.28),
+        baseZ + nz * keyDomeFactor * 0.11
+      );
+      mesh.rotation.x = -nz * keyDomeFactor * 0.22;
+      mesh.rotation.z = nx * keyDomeFactor * 0.18;
+    });
+
+    // Motherboard stays cleanly separated in the center plane
     motherboard.position.set(0, spread * 0.12, 0);
 
-    // RAM Sticks visibly unclip and slide/eject outward from the laptop while scrolling!
-    const ramOut = Math.max(0, Math.min(1, (progress - 0.12) / 0.55));
-    ramL.position.set(-0.62 - ramOut * 1.18, 0.055 + spread * 0.34, 0.22 + ramOut * 0.22);
-    ramR.position.set(0.62 + ramOut * 1.18, 0.055 + spread * 0.34, 0.22 + ramOut * 0.22);
+    // RAM Sticks slide/eject outward from the motherboard slots
+    const ramOut = Math.max(0, Math.min(1, (progress - 0.12) / 0.52));
+    ramL.position.set(-0.62 - ramOut * 1.18, 0.02 + spread * 0.34, 0.22 + ramOut * 0.22);
+    ramR.position.set(0.62 + ramOut * 1.18, 0.02 + spread * 0.34, 0.22 + ramOut * 0.22);
     ramL.rotation.z = ramOut * 0.12;
     ramR.rotation.z = -ramOut * 0.12;
 
-    // Storage array & base separate cleanly downward
-    storage.position.set(0, -spread * 0.62, 0);
-    ssd1.position.y = -0.02 + spread * 0.24;
-    ssd2.position.y = -0.02 + spread * 0.24;
+    // Storage & Lower Chassis separate downward
+    storage.position.set(0, -spread * 0.58, 0);
+    ssd1.position.y = -0.03 + spread * 0.24;
+    ssd2.position.y = -0.03 + spread * 0.24;
 
     // Touchpad stays front-and-center and detaches forward toward camera at completion
     touchpad.position.set(
-      touchpadDetach * 0.35,
+      touchpadDetach * 0.32,
       spread * 0.28 + touchpadDetach * 0.08,
-      spread * 0.75 + touchpadDetach * 1.05
+      spread * 0.72 + touchpadDetach * 1.05
     );
     touchpad.rotation.x = touchpadDetach * 0.28;
 
-    // Root Position & Front-Facing Isometric Rotation (Never rotates its back to the camera!)
     root.position.x = -1.32 * smoothLeft + touchpadDetach * 0.85;
-    root.position.y = -0.15;
-    // Gentle front-facing yaw sweep between +0.34 and -0.28 rad, ending at +0.16 rad so touchpad is 100% visible!
-    root.rotation.y = 0.28 - Math.sin(progress * Math.PI) * 0.52 + touchpadDetach * 0.12;
+    root.position.y = -0.12;
+    root.rotation.y = 0.28 - Math.sin(progress * Math.PI) * 0.48 + touchpadDetach * 0.12;
     root.rotation.x = 0.24 + spread * 0.08;
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
-    // Highlight active subsystem's crisp edge lines
     Object.entries(parts).forEach(([key, group]) => {
       const isFocused = (touchpadDetach > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && touchpadDetach <= 0.45 && key === activeKey);
-      group.scale.setScalar(isFocused ? 1.08 : 0.99);
+      group.scale.setScalar(isFocused ? 1.07 : 0.99);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
-        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#8b95a9');
-        lMat.opacity = isFocused ? 0.98 : 0.58;
+        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
+        lMat.opacity = isFocused ? 1.0 : 0.78;
       });
     });
   }
@@ -2153,9 +2299,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   function animate() {
     requestAnimationFrame(animate);
-    // Subtle turbine fan spin on motherboard
-    fanL.rotation.y += 0.025;
-    fanR.rotation.y -= 0.025;
+    fanL.rotation.y += 0.028;
+    fanR.rotation.y -= 0.028;
 
     renderer.render(scene, camera);
     scene.updateMatrixWorld(true);
@@ -2204,18 +2349,49 @@ function buildFallbackGithubChartSvg() {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
+// Non-scrollable Typewriter Effect for Landing Page Name After Loading Completes
+function runHeroTypewriter(firstName, lastName) {
+  const firstEl = document.getElementById('hero-first');
+  const lastEl = document.getElementById('hero-last');
+  if (!firstEl || !lastEl) return;
+
+  firstEl.textContent = '';
+  lastEl.textContent = '';
+  firstEl.classList.add('typing');
+
+  let i = 0;
+  const firstTimer = setInterval(() => {
+    i += 1;
+    firstEl.textContent = firstName.slice(0, i);
+    if (i >= firstName.length) {
+      clearInterval(firstTimer);
+      firstEl.classList.remove('typing');
+      lastEl.classList.add('typing');
+
+      let j = 0;
+      const lastTimer = setInterval(() => {
+        j += 1;
+        lastEl.textContent = lastName.slice(0, j);
+        if (j >= lastName.length) {
+          clearInterval(lastTimer);
+          setTimeout(() => lastEl.classList.remove('typing'), 450);
+        }
+      }, 95);
+    }
+  }, 95);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Template Repository Loading Screen (Longer ~3.0s smooth duration)
+  // 0. Initial Loading Screen (~4.1s total — 1 second slower than v5, no name on loader)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
 
   let loadVal = 0;
   const loadTimer = setInterval(() => {
-    const step = loadVal < 35 ? 2 : loadVal < 78 ? 1 : 2;
-    loadVal = Math.min(100, loadVal + step);
+    loadVal = Math.min(100, loadVal + 1);
     if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
     if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
     if (loadVal >= 100) {
@@ -2223,13 +2399,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-      }, 420);
+        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 320);
+      }, 450);
     }
-  }, 42);
-
-  // 1. Populate Hero
-  document.getElementById('hero-first').textContent = profile.firstName;
-  document.getElementById('hero-last').textContent = profile.lastName;
+  }, 36);
 
   // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
@@ -2269,14 +2442,14 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="github-contrib-card">
         <div class="github-contrib-header">
           <span>GitHub Contributions</span>
-          <a href="${profile.github}" target="_blank" rel="noopener">@${st.githubUsername} ↗</a>
+          <a href="${profile.github}" target="_blank" rel="noopener noreferrer">@${st.githubUsername} ↗</a>
         </div>
         <div class="github-chart-wrap">
           <img
             src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
-            onerror="this.onerror=null;this.src='${fallbackChartUri}';"
+            referrerpolicy="no-referrer"
           />
         </div>
         <div class="github-badges-row">
@@ -2284,13 +2457,16 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
         </div>
       </div>
-      <div class="stage-mini-quote-wrap">
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    ` : '';
+
+    const outsideQuoteHtml = st.outsideQuote ? `
+      <div class="stage-outside-quote-wrap">
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
           <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
         </svg>
-        <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <blockquote class="stage-mini-quote">“${st.outsideQuote}”</blockquote>
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
           <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
         </svg>
@@ -2321,7 +2497,16 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>`;
+      </article>
+      ${outsideQuoteHtml}`;
+
+    const chartImg = section.querySelector('.github-chart-img');
+    if (chartImg) {
+      chartImg.addEventListener('error', () => {
+        chartImg.src = fallbackChartUri;
+      }, { once: true });
+    }
+
     stagesContainer.appendChild(section);
   });
 
@@ -2340,7 +2525,6 @@ window.addEventListener('DOMContentLoaded', () => {
     touchpadAnchor.download = profile.cvDownloadName;
   }
 
-  // Initialize 3D Laptop & Accurate Screen-Space Callout / Touchpad Button Tracking
   const canvas = document.getElementById('laptop-canvas');
   const laptop3D = initLaptop3D(
     canvas,
@@ -2361,7 +2545,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.16 && progress < 0.79) {
+      if (progress >= 0.10 && progress < 0.79) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -2383,11 +2567,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies & Aspirations — 8 Frames)
+  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A lights up after scrolling into section!)
   const reelTrack = document.getElementById('reel-track');
-  reelFrames.forEach((rf, idx) => {
+  reelFrames.forEach((rf) => {
     const card = document.createElement('article');
-    card.className = `reel-card ${idx === 0 ? 'revealed' : ''}`;
+    card.className = 'reel-card';
     card.style.setProperty('--frame-color', rf.color);
     card.innerHTML = `
       <div class="reel-frame-meta">
@@ -2401,38 +2585,37 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Horizontally Stacked Project Layers (Template Repo Style: Hovering Moves Card to Center!)
+  // 4. Render 8 Steeply Angled Horizontal Project Cards (Hovering Pulls Card to Exact Center + Blurs Website & Other Tabs!)
+  const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
+  const focusBackdrop = document.getElementById('projects-focus-backdrop');
   const totalLayers = projects.length;
-  const middleIdx = (totalLayers - 1) / 2;
 
   projects.forEach((proj, idx) => {
-    const card = document.createElement('article');
-    card.style.zIndex = String(totalLayers - idx);
-    // Calculate horizontal shift needed to bring this card to the exact center of the horizontal stack when hovered
-    const offsetSteps = middleIdx - idx;
-    const shiftPx = offsetSteps * 42;
-    card.style.setProperty('--center-shift', `${shiftPx}px`);
+    const slot = document.createElement('div');
+    slot.className = 'stack-card-slot';
+    slot.style.zIndex = String(totalLayers - idx);
 
+    const card = document.createElement('article');
     if (!proj.isPlaceholder) {
       card.className = 'stack-card active-project-card';
       card.innerHTML = `
         <div class="stack-card-top">
-          <div>
-            <h3 class="stage-title" style="font-size:1.95rem">${proj.title}</h3>
-            <p class="mono-tag" style="color:#f59e0b;margin-top:0.2rem;font-size:0.65rem">${proj.subtitle}</p>
+          <div class="stack-card-title-wrap">
+            <h3 class="stack-card-title">${proj.title}</h3>
+            <p class="stack-card-subtitle">${proj.subtitle}</p>
           </div>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="64" height="64" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="56" height="56" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <span class="project-logo-caption">View SanitX on GitHub ↗</span>
         </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.7rem;padding:0.25rem 0.55rem">${t}</span>`).join('')}</div>
+        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
         <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
       card.className = 'stack-card grey-layer-card';
@@ -2441,37 +2624,61 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="stack-card-top">
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <div class="grey-photo-frame"></div>`;
+        <div class="grey-photo-frame">
+          <span class="yet-to-build-text">${proj.emptyLabel || 'yet to build😝'}</span>
+        </div>`;
     }
-    projectsStack.appendChild(card);
+
+    slot.appendChild(card);
+    projectsStack.appendChild(slot);
   });
 
-  // Hovering the active project card smoothly moves it to the center and parts the rest of the stack
+  const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
-  const activeProjectCard = projectsStack.querySelector('.active-project-card');
+  const activeSlot = allSlots[0];
 
-  function focusCardToCenter(targetIdx) {
+  function focusCardToViewportCenter(targetIdx) {
+    const targetSlot = allSlots[targetIdx];
+    const targetCard = allStackCards[targetIdx];
+    if (!targetSlot || !targetCard) return;
+
+    // Calculate exact horizontal pixel delta from this slot's center to the viewport center
+    const slotRect = targetSlot.getBoundingClientRect();
+    const slotCenterX = slotRect.left + slotRect.width / 2;
+    const viewportCenterX = window.innerWidth / 2;
+    const deltaX = viewportCenterX - slotCenterX;
+    targetCard.style.setProperty('--center-shift', `${deltaX}px`);
+
+    if (focusBackdrop) focusBackdrop.classList.add('active');
+    if (projectsSection) projectsSection.classList.add('has-focused-card');
+    targetSlot.classList.add('slot-focused');
+
     allStackCards.forEach((c, i) => {
-      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+      c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
+      allSlots[i].style.zIndex = i === targetIdx ? '90' : String(totalLayers - i);
       if (i === targetIdx) {
         c.classList.add('is-centered');
       } else if (i < targetIdx) {
-        c.classList.add('pushed-left');
+        c.classList.add('blurred-left');
       } else {
-        c.classList.add('pushed-right');
+        c.classList.add('blurred-right');
       }
     });
   }
 
-  function resetStack() {
-    allStackCards.forEach((c) => {
-      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+  function resetProjectStack() {
+    if (focusBackdrop) focusBackdrop.classList.remove('active');
+    if (projectsSection) projectsSection.classList.remove('has-focused-card');
+    allSlots.forEach((s) => s.classList.remove('slot-focused'));
+    allStackCards.forEach((c, i) => {
+      c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
+      allSlots[i].style.zIndex = String(totalLayers - i);
     });
   }
 
-  if (activeProjectCard) {
-    activeProjectCard.addEventListener('pointerenter', () => focusCardToCenter(0));
-    projectsStack.addEventListener('pointerleave', resetStack);
+  if (activeSlot) {
+    activeSlot.addEventListener('pointerenter', () => focusCardToViewportCenter(0));
+    activeSlot.addEventListener('pointerleave', resetProjectStack);
   }
 
   // GSAP ScrollTrigger Animations
@@ -2486,7 +2693,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.63));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.10) / 0.69));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -2517,6 +2724,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Scroll-Driven 35mm Camera Reel Animation (Card 01A lights up after scrolling into section: self.progress >= 0.04)
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -2524,7 +2732,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ScrollTrigger.create({
       trigger: '#section-reel',
-      start: 'top top',
+      start: 'top 65%',
       end: 'bottom bottom',
       scrub: 0.5,
       onUpdate: (self) => {
@@ -2536,8 +2744,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(self.progress * totalFrames));
 
         reelCards.forEach((card, i) => {
-          const threshold = (i / totalFrames) * 0.85;
-          if (self.progress >= threshold || i === 0) {
+          const threshold = 0.04 + (i / totalFrames) * 0.82;
+          if (self.progress >= threshold) {
             card.classList.add('revealed');
           } else {
             card.classList.remove('revealed');
@@ -2549,13 +2757,13 @@ window.addEventListener('DOMContentLoaded', () => {
           reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color;
         }
         if (reelProgressFill) {
-          reelProgressFill.style.width = `${Math.max(12.5, self.progress * 100)}%`;
+          reelProgressFill.style.width = `${Math.max(0, self.progress * 100)}%`;
         }
       }
     });
   }
 
-  // 5. Julian Garnier (juliangarnier.com) Auto-Typing Chat-Form Contact Me Section (No Buttons, No Phone Number)
+  // 5. Julian Garnier (juliangarnier.com) Slow ~6s Chat-Form Contact Me Section
   const chatMessagesEl = document.getElementById('chat-messages');
 
   function appendChatBubble(html) {
@@ -2565,7 +2773,7 @@ window.addEventListener('DOMContentLoaded', () => {
     chatMessagesEl.appendChild(b);
   }
 
-  function showTypingThenBubble(html, delay = 650) {
+  function showTypingThenBubble(html, typingDuration = 1150, pauseAfter = 350) {
     return new Promise((resolve) => {
       const typing = document.createElement('div');
       typing.className = 'minimal-typing';
@@ -2574,8 +2782,8 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         typing.remove();
         appendChatBubble(html);
-        resolve();
-      }, delay);
+        setTimeout(resolve, pauseAfter);
+      }, typingDuration);
     });
   }
 
@@ -2583,8 +2791,9 @@ window.addEventListener('DOMContentLoaded', () => {
   async function startJulianGarnierChat() {
     if (contactStarted || !chatMessagesEl) return;
     contactStarted = true;
+    // 4 messages * (1150ms typing + 350ms pause) = 6000ms (~6 seconds total animation)
     for (const msg of contactMessages) {
-      await showTypingThenBubble(msg, 620);
+      await showTypingThenBubble(msg, 1150, 350);
     }
   }
 
@@ -2605,12 +2814,128 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
+### File 6: `server.js`
+```javascript
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = process.env.PORT || 3000;
+const ROOT_DIR = path.resolve(__dirname);
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.pdf': 'application/pdf'
+};
+
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+};
+
+http.createServer((req, res) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.writeHead(405, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('405 Method Not Allowed');
+  }
+
+  let decodedPath;
+  try {
+    decodedPath = decodeURIComponent((req.url || '/').split('?')[0]);
+  } catch {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('400 Bad Request');
+  }
+
+  if (decodedPath.includes('\0')) {
+    res.writeHead(400, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('400 Bad Request');
+  }
+
+  const relPath = decodedPath === '/' ? '/index.html' : decodedPath;
+  const resolvedPath = path.resolve(ROOT_DIR, '.' + relPath);
+
+  // Prevent directory traversal outside ROOT_DIR and block hidden dotfiles (.git, .env, .vercel)
+  const relFromRoot = path.relative(ROOT_DIR, resolvedPath);
+  if (
+    relFromRoot.startsWith('..') ||
+    path.isAbsolute(relFromRoot) ||
+    relFromRoot.split(path.sep).some((part) => part.startsWith('.'))
+  ) {
+    res.writeHead(403, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('403 Forbidden');
+  }
+
+  fs.stat(resolvedPath, (statErr, stats) => {
+    if (statErr || !stats.isFile()) {
+      res.writeHead(404, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('404 Not Found');
+    }
+
+    const ext = path.extname(resolvedPath).toLowerCase();
+    const contentType = MIME[ext] || 'application/octet-stream';
+
+    fs.readFile(resolvedPath, (readErr, data) => {
+      if (readErr) {
+        res.writeHead(500, { ...SECURITY_HEADERS, 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('500 Internal Server Error');
+      }
+      res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': contentType });
+      if (req.method === 'HEAD') return res.end();
+      res.end(data);
+    });
+  });
+}).listen(PORT, () => console.log(`Portfolio running securely at http://localhost:${PORT}`));
+```
+
+### File 7: `vercel.json`
+```json
+{
+  "version": 2,
+  "framework": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ---
 
 ## 3. One-Step Deployment Commands
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
-git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js
-git commit -m "feat: implement v5 refinements (longer loader, philosophical leaf quotes, closed-to-open laptop with Motherboard/RAM/Storage, hover-to-center project stack, Julian Garnier chat Contact Me)"
+git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js server.js vercel.json
+git commit -m "feat: implement v6 refinements and security hardening"
 git push origin main
 ```

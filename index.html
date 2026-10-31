@@ -10,16 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
 <body class="is-loading">
-  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Smooth Progression) -->
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (No Name on Loader, ~4.1s Smooth Duration) -->
   <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
     <div class="loader-inner">
-      <span class="loader-brand">SUYASH SHARMA</span>
       <div class="loader-counter-wrap">
         <span id="loader-count" class="loader-count">000</span>
         <span class="loader-percent">%</span>
@@ -32,15 +31,18 @@
 
   <div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- 1. HERO SECTION -->
+  <!-- Full-Viewport Blur Backdrop when Focusing a Project Card in Center -->
+  <div id="projects-focus-backdrop" class="projects-focus-backdrop" aria-hidden="true"></div>
+
+  <!-- 1. HERO SECTION (Typewriter Name Effect After Loading Completes) -->
   <section id="section-hero" class="hero-section">
     <div class="hero-center">
       <h1 class="hero-title">
-        <span id="hero-first">SUYASH</span>
+        <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
         <span class="hero-photo-frame">
           <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
         </span>
-        <span id="hero-last">SHARMA</span>
+        <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
       </h1>
     </div>
 
@@ -56,8 +58,8 @@
     </div>
   </section>
 
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (With Peaceful Botanical Leaves on Left & Right Ends) -->
-  <div class="quote-interlude">
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (Halved Bottom Space) -->
+  <div class="quote-interlude first-quote-interlude">
     <div class="quote-frame">
       <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
@@ -96,7 +98,7 @@
       <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
       <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
 
-      <!-- Detached 3D Touchpad "Download CV" Button (Appears directly on the unobstructed touchpad when scroll finishes) -->
+      <!-- Detached 3D Touchpad "Download CV" Button -->
       <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
         <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
           <span class="touchpad-btn-dot"></span>
@@ -109,7 +111,7 @@
       </div>
     </div>
 
-    <!-- Scroll Stages: Closed-to-Open Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
+    <!-- Scroll Stages: Flush-Closed Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
 
@@ -194,7 +196,7 @@
     </div>
   </div>
 
-  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Template Repo Style: Hovering Moves Card to Center) -->
+  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Steeper Angle + Hover Pulls Forward to Exact Center & Blurs Website) -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
       <h2 class="section-heading">Projects</h2>
@@ -205,7 +207,7 @@
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (No Buttons, No Phone Number) -->
+  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (~6s Slow Stream, No Buttons, No Phone) -->
   <section id="section-contact" class="minimal-white-contact">
     <div class="minimal-contact-inner">
       <h2 class="contact-me-title">Contact Me</h2>

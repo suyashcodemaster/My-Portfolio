@@ -23,18 +23,49 @@ function buildFallbackGithubChartSvg() {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
+// Non-scrollable Typewriter Effect for Landing Page Name After Loading Completes
+function runHeroTypewriter(firstName, lastName) {
+  const firstEl = document.getElementById('hero-first');
+  const lastEl = document.getElementById('hero-last');
+  if (!firstEl || !lastEl) return;
+
+  firstEl.textContent = '';
+  lastEl.textContent = '';
+  firstEl.classList.add('typing');
+
+  let i = 0;
+  const firstTimer = setInterval(() => {
+    i += 1;
+    firstEl.textContent = firstName.slice(0, i);
+    if (i >= firstName.length) {
+      clearInterval(firstTimer);
+      firstEl.classList.remove('typing');
+      lastEl.classList.add('typing');
+
+      let j = 0;
+      const lastTimer = setInterval(() => {
+        j += 1;
+        lastEl.textContent = lastName.slice(0, j);
+        if (j >= lastName.length) {
+          clearInterval(lastTimer);
+          setTimeout(() => lastEl.classList.remove('typing'), 450);
+        }
+      }, 95);
+    }
+  }, 95);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Template Repository Loading Screen (Longer ~3.0s smooth duration)
+  // 0. Initial Loading Screen (~4.1s total — 1 second slower than v5, no name on loader)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
 
   let loadVal = 0;
   const loadTimer = setInterval(() => {
-    const step = loadVal < 35 ? 2 : loadVal < 78 ? 1 : 2;
-    loadVal = Math.min(100, loadVal + step);
+    loadVal = Math.min(100, loadVal + 1);
     if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
     if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
     if (loadVal >= 100) {
@@ -42,13 +73,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-      }, 420);
+        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 320);
+      }, 450);
     }
-  }, 42);
-
-  // 1. Populate Hero
-  document.getElementById('hero-first').textContent = profile.firstName;
-  document.getElementById('hero-last').textContent = profile.lastName;
+  }, 36);
 
   // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
@@ -88,14 +116,14 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="github-contrib-card">
         <div class="github-contrib-header">
           <span>GitHub Contributions</span>
-          <a href="${profile.github}" target="_blank" rel="noopener">@${st.githubUsername} ↗</a>
+          <a href="${profile.github}" target="_blank" rel="noopener noreferrer">@${st.githubUsername} ↗</a>
         </div>
         <div class="github-chart-wrap">
           <img
             src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
-            onerror="this.onerror=null;this.src='${fallbackChartUri}';"
+            referrerpolicy="no-referrer"
           />
         </div>
         <div class="github-badges-row">
@@ -103,13 +131,16 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
         </div>
       </div>
-      <div class="stage-mini-quote-wrap">
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    ` : '';
+
+    const outsideQuoteHtml = st.outsideQuote ? `
+      <div class="stage-outside-quote-wrap">
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
           <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
         </svg>
-        <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <blockquote class="stage-mini-quote">“${st.outsideQuote}”</blockquote>
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
           <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
         </svg>
@@ -140,7 +171,16 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>`;
+      </article>
+      ${outsideQuoteHtml}`;
+
+    const chartImg = section.querySelector('.github-chart-img');
+    if (chartImg) {
+      chartImg.addEventListener('error', () => {
+        chartImg.src = fallbackChartUri;
+      }, { once: true });
+    }
+
     stagesContainer.appendChild(section);
   });
 
@@ -159,7 +199,6 @@ window.addEventListener('DOMContentLoaded', () => {
     touchpadAnchor.download = profile.cvDownloadName;
   }
 
-  // Initialize 3D Laptop & Accurate Screen-Space Callout / Touchpad Button Tracking
   const canvas = document.getElementById('laptop-canvas');
   const laptop3D = initLaptop3D(
     canvas,
@@ -180,7 +219,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.16 && progress < 0.79) {
+      if (progress >= 0.10 && progress < 0.79) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -202,11 +241,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies & Aspirations — 8 Frames)
+  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A lights up after scrolling into section!)
   const reelTrack = document.getElementById('reel-track');
-  reelFrames.forEach((rf, idx) => {
+  reelFrames.forEach((rf) => {
     const card = document.createElement('article');
-    card.className = `reel-card ${idx === 0 ? 'revealed' : ''}`;
+    card.className = 'reel-card';
     card.style.setProperty('--frame-color', rf.color);
     card.innerHTML = `
       <div class="reel-frame-meta">
@@ -220,38 +259,37 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Horizontally Stacked Project Layers (Template Repo Style: Hovering Moves Card to Center!)
+  // 4. Render 8 Steeply Angled Horizontal Project Cards (Hovering Pulls Card to Exact Center + Blurs Website & Other Tabs!)
+  const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
+  const focusBackdrop = document.getElementById('projects-focus-backdrop');
   const totalLayers = projects.length;
-  const middleIdx = (totalLayers - 1) / 2;
 
   projects.forEach((proj, idx) => {
-    const card = document.createElement('article');
-    card.style.zIndex = String(totalLayers - idx);
-    // Calculate horizontal shift needed to bring this card to the exact center of the horizontal stack when hovered
-    const offsetSteps = middleIdx - idx;
-    const shiftPx = offsetSteps * 42;
-    card.style.setProperty('--center-shift', `${shiftPx}px`);
+    const slot = document.createElement('div');
+    slot.className = 'stack-card-slot';
+    slot.style.zIndex = String(totalLayers - idx);
 
+    const card = document.createElement('article');
     if (!proj.isPlaceholder) {
       card.className = 'stack-card active-project-card';
       card.innerHTML = `
         <div class="stack-card-top">
-          <div>
-            <h3 class="stage-title" style="font-size:1.95rem">${proj.title}</h3>
-            <p class="mono-tag" style="color:#f59e0b;margin-top:0.2rem;font-size:0.65rem">${proj.subtitle}</p>
+          <div class="stack-card-title-wrap">
+            <h3 class="stack-card-title">${proj.title}</h3>
+            <p class="stack-card-subtitle">${proj.subtitle}</p>
           </div>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="64" height="64" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="56" height="56" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <span class="project-logo-caption">View SanitX on GitHub ↗</span>
         </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.7rem;padding:0.25rem 0.55rem">${t}</span>`).join('')}</div>
+        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
         <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
       card.className = 'stack-card grey-layer-card';
@@ -260,37 +298,61 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="stack-card-top">
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <div class="grey-photo-frame"></div>`;
+        <div class="grey-photo-frame">
+          <span class="yet-to-build-text">${proj.emptyLabel || 'yet to build😝'}</span>
+        </div>`;
     }
-    projectsStack.appendChild(card);
+
+    slot.appendChild(card);
+    projectsStack.appendChild(slot);
   });
 
-  // Hovering the active project card smoothly moves it to the center and parts the rest of the stack
+  const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
-  const activeProjectCard = projectsStack.querySelector('.active-project-card');
+  const activeSlot = allSlots[0];
 
-  function focusCardToCenter(targetIdx) {
+  function focusCardToViewportCenter(targetIdx) {
+    const targetSlot = allSlots[targetIdx];
+    const targetCard = allStackCards[targetIdx];
+    if (!targetSlot || !targetCard) return;
+
+    // Calculate exact horizontal pixel delta from this slot's center to the viewport center
+    const slotRect = targetSlot.getBoundingClientRect();
+    const slotCenterX = slotRect.left + slotRect.width / 2;
+    const viewportCenterX = window.innerWidth / 2;
+    const deltaX = viewportCenterX - slotCenterX;
+    targetCard.style.setProperty('--center-shift', `${deltaX}px`);
+
+    if (focusBackdrop) focusBackdrop.classList.add('active');
+    if (projectsSection) projectsSection.classList.add('has-focused-card');
+    targetSlot.classList.add('slot-focused');
+
     allStackCards.forEach((c, i) => {
-      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+      c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
+      allSlots[i].style.zIndex = i === targetIdx ? '90' : String(totalLayers - i);
       if (i === targetIdx) {
         c.classList.add('is-centered');
       } else if (i < targetIdx) {
-        c.classList.add('pushed-left');
+        c.classList.add('blurred-left');
       } else {
-        c.classList.add('pushed-right');
+        c.classList.add('blurred-right');
       }
     });
   }
 
-  function resetStack() {
-    allStackCards.forEach((c) => {
-      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+  function resetProjectStack() {
+    if (focusBackdrop) focusBackdrop.classList.remove('active');
+    if (projectsSection) projectsSection.classList.remove('has-focused-card');
+    allSlots.forEach((s) => s.classList.remove('slot-focused'));
+    allStackCards.forEach((c, i) => {
+      c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
+      allSlots[i].style.zIndex = String(totalLayers - i);
     });
   }
 
-  if (activeProjectCard) {
-    activeProjectCard.addEventListener('pointerenter', () => focusCardToCenter(0));
-    projectsStack.addEventListener('pointerleave', resetStack);
+  if (activeSlot) {
+    activeSlot.addEventListener('pointerenter', () => focusCardToViewportCenter(0));
+    activeSlot.addEventListener('pointerleave', resetProjectStack);
   }
 
   // GSAP ScrollTrigger Animations
@@ -305,7 +367,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.63));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.10) / 0.69));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -336,6 +398,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Scroll-Driven 35mm Camera Reel Animation (Card 01A lights up after scrolling into section: self.progress >= 0.04)
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -343,7 +406,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ScrollTrigger.create({
       trigger: '#section-reel',
-      start: 'top top',
+      start: 'top 65%',
       end: 'bottom bottom',
       scrub: 0.5,
       onUpdate: (self) => {
@@ -355,8 +418,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(self.progress * totalFrames));
 
         reelCards.forEach((card, i) => {
-          const threshold = (i / totalFrames) * 0.85;
-          if (self.progress >= threshold || i === 0) {
+          const threshold = 0.04 + (i / totalFrames) * 0.82;
+          if (self.progress >= threshold) {
             card.classList.add('revealed');
           } else {
             card.classList.remove('revealed');
@@ -368,13 +431,13 @@ window.addEventListener('DOMContentLoaded', () => {
           reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color;
         }
         if (reelProgressFill) {
-          reelProgressFill.style.width = `${Math.max(12.5, self.progress * 100)}%`;
+          reelProgressFill.style.width = `${Math.max(0, self.progress * 100)}%`;
         }
       }
     });
   }
 
-  // 5. Julian Garnier (juliangarnier.com) Auto-Typing Chat-Form Contact Me Section (No Buttons, No Phone Number)
+  // 5. Julian Garnier (juliangarnier.com) Slow ~6s Chat-Form Contact Me Section
   const chatMessagesEl = document.getElementById('chat-messages');
 
   function appendChatBubble(html) {
@@ -384,7 +447,7 @@ window.addEventListener('DOMContentLoaded', () => {
     chatMessagesEl.appendChild(b);
   }
 
-  function showTypingThenBubble(html, delay = 650) {
+  function showTypingThenBubble(html, typingDuration = 1150, pauseAfter = 350) {
     return new Promise((resolve) => {
       const typing = document.createElement('div');
       typing.className = 'minimal-typing';
@@ -393,8 +456,8 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         typing.remove();
         appendChatBubble(html);
-        resolve();
-      }, delay);
+        setTimeout(resolve, pauseAfter);
+      }, typingDuration);
     });
   }
 
@@ -402,8 +465,9 @@ window.addEventListener('DOMContentLoaded', () => {
   async function startJulianGarnierChat() {
     if (contactStarted || !chatMessagesEl) return;
     contactStarted = true;
+    // 4 messages * (1150ms typing + 350ms pause) = 6000ms (~6 seconds total animation)
     for (const msg of contactMessages) {
-      await showTypingThenBubble(msg, 620);
+      await showTypingThenBubble(msg, 1150, 350);
     }
   }
 

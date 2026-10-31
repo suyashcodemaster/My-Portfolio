@@ -1,6 +1,6 @@
 :root {
   --bg-dark: #09090d;
-  --bg-panel: rgba(16, 17, 23, 0.84);
+  --bg-panel: rgba(15, 16, 22, 0.86);
   --text-main: #f4f1ea;
   --text-muted: #9ca3af;
   --border-subtle: rgba(244, 241, 234, 0.12);
@@ -16,7 +16,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Deliberate Load Time)
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (No Name, ~4.1s Smooth Duration)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -41,22 +41,16 @@ body.is-loading { overflow: hidden; }
   gap: 1rem;
 }
 
-.loader-brand {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  color: var(--text-muted);
-}
-
 .loader-counter-wrap {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 0.2rem;
 }
 
 .loader-count {
   font-family: var(--font-display);
-  font-size: clamp(3.8rem, 8vw, 5.5rem);
+  font-size: clamp(4rem, 8.5vw, 5.8rem);
   line-height: 1;
   color: var(--text-main);
 }
@@ -97,7 +91,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   1. HERO SECTION — Clean like template repo, single-line name + perfect photo
+   1. HERO SECTION — Typewriter Name Effect After Loading + Single Line
    ========================================================================== */
 .hero-section {
   position: relative;
@@ -130,6 +124,39 @@ body.is-loading { overflow: hidden; }
   white-space: nowrap;
   gap: clamp(0.18em, 2.2vw, 0.34em);
   width: 100%;
+}
+
+.hero-word-slot {
+  display: inline-flex;
+  align-items: center;
+  min-width: 3.1em;
+}
+
+.hero-word-slot:first-child {
+  justify-content: flex-end;
+}
+
+.hero-word-slot:last-child {
+  justify-content: flex-start;
+}
+
+.typewriter-word {
+  display: inline-block;
+  position: relative;
+}
+
+.typewriter-word.typing::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 2px;
+  color: #f59e0b;
+  font-weight: 300;
+  animation: cursorBlink 0.65s steps(2, start) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .hero-photo-frame {
@@ -220,7 +247,7 @@ body.is-loading { overflow: hidden; }
    PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 4.2rem 5vw;
+  padding: 3.6rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -229,9 +256,14 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
+/* Halved space after the first quote without breaking scroll animations */
+.quote-interlude.first-quote-interlude {
+  padding: 2.2rem 5vw 0.4rem;
+}
+
 /* Remove majority of space beneath the Helen Keller quote */
 .quote-interlude.helen-keller-quote {
-  padding: 3.2rem 5vw 0.35rem;
+  padding: 3rem 5vw 0.25rem;
 }
 
 .quote-frame {
@@ -240,7 +272,7 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   gap: clamp(0.85rem, 2vw, 1.65rem);
   max-width: 820px;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.5rem;
 }
 
 .quote-leaf {
@@ -265,7 +297,7 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.15rem, 1.78vw, 1.48rem);
+  font-size: clamp(1.12rem, 1.72vw, 1.44rem);
   line-height: 1.5;
   letter-spacing: 0.03em;
   color: #d6d3cd;
@@ -273,10 +305,10 @@ body.is-loading { overflow: hidden; }
 
 .interlude-cite {
   display: block;
-  margin-top: 0.45rem;
+  margin-top: 0.42rem;
   font-family: var(--font-philo);
   font-style: normal;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8c8881;
@@ -297,7 +329,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.13) 0%, rgba(30, 41, 59, 0.06) 40%, transparent 70%);
+  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
 }
 
 #laptop-canvas {
@@ -377,7 +409,7 @@ body.is-loading { overflow: hidden; }
   color: #f4f1ea;
 }
 
-/* 3D Part Hover Tooltip — Strictly visible only when hovering directly on a 3D laptop mesh */
+/* 3D Part Hover Tooltip */
 .part-hover-tooltip {
   position: fixed;
   left: 0;
@@ -490,18 +522,20 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Opening Lead-In Stage: Laptop starts closed & centered, opens up, and glides left while disassembling before About Me starts */
+/* Halved Opening Lead-In Stage so there isn't excessive space after the first quote */
 .laptop-stage.laptop-intro-stage {
-  min-height: 118vh;
+  min-height: 55vh;
   pointer-events: none;
 }
 
 .laptop-stage {
-  min-height: 102vh;
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 3.5rem 4.5vw;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 3rem 4.5vw;
+  gap: 1.5rem;
 }
 
 /* Shorter, well-proportioned height for Languages I Know stage */
@@ -512,7 +546,7 @@ body.is-loading { overflow: hidden; }
 
 /* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
 .laptop-stage.final-disassembly-hold {
-  min-height: 110vh;
+  min-height: 108vh;
   pointer-events: none;
 }
 
@@ -532,8 +566,19 @@ body.is-loading { overflow: hidden; }
 }
 
 .stage-bento-panel.compact-panel {
-  padding: 1.75rem 2.1rem;
-  gap: 0.95rem;
+  padding: 1.7rem 2.05rem;
+  gap: 0.9rem;
+}
+
+/* Standalone Quote Outside the Languages I Know Card */
+.stage-outside-quote-wrap {
+  width: min(50vw, 660px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 0.6rem 1rem;
+  pointer-events: none;
 }
 
 .stage-part-chip {
@@ -557,9 +602,8 @@ body.is-loading { overflow: hidden; }
   line-height: 1.05;
 }
 
-/* Smaller heading specifically for Languages I Know */
 .stage-title.small-stage-title {
-  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
+  font-size: clamp(1.4rem, 2.05vw, 1.8rem);
 }
 
 .stage-paragraphs {
@@ -618,7 +662,6 @@ body.is-loading { overflow: hidden; }
   color: var(--stage-accent);
 }
 
-/* Compact Languages Row + Embedded GitHub Contribution Graph + Badges + Philosophical Quote */
 .compact-lang-row {
   display: flex;
   flex-wrap: wrap;
@@ -689,7 +732,6 @@ body.is-loading { overflow: hidden; }
   filter: contrast(1.08);
 }
 
-/* Badges Subsection under Contribution Graph */
 .github-badges-row {
   display: flex;
   align-items: center;
@@ -715,18 +757,10 @@ body.is-loading { overflow: hidden; }
   border: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-.stage-mini-quote-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  padding-top: 0.2rem;
-}
-
 .mini-leaf {
-  width: 24px;
+  width: 28px;
   height: auto;
-  opacity: 0.75;
+  opacity: 0.8;
   flex-shrink: 0;
 }
 
@@ -734,8 +768,8 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: 1.08rem;
-  letter-spacing: 0.025em;
+  font-size: 1.15rem;
+  letter-spacing: 0.03em;
   color: #d6d3cd;
   text-align: center;
 }
@@ -893,9 +927,9 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  opacity: 0.18;
+  opacity: 0.16;
   transform: scale(0.92) translateY(16px);
-  filter: grayscale(0.85) brightness(0.5);
+  filter: grayscale(0.88) brightness(0.45);
   transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, box-shadow 0.45s ease;
 }
 
@@ -943,25 +977,47 @@ body.is-loading { overflow: hidden; }
 }
 
 .reel-progress-fill {
-  width: 12.5%;
+  width: 0%;
   height: 100%;
   background: linear-gradient(90deg, #f43f5e, #f59e0b, #10b981, #38bdf8, #a855f7);
   transition: width 0.12s linear;
 }
 
 /* ==========================================================================
-   4. TEMPLATE REPO HORIZONTAL OVERLAPPING CARD STACK (Hover Moves Card to Center)
+   4. STEEPLY ANGLED HORIZONTAL PROJECT STACK (Hover Pulls Card to Exact Center + Blurs Website)
    ========================================================================== */
+.projects-focus-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: rgba(6, 7, 11, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.projects-focus-backdrop.active {
+  opacity: 1;
+}
+
 .projects-section {
-  padding: 1.1rem 4.5vw 7rem;
+  padding: 0.9rem 4.5vw 7rem;
   position: relative;
-  z-index: 5;
-  overflow: hidden;
+  z-index: 50;
+  overflow: visible;
 }
 
 .section-header-wrap {
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   text-align: center;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.projects-section.has-focused-card .section-header-wrap {
+  filter: blur(5px);
+  opacity: 0.35;
 }
 
 .template-horizontal-stack {
@@ -972,63 +1028,109 @@ body.is-loading { overflow: hidden; }
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  perspective: 1600px;
+  perspective: 1500px;
   padding: 2rem 0;
 }
 
-.stack-card {
-  width: clamp(290px, 32vw, 390px);
-  height: 470px;
-  border-radius: 18px;
-  margin: 0 -115px;
+.stack-card-slot {
   position: relative;
-  transform-style: preserve-3d;
-  transform: translateX(0px) translateY(0px) translateZ(0px) rotateY(-24deg) scale(0.94);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, border-color 0.35s ease, opacity 0.4s ease;
-  box-shadow: -18px 14px 38px rgba(0, 0, 0, 0.78);
+  margin: 0 -118px;
   flex-shrink: 0;
+  transform-style: preserve-3d;
 }
 
-/* When a card is hovered/focused, it glides horizontally to the center of the stage and rotates flat! */
+.stack-card-slot.slot-focused::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  bottom: -30px;
+  left: -30px;
+  right: -520px;
+  z-index: 1;
+}
+
+.stack-card {
+  width: clamp(285px, 30vw, 370px);
+  height: 465px;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  /* Steeper 3D angle like books/plates in the template repository */
+  transform: translate3d(0px, 0px, 0px) rotateY(-40deg) rotateX(4deg) scale(0.92);
+  transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, filter 0.45s ease, opacity 0.45s ease;
+  box-shadow: -22px 16px 42px rgba(0, 0, 0, 0.82);
+}
+
+/* When hovered, the card moves forward in 3D and translates to the exact horizontal center of the viewport! */
 .stack-card.is-centered {
-  transform: translateX(var(--center-shift, 0px)) translateY(-12px) translateZ(130px) rotateY(0deg) scale(1.04);
-  z-index: 60 !important;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.88), 0 0 42px rgba(16, 185, 129, 0.25);
+  transform: translate3d(var(--center-shift, 0px), -16px, 220px) rotateY(0deg) rotateX(0deg) scale(1.08);
+  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 48px rgba(16, 185, 129, 0.32);
+  filter: none !important;
+  opacity: 1 !important;
 }
 
-.stack-card.pushed-left {
-  transform: translateX(-145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
-  opacity: 0.72;
+/* Other tabs blur out and part away when a card is focused in the center */
+.stack-card.blurred-left {
+  transform: translate3d(-150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  filter: blur(6px) brightness(0.42);
+  opacity: 0.55;
 }
 
-.stack-card.pushed-right {
-  transform: translateX(145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
-  opacity: 0.72;
+.stack-card.blurred-right {
+  transform: translate3d(150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  filter: blur(6px) brightness(0.42);
+  opacity: 0.55;
 }
 
-/* Layer 01: Active Project Card (SanitX) */
+/* Layer 01: Active Project Card (SanitX) — Strictly contained so text never overflows when angled */
 .stack-card.active-project-card {
-  background: linear-gradient(155deg, rgba(18, 36, 31, 0.98), rgba(14, 15, 22, 0.99));
+  background: linear-gradient(155deg, rgba(16, 32, 28, 0.98), rgba(12, 13, 19, 0.99));
   border: 1.5px solid #10b981;
-  padding: 1.65rem;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.9rem;
+  gap: 0.65rem;
   cursor: pointer;
 }
 
 .stack-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.stack-card-title-wrap {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.stack-card-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 400;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+.stack-card-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #f59e0b;
+  margin-top: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stack-slot-num {
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #10b981;
+  flex-shrink: 0;
 }
 
 .project-logo-link {
@@ -1036,9 +1138,9 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.85rem;
   border-radius: 12px;
-  background: rgba(9, 9, 13, 0.8);
+  background: rgba(9, 9, 13, 0.82);
   border: 1px solid rgba(16, 185, 129, 0.4);
   text-decoration: none;
   color: #fff;
@@ -1051,28 +1153,29 @@ body.is-loading { overflow: hidden; }
 }
 
 .project-logo-caption {
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: #10b981;
 }
 
 .project-bullets {
-  padding-left: 1rem;
+  padding-left: 0.95rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.28rem;
   color: #d1d5db;
-  font-size: 0.78rem;
-  line-height: 1.42;
+  font-size: 0.73rem;
+  line-height: 1.36;
+  overflow: hidden;
 }
 
-/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards */
+/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards with "yet to build😝" */
 .stack-card.grey-layer-card {
-  background: linear-gradient(160deg, #1d1e26 0%, #13141a 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 1.35rem;
+  background: linear-gradient(160deg, #1a1b23 0%, #111218 100%);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1087,26 +1190,29 @@ body.is-loading { overflow: hidden; }
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.75rem;
+  margin-top: 0.7rem;
   border-radius: 12px;
-  background: linear-gradient(145deg, #2a2b34 0%, #1e1f27 100%);
+  background: linear-gradient(145deg, #272832 0%, #1c1d25 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.55);
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
 }
 
-.grey-photo-frame::after {
-  content: '';
-  position: absolute;
-  inset: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  background: rgba(255, 255, 255, 0.015);
+.yet-to-build-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #8e929f;
+  letter-spacing: 0.06em;
+  text-align: center;
 }
 
 /* ==========================================================================
    5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION
-      (Minimalist White, Sequential Chat Bubbles, No Buttons, No Phone Number)
+      (Longer Stream, ~6s Slow Cadence, No Intro Fluff, No Buttons, No Phone)
    ========================================================================== */
 .dark-to-white-transition {
   width: 100%;
@@ -1117,27 +1223,27 @@ body.is-loading { overflow: hidden; }
 .minimal-white-contact {
   background: #f7f6f2;
   color: #141413;
-  min-height: 82vh;
+  min-height: 86vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5rem 5vw 4rem;
+  padding: 6rem 5vw 4.5rem;
   position: relative;
   z-index: 10;
 }
 
 .minimal-contact-inner {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.4rem;
 }
 
 .contact-me-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  font-size: clamp(2.5rem, 4.4vw, 3.6rem);
   color: #141413;
   letter-spacing: -0.01em;
 }
@@ -1146,25 +1252,26 @@ body.is-loading { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.75rem;
-  min-height: 290px;
+  gap: 1.25rem;
+  min-height: 360px;
+  padding: 0.5rem 0;
 }
 
 .minimal-bubble {
   max-width: 88%;
-  padding: 0.9rem 1.3rem;
-  border-radius: 22px;
+  padding: 1.05rem 1.45rem;
+  border-radius: 24px;
   border-bottom-left-radius: 6px;
   background: #e9e7e0;
   color: #141413;
-  font-size: 1.02rem;
-  line-height: 1.52;
+  font-size: 1.06rem;
+  line-height: 1.56;
   letter-spacing: -0.01em;
-  animation: minimalFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: minimalFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes minimalFadeUp {
-  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
@@ -1180,13 +1287,12 @@ body.is-loading { overflow: hidden; }
   opacity: 0.6;
 }
 
-/* Julian Garnier ••• typing indicator pill */
 .minimal-typing {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 0.95rem 1.2rem;
-  border-radius: 22px;
+  padding: 1.05rem 1.3rem;
+  border-radius: 24px;
   border-bottom-left-radius: 6px;
   background: #e9e7e0;
 }
@@ -1228,7 +1334,8 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel { width: 92vw; }
+  .stage-bento-panel, .stage-outside-quote-wrap { width: 92vw; }
   .part-link-callout { display: none; }
-  .stack-card { width: 270px; height: 440px; margin: 0 -95px; }
+  .stack-card-slot { margin: 0 -100px; }
+  .stack-card { width: 265px; height: 445px; }
 }

@@ -106,7 +106,7 @@ export const PORTFOLIO_DATA = {
       githubUsername: "suyashcodemaster",
       badgesTitle: "Badges",
       badgesPlaceholder: "Yet to earn",
-      stageQuote: "If it doesn't challenge you, it won't change you."
+      outsideQuote: "If it doesn't challenge you, it won't change you."
     },
     {
       id: "achievements",
@@ -151,7 +151,7 @@ export const PORTFOLIO_DATA = {
     { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center like template repo)
+  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center & blurs background)
   projects: [
     {
       slot: "01",
@@ -167,22 +167,20 @@ export const PORTFOLIO_DATA = {
         "Contributed across the stack: ideation, FastAPI backend, Next.js frontend, and designing and presenting the system architecture."
       ]
     },
-    { slot: "02", isPlaceholder: true },
-    { slot: "03", isPlaceholder: true },
-    { slot: "04", isPlaceholder: true },
-    { slot: "05", isPlaceholder: true },
-    { slot: "06", isPlaceholder: true },
-    { slot: "07", isPlaceholder: true },
-    { slot: "08", isPlaceholder: true }
+    { slot: "02", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "03", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "04", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "05", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "07", isPlaceholder: true, emptyLabel: "yet to build😝" },
+    { slot: "08", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
-  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (No buttons, no phone number)
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)
   contactMessages: [
     "Hey there 👋",
-    "I'm Suyash — a first-year CSE student at VIT Vellore.",
-    "I love building things from scratch and exploring C++, Data Structures & Algorithms, and AI.",
     "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",
-    "Or find me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener\">GitHub ↗</a>",
-    "Looking for my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
+    "Or connect with me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener noreferrer\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub ↗</a>",
+    "Need a copy of my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
   ]
 };
