@@ -1,49 +1,35 @@
-# Project Handoff Document v4.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v5.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v4.md`  
-**Version:** 4.0 (All 11 Final Refinements & Bug Fixes Implemented)  
+**Document Name:** `handoff-v5.md`  
+**Version:** 5.0 (All 5 Final Polish Updates Implemented)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 11 Final Changes & Fixes in v4.0
+## 1. Summary of All 5 Changes Implemented in v5.0
 
-1. **Refined Black-Grey / Brushed Gunmetal 3D Laptop with High-Contrast Architectural Edges (`scripts/laptop3d.js`)**:
-   - Styled the 3D laptop in a studio-lit matte black-grey / space-grey / gunmetal palette (`#323642` anodized chassis, `#232730` logic board, `#15171e` keycaps, `#282c37` deck) with crisp `THREE.EdgesGeometry` metallic edge highlights and a subtle radial studio backlight behind the model so it stands out sharply and never merges with the `#09090d` background.
-2. **Centered Laptop Lead-In Before "About Me" Starts (`scripts/laptop3d.js`, `scripts/main.js`, `styles/main.css`)**:
-   - Added an opening `115vh` lead-in stage (`.laptop-intro-stage`) at the start of `#section-laptop`. The laptop first appears **centered** in the viewport (`x = 0`), opens its lid, and begins disassembling while gliding smoothly to the left (`x = -1.35`) before the *About Me* card scrolls in on the right.
-3. **Simple, Candid Language & Removal of `01 // ...` Slash Jargon (`index.html`, `data/portfolioData.js`, `scripts/main.js`)**:
-   - Removed all `01 // DISPLAY SUBSYSTEM`, `HARDWARE MATCH:`, `KODAK 400TX //`, and slash-heavy technical labels throughout the site.
-   - Replaced hardware indicators with clean, simple labels: **`Display`**, **`Logic Board`**, **`Keyboard`**, **`Speakers`**, **`Battery`**, and **`Touchpad`**.
-4. **Fixed 3D Part Pointer Alignment (`scripts/laptop3d.js`, `styles/main.css`)**:
-   - Attached dedicated `THREE.Object3D` anchors to the exact visual center of each 3D subsystem (`displayAnchor`, `logicAnchor`, `keyboardAnchor`, `speakerAnchor`, `batteryAnchor`, `touchpadAnchor`) and centered `.callout-dot` at `(0, 0)` of `#part-link-callout` after `scene.updateMatrixWorld(true)` so the pointer locks onto the exact 3D component (never pointing into empty space).
-5. **Updated About Me, Technical Skills & Hobbies Content (`data/portfolioData.js`)**:
-   - **About Me**: Updated to the exact 3-paragraph candid introduction (*"Hey! I'm Suyash — a first-year CSE student at VIT Vellore..."*).
-   - **Technical Skills**:
-     - *Programming Languages*: `Python`, `HTML/CSS`
-     - *Currently Learning*: `Python`, `C++`, `Data Structures & Algorithms (DSA)`, `Learning AI`
-     - *Frameworks*: `Want to learn React`
-     - *Libraries*: `pandas`, `NumPy`, `Matplotlib` (omitted `PyMuPDF`)
-   - **Hobbies & Aspirations (35mm Camera Reel)**: Changed Frame `01A` to **Building Human Connections**, kept **Video Games** (`07A`) as its own card, and added **Learning About Tech & AI** (`08A`) as a separate card.
-6. **Shorter "Languages I Know" Section + Embedded GitHub Contribution Graph + Quote (`scripts/main.js`, `styles/main.css`)**:
-   - Reduced the height of *Languages I Know* (`.compact-stage`) with a compact side-by-side row for **English** and **Hindi**, embedded Suyash's live GitHub contribution graph (`https://ghchart.rshah.org/10b981/suyashcodemaster` with an automatic SVG fallback), and added the quote:
-     > *"If it doesn't challenge you, it won't change you."*
-7. **3 Impactful Quotes Sprinkled Across the Website (`index.html`, `styles/main.css`)**:
-   - Added 3 full-width editorial quote interludes (`.quote-interlude`) in the spaces between major sections:
-     1. *"You don't have to be great to get started, but you have to get started to be great."*
-     2. *"Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming."*
-     3. *"Life is either a daring adventure or nothing at all."* — Helen Keller
-8. **Initial Loading Screen from the Template Repository (`index.html`, `styles/main.css`, `scripts/main.js`)**:
-   - Added `#loader-overlay` with a smooth `000` → `100%` counter and progress bar that lifts upward cleanly on initial page load so the entrance is smooth and never abrupt.
-9. **Horizontally Stacked Library-Book Project Layers (`styles/main.css`, `scripts/main.js`)**:
-   - Kept `.projects-library-stack` strictly horizontal (`flex-direction: row` across all screen sizes—never collapsing into a vertical stack) so Layer `01` (*SanitX*) opens on the left while Layers `02`–`08` stand horizontally side-by-side like books on a library shelf with non-interactive matte-grey photo frames (`pointer-events: none`).
-10. **Static Julian Garner–Style Minimalist White Contact Section (`index.html`, `styles/main.css`)**:
-    - Removed all interactive chat buttons and typing prompts from `#section-contact`. Kept the seamless transition to the warm-white (`#f7f6f2`) section and laid out all contact info (*Email*, *Phone*, *LinkedIn*, *GitHub*, *Download CV*, and *Location*) in Julian Garner's clean, static minimalist editorial layout.
-11. **Fixed the 3D Hover Tooltip Glitch Completely (`scripts/laptop3d.js`, `styles/main.css`)**:
-    - Removed the global `window` mousemove listener and bound `pointermove` / `pointerleave` strictly to `#laptop-canvas` when `#section-laptop` is in the active scroll range (`0.005 < progress < 0.995`) and `e.target === canvas`.
-    - Raycasts only against solid 3D meshes (`pickableMeshes`) and immediately hides `#part-hover-tooltip` on scroll or when the pointer leaves the 3D laptop mesh.
+1. **Longer, Smoother Initial Loading Screen (`scripts/main.js`, `styles/main.css`)**:
+   - Adjusted the initial preloader (`#loader-overlay`) progression to step in `1%–2%` increments every `42ms` with a `420ms` hold at `100%` (~3.0 seconds total) before smoothly lifting the curtain.
+2. **Smaller, Philosophical Quote Typography + Botanical Leaves on Left & Right Ends + Tight Spacing Under Helen Keller Quote (`index.html`, `styles/main.css`)**:
+   - Styled all quotes in italic `'Cormorant Garamond'` (`clamp(1.15rem, 1.78vw, 1.48rem)`, `font-weight: 300`, `letter-spacing: 0.03em`).
+   - Added peaceful botanical leaf branch SVGs (`.quote-leaf.leaf-left` and `.quote-leaf.leaf-right`) flanking the left and right ends of each quote.
+   - Reduced the bottom padding beneath the Helen Keller quote (`.quote-interlude.helen-keller-quote`) to `0.35rem` and tightened `#section-projects` top padding (`1.1rem`) so there is no dead gap before Projects.
+3. **Refined 3D Laptop (Closed-to-Open Start, Compact Gaps, Front-Facing Unobstructed Touchpad, Complex Motherboard with Wiring, Ejecting RAM Sticks, Storage Module, Smaller Languages Heading & Badges) (`scripts/laptop3d.js`, `data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
+   - **Opens from Closed Position**: The lid pivots from its rear hinge starting completely closed flat (`display.rotation.x = Math.PI / 2`) at `progress = 0` and hinges open smoothly before separating.
+   - **Smaller Vertical Gaps & Front-Facing Rotation**: Tightened vertical separation distances so all 6 subsystems fit comfortably in the viewport simultaneously, and kept `root.rotation.y` in a front-facing isometric range (`+0.28` to `-0.24` rad, ending at `+0.16` rad) so the laptop never turns its back to the camera and the detached **Touchpad** + **Download CV** button remain 100% visible and unobstructed at the end.
+   - **Motherboard (with Wiring & Circuitry)**: Renamed `Logic Board` to **`Motherboard`** and added gold/copper circuit traces, 3D arched insulated wiring cables (`THREE.TubeGeometry`), VRM choke coils, capacitors, copper heatpipes, and dual spinning cooling fans.
+   - **RAM Sticks (Sliding Out While Scrolling)**: Replaced `Speakers` with dual DDR5 **`RAM Sticks`** (with gold edge pins and 4 memory ICs per stick) that visibly unclip and slide/eject outward from the laptop while scrolling.
+   - **Storage**: Replaced `Battery` with **`Storage`** (dual NVMe M.2 SSD modules with finned heatsinks and gold connectors over the lower unibody base).
+   - **Smaller *Languages I Know* Heading + *Badges* Subsection**: Reduced the *Languages I Know* heading size (`.small-stage-title`) and added a **`Badges`** row directly beneath the GitHub contribution graph with the temporary text **`Yet to earn`**.
+4. **Template Repository Horizontal Overlapping Project Card Stack (Hovering Moves Card to Center) (`index.html`, `styles/main.css`, `scripts/main.js`)**:
+   - Replaced the side-by-side accordion with the template repository's 8-card **horizontal 3D overlapping stack** (`.template-horizontal-stack`, `margin: 0 -115px`, `rotateY(-24deg)`).
+   - Hovering the active project card (`01 — SanitX`) smoothly translates it horizontally to the exact center of the stage (`translateX(var(--center-shift)) translateZ(130px) rotateY(0deg) scale(1.04)`) while parting the remaining 7 non-interactive grey-framed cards (`02`–`08`).
+5. **Julian Garnier (`https://juliangarnier.com/`) Chat-Form *Contact Me* Section (No Buttons, No Phone Number) (`index.html`, `styles/main.css`, `scripts/main.js`, `data/portfolioData.js`)**:
+   - Kept the seamless transition into the minimalist warm-white (`#f7f6f2`) section titled simply **`Contact Me`**.
+   - Removed all interactive prompt buttons and removed the phone number.
+   - When scrolled into view, the messages automatically type out in sequence (`•••` typing indicator morphing into each chat bubble: *"Hey there 👋"*, *"I'm Suyash — a first-year CSE student at VIT Vellore."*, email link, LinkedIn & GitHub links, and CV download link).
 
 ---
 
@@ -59,14 +45,13 @@ export const PORTFOLIO_DATA = {
     cvUrl: "./Suyash-CV.pdf",
     cvDownloadName: "Suyash-Sharma-CV.pdf",
     email: "sharma.suyash.in@gmail.com",
-    phone: "+91 7888222223",
     linkedin: "https://linkedin.com/in/suyashsharmadev",
     github: "https://github.com/suyashcodemaster",
     githubUsername: "suyashcodemaster",
     location: "Vellore, Tamil Nadu & Pune, India"
   },
 
-  // 3 Impactful Editorial Quotes Sprinkled Across Spaces Between Sections
+  // 3 Philosophical Quotes Sprinkled Across Spaces Between Sections
   interludeQuotes: [
     {
       id: "quote-1",
@@ -85,7 +70,8 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections (Simple, candid labels — no slash jargon)
+  // 5 Core Laptop Disassembly Sections
+  // (Display -> Motherboard -> Keyboard -> RAM Sticks -> Storage, plus Touchpad at completion for Download CV)
   laptopStages: [
     {
       id: "about",
@@ -123,8 +109,8 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "mission",
-      partKey: "logicBoard",
-      partLabel: "Logic Board",
+      partKey: "motherboard",
+      partLabel: "Motherboard",
       title: "The Mission",
       accent: "#a855f7",
       quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
@@ -147,8 +133,8 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "languages",
-      partKey: "speakers",
-      partLabel: "Speakers",
+      partKey: "ram",
+      partLabel: "RAM Sticks",
       title: "Languages I Know",
       accent: "#f59e0b",
       isCompactLanguages: true,
@@ -157,12 +143,14 @@ export const PORTFOLIO_DATA = {
         { name: "Hindi", level: "Native Fluency" }
       ],
       githubUsername: "suyashcodemaster",
+      badgesTitle: "Badges",
+      badgesPlaceholder: "Yet to earn",
       stageQuote: "If it doesn't challenge you, it won't change you."
     },
     {
       id: "achievements",
-      partKey: "battery",
-      partLabel: "Battery",
+      partKey: "storage",
+      partLabel: "Storage",
       title: "Courses & Achievements",
       accent: "#6366f1",
       cards: [
@@ -202,7 +190,7 @@ export const PORTFOLIO_DATA = {
     { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Library-Book Project Layers (Layer 01 Open + Layers 02-08 Non-Interactive Grey Photo Frames)
+  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center like template repo)
   projects: [
     {
       slot: "01",
@@ -225,6 +213,16 @@ export const PORTFOLIO_DATA = {
     { slot: "06", isPlaceholder: true },
     { slot: "07", isPlaceholder: true },
     { slot: "08", isPlaceholder: true }
+  ],
+
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (No buttons, no phone number)
+  contactMessages: [
+    "Hey there 👋",
+    "I'm Suyash — a first-year CSE student at VIT Vellore.",
+    "I love building things from scratch and exploring C++, Data Structures & Algorithms, and AI.",
+    "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",
+    "Or find me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener\">GitHub ↗</a>",
+    "Looking for my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
   ]
 };
 ```
@@ -240,7 +238,7 @@ export const PORTFOLIO_DATA = {
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
@@ -249,7 +247,7 @@ export const PORTFOLIO_DATA = {
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
 <body class="is-loading">
-  <!-- INITIAL TEMPLATE REPO LOADING SCREEN -->
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Smooth Progression) -->
   <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
     <div class="loader-inner">
       <span class="loader-brand">SUYASH SHARMA</span>
@@ -277,7 +275,7 @@ export const PORTFOLIO_DATA = {
       </h1>
     </div>
 
-    <!-- Bottom-Left Direct Jump Button (Simple Language) -->
+    <!-- Bottom-Left Direct Jump Button -->
     <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
       <span class="btn-main-text">Explore Projects ↓</span>
     </a>
@@ -289,11 +287,27 @@ export const PORTFOLIO_DATA = {
     </div>
   </section>
 
-  <!-- QUOTE INTERLUDE 1 -->
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (With Peaceful Botanical Leaves on Left & Right Ends) -->
   <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “You don't have to be great to get started, but you have to get started to be great.”
-    </blockquote>
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “You don't have to be great to get started, but you have to get started to be great.”
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
   <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
@@ -301,7 +315,7 @@ export const PORTFOLIO_DATA = {
     <div class="laptop-sticky-viewport">
       <canvas id="laptop-canvas"></canvas>
 
-      <!-- Clean, Simple 3D Part Pointer (Anchored accurately to active 3D part center) -->
+      <!-- Clean, Simple 3D Part Pointer -->
       <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
         <span class="callout-dot"></span>
         <span class="callout-line"></span>
@@ -313,7 +327,7 @@ export const PORTFOLIO_DATA = {
       <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
       <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
 
-      <!-- Detached 3D Touchpad "Download CV" Button (Appears on the touchpad when scroll finishes) -->
+      <!-- Detached 3D Touchpad "Download CV" Button (Appears directly on the unobstructed touchpad when scroll finishes) -->
       <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
         <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
           <span class="touchpad-btn-dot"></span>
@@ -326,15 +340,31 @@ export const PORTFOLIO_DATA = {
       </div>
     </div>
 
-    <!-- Scroll Stages: Lead-In Disassembly Stage -> 5 Info Stages -> Final Detached Touchpad Hold -->
+    <!-- Scroll Stages: Closed-to-Open Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
 
-  <!-- QUOTE INTERLUDE 2 -->
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
   <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
-    </blockquote>
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
   <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES & ASPIRATIONS) -->
@@ -371,65 +401,51 @@ export const PORTFOLIO_DATA = {
     </div>
   </section>
 
-  <!-- QUOTE INTERLUDE 3 -->
-  <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “Life is either a daring adventure or nothing at all.”
-      <cite class="interlude-cite">— Helen Keller</cite>
-    </blockquote>
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 (Tight bottom spacing beneath Helen Keller quote) -->
+  <div class="quote-interlude helen-keller-quote">
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “Life is either a daring adventure or nothing at all.”
+        <cite class="interlude-cite">— Helen Keller</cite>
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
-  <!-- 4. 8 HORIZONTALLY STACKED LIBRARY-BOOK PROJECT LAYERS -->
+  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Template Repo Style: Hovering Moves Card to Center) -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
       <h2 class="section-heading">Projects</h2>
     </div>
-    <div id="projects-stack" class="projects-library-stack"></div>
+    <div id="projects-stack" class="template-horizontal-stack"></div>
   </section>
 
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. STATIC MINIMALIST WHITE CONTACT SECTION (JULIAN GARNER STYLE) -->
+  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (No Buttons, No Phone Number) -->
   <section id="section-contact" class="minimal-white-contact">
-    <div class="julian-contact-container">
-      <div class="julian-contact-top">
-        <p class="julian-eyebrow">Get in touch</p>
-        <h2 class="julian-heading">Let's build something real together.</h2>
-        <p class="julian-sub">
-          First-year CSE undergraduate at VIT Vellore. Always happy to connect about internships, hackathons, collaborations, or a good conversation.
-        </p>
-      </div>
+    <div class="minimal-contact-inner">
+      <h2 class="contact-me-title">Contact Me</h2>
+      <div class="minimal-chat-stream" id="chat-messages"></div>
 
-      <div class="julian-contact-grid">
-        <div class="julian-contact-row">
-          <span class="julian-label">Email</span>
-          <a href="mailto:sharma.suyash.in@gmail.com" class="julian-value-link">sharma.suyash.in@gmail.com ↗</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Phone</span>
-          <a href="tel:+917888222223" class="julian-value-link">+91 7888222223</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Social</span>
-          <div class="julian-inline-links">
-            <a href="https://linkedin.com/in/suyashsharmadev" target="_blank" rel="noopener" class="julian-value-link">LinkedIn ↗</a>
-            <a href="https://github.com/suyashcodemaster" target="_blank" rel="noopener" class="julian-value-link">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Resume</span>
-          <a id="contact-cv-link" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="julian-value-link">Download CV (PDF) ↓</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Location</span>
-          <span class="julian-value-static">Vellore, Tamil Nadu &amp; Pune, India</span>
-        </div>
-      </div>
-
-      <footer class="julian-footer">
+      <footer class="minimal-contact-footer">
         <span>© 2026 Suyash Sharma</span>
-        <a href="#section-hero" class="julian-back-top">Back to top ↑</a>
+        <span class="footer-sep">·</span>
+        <a href="#section-hero">Back to top ↑</a>
       </footer>
     </div>
   </section>
@@ -446,6 +462,7 @@ export const PORTFOLIO_DATA = {
   --text-muted: #9ca3af;
   --border-subtle: rgba(244, 241, 234, 0.12);
   --font-display: 'Instrument Serif', Georgia, serif;
+  --font-philo: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
@@ -456,7 +473,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Deliberate Load Time)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -466,7 +483,7 @@ body.is-loading { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.6s ease;
+  transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.7s ease;
 }
 
 .loader-overlay.loaded {
@@ -518,7 +535,7 @@ body.is-loading { overflow: hidden; }
   width: 0%;
   height: 100%;
   background: #f4f1ea;
-  transition: width 0.08s linear;
+  transition: width 0.06s linear;
 }
 
 .grain-overlay {
@@ -657,10 +674,10 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   EDITORIAL QUOTE INTERLUDES (Sprinkled Between Sections for Impact)
+   PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 6.5rem 6vw;
+  padding: 4.2rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -669,25 +686,57 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
+/* Remove majority of space beneath the Helen Keller quote */
+.quote-interlude.helen-keller-quote {
+  padding: 3.2rem 5vw 0.35rem;
+}
+
+.quote-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.85rem, 2vw, 1.65rem);
+  max-width: 820px;
+  padding: 0.75rem 1.5rem;
+}
+
+.quote-leaf {
+  width: clamp(36px, 4.2vw, 52px);
+  height: auto;
+  flex-shrink: 0;
+  opacity: 0.82;
+  filter: drop-shadow(0 0 8px rgba(110, 231, 183, 0.18));
+  animation: leafBreeze 5s ease-in-out infinite alternate;
+}
+
+.quote-leaf.leaf-right {
+  animation-delay: -2.5s;
+}
+
+@keyframes leafBreeze {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-3px) rotate(2deg); }
+}
+
 .interlude-text {
-  max-width: 860px;
-  font-family: var(--font-display);
+  font-family: var(--font-philo);
   font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.85rem, 3.4vw, 3rem);
-  line-height: 1.32;
-  color: #f4f1ea;
-  opacity: 0.92;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.78vw, 1.48rem);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: #d6d3cd;
 }
 
 .interlude-cite {
   display: block;
-  margin-top: 0.85rem;
-  font-family: var(--font-sans);
+  margin-top: 0.45rem;
+  font-family: var(--font-philo);
   font-style: normal;
-  font-size: 0.92rem;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
+  font-size: 0.88rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8c8881;
 }
 
 /* ==========================================================================
@@ -705,8 +754,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  /* Subtle studio radial glow behind the black-grey 3D laptop so it never merges with the dark background */
-  background: radial-gradient(circle at 32% 52%, rgba(148, 163, 184, 0.11) 0%, rgba(30, 41, 59, 0.05) 38%, transparent 68%);
+  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.13) 0%, rgba(30, 41, 59, 0.06) 40%, transparent 70%);
 }
 
 #laptop-canvas {
@@ -715,7 +763,7 @@ body.is-loading { overflow: hidden; }
   display: block;
 }
 
-/* Accurate 3D Part Pointer (Dot is placed at exact projected (x,y) of the 3D part) */
+/* Accurate 3D Part Pointer */
 .part-link-callout {
   position: absolute;
   left: 0;
@@ -760,20 +808,20 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   left: 6px;
   top: -1px;
-  width: 36px;
+  width: 34px;
   height: 1.5px;
   background: var(--callout-color, #38bdf8);
 }
 
 .callout-badge {
   position: absolute;
-  left: 44px;
+  left: 42px;
   top: 0;
   transform: translateY(-50%);
   white-space: nowrap;
-  padding: 0.32rem 0.7rem;
+  padding: 0.3rem 0.68rem;
   border-radius: 999px;
-  background: rgba(12, 13, 18, 0.9);
+  background: rgba(12, 13, 18, 0.92);
   border: 1px solid var(--callout-color, #38bdf8);
   backdrop-filter: blur(8px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
@@ -781,7 +829,7 @@ body.is-loading { overflow: hidden; }
 
 .callout-part {
   font-family: var(--font-sans);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: #f4f1ea;
 }
@@ -793,12 +841,12 @@ body.is-loading { overflow: hidden; }
   top: 0;
   pointer-events: none;
   z-index: 40;
-  padding: 0.38rem 0.75rem;
+  padding: 0.36rem 0.72rem;
   border-radius: 999px;
   background: rgba(12, 13, 18, 0.94);
   border: 1px solid rgba(244, 241, 234, 0.28);
   font-family: var(--font-sans);
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: #f4f1ea;
   opacity: 0;
@@ -816,7 +864,7 @@ body.is-loading { overflow: hidden; }
 .touchpad-cv-overlay {
   position: absolute;
   left: 50%;
-  top: 68%;
+  top: 66%;
   transform: translate(-50%, -50%) scale(0.88);
   z-index: 30;
   opacity: 0;
@@ -836,7 +884,7 @@ body.is-loading { overflow: hidden; }
   gap: 0.6rem;
   padding: 0.75rem 1.45rem;
   border-radius: 999px;
-  background: rgba(14, 15, 20, 0.92);
+  background: rgba(14, 15, 20, 0.94);
   border: 1.5px solid #ec4899;
   color: #f4f1ea;
   font-family: var(--font-sans);
@@ -844,7 +892,7 @@ body.is-loading { overflow: hidden; }
   font-weight: 500;
   text-decoration: none;
   backdrop-filter: blur(12px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 24px rgba(236, 72, 153, 0.4);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), 0 0 24px rgba(236, 72, 153, 0.45);
   transition: transform 0.22s ease, background 0.22s ease;
 }
 
@@ -899,9 +947,9 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Opening Lead-In Stage: Gives the laptop room to appear centered, open, and shift left while disassembling before About Me starts */
+/* Opening Lead-In Stage: Laptop starts closed & centered, opens up, and glides left while disassembling before About Me starts */
 .laptop-stage.laptop-intro-stage {
-  min-height: 115vh;
+  min-height: 118vh;
   pointer-events: none;
 }
 
@@ -915,11 +963,11 @@ body.is-loading { overflow: hidden; }
 
 /* Shorter, well-proportioned height for Languages I Know stage */
 .laptop-stage.compact-stage {
-  min-height: 78vh;
-  padding: 2rem 4.5vw;
+  min-height: 76vh;
+  padding: 1.75rem 4.5vw;
 }
 
-/* Final Disassembly Hold Stage for Detached Touchpad CV */
+/* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
 .laptop-stage.final-disassembly-hold {
   min-height: 110vh;
   pointer-events: none;
@@ -928,7 +976,7 @@ body.is-loading { overflow: hidden; }
 .stage-bento-panel {
   pointer-events: auto;
   width: min(50vw, 660px);
-  padding: 2.35rem;
+  padding: 2.3rem;
   border-radius: 22px;
   background: var(--bg-panel);
   backdrop-filter: blur(20px);
@@ -937,77 +985,84 @@ body.is-loading { overflow: hidden; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.25rem;
+  gap: 1.2rem;
 }
 
 .stage-bento-panel.compact-panel {
-  padding: 1.85rem 2.15rem;
-  gap: 1.05rem;
+  padding: 1.75rem 2.1rem;
+  gap: 0.95rem;
 }
 
 .stage-part-chip {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0.28rem 0.75rem;
+  padding: 0.26rem 0.72rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--stage-accent, #38bdf8);
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: 0.73rem;
   font-weight: 500;
   color: var(--stage-accent, #38bdf8);
 }
 
 .stage-title {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+  font-size: clamp(2.15rem, 3.5vw, 3.1rem);
   font-weight: 400;
   line-height: 1.05;
+}
+
+/* Smaller heading specifically for Languages I Know */
+.stage-title.small-stage-title {
+  font-size: clamp(1.45rem, 2.1vw, 1.85rem);
 }
 
 .stage-paragraphs {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.82rem;
 }
 
 .stage-summary {
-  font-size: 0.98rem;
-  line-height: 1.65;
+  font-size: 0.96rem;
+  line-height: 1.64;
   color: #d1d5db;
 }
 
 .stage-quote {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2vw, 1.8rem);
-  line-height: 1.45;
-  color: #ffffff;
-  border-left: 3px solid var(--stage-accent);
-  padding-left: 1.15rem;
+  font-family: var(--font-philo);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.65vw, 1.38rem);
+  line-height: 1.52;
+  color: #e5e7eb;
+  border-left: 2px solid var(--stage-accent);
+  padding-left: 1.1rem;
 }
 
 .stage-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.85rem;
+  gap: 0.82rem;
 }
 
 .stage-subcard {
-  padding: 1rem;
+  padding: 0.95rem;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .stage-subcard h4 {
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   color: #fff;
   margin-bottom: 0.25rem;
 }
 
 .stage-subcard p {
-  font-size: 0.84rem;
+  font-size: 0.83rem;
   color: #9ca3af;
   line-height: 1.45;
 }
@@ -1016,20 +1071,20 @@ body.is-loading { overflow: hidden; }
   display: inline-block;
   margin-top: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.69rem;
   color: var(--stage-accent);
 }
 
-/* Compact Languages Row + Embedded GitHub Contribution Graph + Quote */
+/* Compact Languages Row + Embedded GitHub Contribution Graph + Badges + Philosophical Quote */
 .compact-lang-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.7rem;
 }
 
 .compact-lang-item {
-  flex: 1 1 180px;
-  padding: 0.75rem 1rem;
+  flex: 1 1 170px;
+  padding: 0.65rem 0.95rem;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -1039,30 +1094,30 @@ body.is-loading { overflow: hidden; }
 }
 
 .compact-lang-item strong {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: #fff;
 }
 
 .compact-lang-item span {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #9ca3af;
 }
 
 .github-contrib-card {
-  padding: 1rem 1.1rem;
+  padding: 0.9rem 1.05rem;
   border-radius: 14px;
   background: rgba(9, 9, 13, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .github-contrib-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #cbd5e1;
 }
 
@@ -1070,7 +1125,7 @@ body.is-loading { overflow: hidden; }
   color: #f59e0b;
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
 }
 
 .github-contrib-header a:hover {
@@ -1080,56 +1135,97 @@ body.is-loading { overflow: hidden; }
 .github-chart-wrap {
   width: 100%;
   overflow-x: auto;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
 }
 
 .github-chart-img {
   width: 100%;
-  min-width: 420px;
+  min-width: 400px;
   height: auto;
   display: block;
   filter: contrast(1.08);
 }
 
+/* Badges Subsection under Contribution Graph */
+.github-badges-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.badges-title {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+.badges-placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.71rem;
+  color: #9ca3af;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+}
+
+.stage-mini-quote-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding-top: 0.2rem;
+}
+
+.mini-leaf {
+  width: 24px;
+  height: auto;
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
 .stage-mini-quote {
-  font-family: var(--font-display);
+  font-family: var(--font-philo);
   font-style: italic;
-  font-size: 1.35rem;
-  color: #f4f1ea;
-  border-left: 3px solid #f59e0b;
-  padding-left: 0.9rem;
-  margin-top: 0.2rem;
+  font-weight: 300;
+  font-size: 1.08rem;
+  letter-spacing: 0.025em;
+  color: #d6d3cd;
+  text-align: center;
 }
 
 .skill-groups-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.85rem;
 }
 
 .skill-group-row {
   display: flex;
   flex-direction: column;
-  gap: 0.38rem;
+  gap: 0.35rem;
 }
 
 .skill-group-label {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.77rem;
   font-weight: 600;
 }
 
 .pills-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.48rem;
+  gap: 0.45rem;
 }
 
 .color-pill {
-  padding: 0.4rem 0.82rem;
+  padding: 0.38rem 0.8rem;
   border-radius: 8px;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.79rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--pill-color, #38bdf8);
   color: #fff;
@@ -1311,63 +1407,84 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   4. 8 HORIZONTALLY STACKED LIBRARY-BOOK PROJECT LAYERS (Template Repo Style)
+   4. TEMPLATE REPO HORIZONTAL OVERLAPPING CARD STACK (Hover Moves Card to Center)
    ========================================================================== */
 .projects-section {
-  padding: 5.5rem 4.5vw 7.5rem;
+  padding: 1.1rem 4.5vw 7rem;
   position: relative;
   z-index: 5;
+  overflow: hidden;
 }
 
 .section-header-wrap {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-/* Always stacked HORIZONTALLY side-by-side like books standing on a library shelf */
-.projects-library-stack {
+.template-horizontal-stack {
+  position: relative;
+  width: 100%;
+  min-height: 540px;
   display: flex;
   flex-direction: row;
-  align-items: stretch;
-  justify-content: flex-start;
-  width: 100%;
-  min-height: 520px;
-  gap: 0.65rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+  padding: 2rem 0;
 }
 
-.library-layer {
+.stack-card {
+  width: clamp(290px, 32vw, 390px);
+  height: 470px;
+  border-radius: 18px;
+  margin: 0 -115px;
   position: relative;
-  border-radius: 16px;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+  transform-style: preserve-3d;
+  transform: translateX(0px) translateY(0px) translateZ(0px) rotateY(-24deg) scale(0.94);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, border-color 0.35s ease, opacity 0.4s ease;
+  box-shadow: -18px 14px 38px rgba(0, 0, 0, 0.78);
+  flex-shrink: 0;
 }
 
-/* Layer 01: Open Featured Book on the Left (SanitX) */
-.library-layer.active-book {
-  flex: 0 0 min(520px, 56vw);
-  background: linear-gradient(155deg, rgba(16, 185, 129, 0.12), rgba(16, 16, 24, 0.98));
+/* When a card is hovered/focused, it glides horizontally to the center of the stage and rotates flat! */
+.stack-card.is-centered {
+  transform: translateX(var(--center-shift, 0px)) translateY(-12px) translateZ(130px) rotateY(0deg) scale(1.04);
+  z-index: 60 !important;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.88), 0 0 42px rgba(16, 185, 129, 0.25);
+}
+
+.stack-card.pushed-left {
+  transform: translateX(-145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
+  opacity: 0.72;
+}
+
+.stack-card.pushed-right {
+  transform: translateX(145px) translateZ(-35px) rotateY(-28deg) scale(0.9);
+  opacity: 0.72;
+}
+
+/* Layer 01: Active Project Card (SanitX) */
+.stack-card.active-project-card {
+  background: linear-gradient(155deg, rgba(18, 36, 31, 0.98), rgba(14, 15, 22, 0.99));
   border: 1.5px solid #10b981;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+  padding: 1.65rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem;
-  gap: 1.25rem;
+  gap: 0.9rem;
+  cursor: pointer;
 }
 
-.library-layer.active-book:hover {
-  transform: translateY(-5px);
-}
-
-.active-book-top {
+.stack-card-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
 
-.book-index-num {
+.stack-slot-num {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
+  font-weight: 600;
   color: #10b981;
 }
 
@@ -1376,9 +1493,9 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1.35rem;
-  border-radius: 14px;
-  background: rgba(9, 9, 13, 0.78);
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(9, 9, 13, 0.8);
   border: 1px solid rgba(16, 185, 129, 0.4);
   text-decoration: none;
   color: #fff;
@@ -1387,69 +1504,66 @@ body.is-loading { overflow: hidden; }
 
 .project-logo-link:hover {
   border-color: #38bdf8;
-  transform: scale(1.015);
+  transform: scale(1.02);
 }
 
 .project-logo-caption {
-  margin-top: 0.65rem;
+  margin-top: 0.45rem;
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 500;
   color: #10b981;
 }
 
 .project-bullets {
-  padding-left: 1.1rem;
+  padding-left: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.48rem;
+  gap: 0.35rem;
   color: #d1d5db;
-  font-size: 0.87rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  line-height: 1.42;
 }
 
-/* Layers 02–08: Standing Horizontally Next to Each Other Like Books on a Shelf with Grey Photo Frames (Non-Interactive) */
-.library-layer.stacked-book {
-  flex: 1 1 64px;
-  min-width: 58px;
-  background: linear-gradient(180deg, #191a22 0%, #121318 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards */
+.stack-card.grey-layer-card {
+  background: linear-gradient(160deg, #1d1e26 0%, #13141a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.35rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1rem 0.65rem;
   pointer-events: none;
   user-select: none;
 }
 
-.stacked-book-num {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+.grey-layer-card .stack-slot-num {
   color: #71717a;
-  text-align: center;
 }
 
-/* Matte Grey Photo Frame inside each horizontally stacked layer */
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin: 0.65rem 0;
-  border-radius: 10px;
-  background: linear-gradient(145deg, #272830 0%, #1d1e25 100%);
+  margin-top: 0.75rem;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #2a2b34 0%, #1e1f27 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
-.stacked-book-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #3f3f46;
-  margin: 0 auto;
+.grey-photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.015);
 }
 
 /* ==========================================================================
-   5. SEAMLESS TRANSITION & STATIC JULIAN GARNER WHITE CONTACT SECTION
+   5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION
+      (Minimalist White, Sequential Chat Bubbles, No Buttons, No Phone Number)
    ========================================================================== */
 .dark-to-white-transition {
   width: 100%;
@@ -1460,125 +1574,120 @@ body.is-loading { overflow: hidden; }
 .minimal-white-contact {
   background: #f7f6f2;
   color: #141413;
-  min-height: 85vh;
+  min-height: 82vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 6vw 4rem;
+  padding: 5rem 5vw 4rem;
   position: relative;
   z-index: 10;
 }
 
-.julian-contact-container {
+.minimal-contact-inner {
   width: 100%;
-  max-width: 880px;
+  max-width: 620px;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 2rem;
 }
 
-.julian-contact-top {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.julian-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #78756e;
-}
-
-.julian-heading {
+.contact-me-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
   color: #141413;
+  letter-spacing: -0.01em;
 }
 
-.julian-sub {
-  max-width: 560px;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: #52504a;
-}
-
-.julian-contact-grid {
+.minimal-chat-stream {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #dfdcd3;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-height: 290px;
 }
 
-.julian-contact-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.35rem 0;
-  border-bottom: 1px solid #dfdcd3;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.julian-label {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #78756e;
-}
-
-.julian-value-link {
-  font-family: var(--font-sans);
-  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
-  font-weight: 400;
+.minimal-bubble {
+  max-width: 88%;
+  padding: 0.9rem 1.3rem;
+  border-radius: 22px;
+  border-bottom-left-radius: 6px;
+  background: #e9e7e0;
   color: #141413;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
+  font-size: 1.02rem;
+  line-height: 1.52;
+  letter-spacing: -0.01em;
+  animation: minimalFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-.julian-value-link:hover {
-  opacity: 0.55;
+@keyframes minimalFadeUp {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.julian-inline-links {
-  display: flex;
-  gap: 1.75rem;
+.minimal-bubble a {
+  color: #141413;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+}
+
+.minimal-bubble a:hover {
+  opacity: 0.6;
+}
+
+/* Julian Garnier ••• typing indicator pill */
+.minimal-typing {
+  display: inline-flex;
   align-items: center;
+  gap: 5px;
+  padding: 0.95rem 1.2rem;
+  border-radius: 22px;
+  border-bottom-left-radius: 6px;
+  background: #e9e7e0;
 }
 
-.julian-value-static {
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: #3f3d38;
+.minimal-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #78756e;
+  animation: minimalBounce 1.1s infinite ease-in-out;
 }
 
-.julian-footer {
+.minimal-typing span:nth-child(2) { animation-delay: 0.15s; }
+.minimal-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes minimalBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+
+.minimal-contact-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dfdcd3;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-top: 1rem;
+  gap: 0.75rem;
   font-size: 0.86rem;
   color: #78756e;
 }
 
-.julian-back-top {
+.minimal-contact-footer a {
   color: #141413;
   text-decoration: none;
-  font-weight: 500;
 }
 
-.julian-back-top:hover {
+.minimal-contact-footer a:hover {
   opacity: 0.6;
 }
 
 @media (max-width: 900px) {
   .stage-bento-panel { width: 92vw; }
   .part-link-callout { display: none; }
-  .library-layer.active-book { flex: 0 0 340px; }
-  .library-layer.stacked-book { flex: 0 0 46px; min-width: 44px; }
+  .stack-card { width: 270px; height: 440px; margin: 0 -95px; }
 }
 ```
 
@@ -1586,44 +1695,48 @@ body.is-loading { overflow: hidden; }
 ```javascript
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.35, 6.3);
+  const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 1.55, 6.2);
+  camera.lookAt(0, 0.15, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.28;
 
-  // High-Contrast Studio Lighting so the Black-Grey Laptop Pops Clearly Against the Dark Background
-  const ambient = new THREE.AmbientLight(0xffffff, 0.95);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+  // Studio Multi-Point Lighting for Sleek Black-Grey / Brushed Gunmetal Contrast
+  const ambient = new THREE.AmbientLight(0xffffff, 0.98);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.3);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.8);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.85);
   rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x64748b, 1.1);
-  bottomFill.position.set(0, -5, 3);
-  const accentLight = new THREE.PointLight(0x38bdf8, 1.8, 16);
-  accentLight.position.set(-2.2, 2.0, 4.2);
+  const bottomFill = new THREE.DirectionalLight(0x64748b, 1.15);
+  bottomFill.position.set(0, -5, 4);
+  const accentLight = new THREE.PointLight(0x38bdf8, 1.9, 16);
+  accentLight.position.set(-2.0, 2.2, 4.2);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  // Starts centered (x = 0) before moving left during disassembly
-  root.position.set(0, -0.08, 0);
-  root.rotation.set(0.26, 0.35, 0);
+  root.position.set(0, -0.1, 0);
+  root.rotation.set(0.24, 0.28, 0);
   scene.add(root);
 
-  // Cohesive Black-Grey / Brushed Space-Grey / Gunmetal Palette
-  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x323642, metalness: 0.72, roughness: 0.28 });
-  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x161922, emissive: 0x1e293b, emissiveIntensity: 0.45, roughness: 0.15 });
-  const matLogicPcb = new THREE.MeshStandardMaterial({ color: 0x232730, metalness: 0.55, roughness: 0.35 });
-  const matCpuCore = new THREE.MeshStandardMaterial({ color: 0x646b7d, emissive: 0x475569, emissiveIntensity: 0.4, metalness: 0.85, roughness: 0.18 });
-  const matHeatPipe = new THREE.MeshStandardMaterial({ color: 0x4b5162, metalness: 0.8, roughness: 0.22 });
-  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x282c37, metalness: 0.65, roughness: 0.32 });
-  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x15171e, roughness: 0.4 });
-  const matSpeakerBody = new THREE.MeshStandardMaterial({ color: 0x383d4b, metalness: 0.75, roughness: 0.25 });
-  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x252934, emissive: 0x334155, emissiveIntensity: 0.35, roughness: 0.15, metalness: 0.6 });
-  const matBatteryPack = new THREE.MeshStandardMaterial({ color: 0x1f232d, metalness: 0.6, roughness: 0.3 });
+  // Materials
+  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x303440, metalness: 0.76, roughness: 0.24 });
+  const matBezel = new THREE.MeshStandardMaterial({ color: 0x12141c, metalness: 0.4, roughness: 0.2 });
+  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x0f172a, emissive: 0x1e293b, emissiveIntensity: 0.55, roughness: 0.12 });
+  const matMotherboardPcb = new THREE.MeshStandardMaterial({ color: 0x1c212b, metalness: 0.55, roughness: 0.34 });
+  const matCpuPackage = new THREE.MeshStandardMaterial({ color: 0x646d80, emissive: 0x475569, emissiveIntensity: 0.35, metalness: 0.88, roughness: 0.16 });
+  const matCopperPipe = new THREE.MeshStandardMaterial({ color: 0xb45309, emissive: 0x78350f, emissiveIntensity: 0.22, metalness: 0.85, roughness: 0.2 });
+  const matGoldContacts = new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xd97706, emissiveIntensity: 0.3, metalness: 0.9, roughness: 0.18 });
+  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x262a35, metalness: 0.68, roughness: 0.3 });
+  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x14161d, roughness: 0.38 });
+  const matRamSpreader = new THREE.MeshStandardMaterial({ color: 0x282d3a, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.8, roughness: 0.22 });
+  const matRamChip = new THREE.MeshStandardMaterial({ color: 0x111318, metalness: 0.5, roughness: 0.3 });
+  const matStoragePcb = new THREE.MeshStandardMaterial({ color: 0x1e2433, metalness: 0.65, roughness: 0.28 });
+  const matStorageSink = new THREE.MeshStandardMaterial({ color: 0x3b4254, metalness: 0.82, roughness: 0.2 });
+  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x262b38, emissive: 0x334155, emissiveIntensity: 0.4, roughness: 0.14, metalness: 0.62 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
@@ -1637,53 +1750,150 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     partEdgeLines[partKey].push(lineMat);
   }
 
-  // 1. Display (About Me)
+  // =========================================================================
+  // 1. DISPLAY (Pivots from rear hinge so it starts 100% CLOSED flat at progress = 0)
+  // =========================================================================
   const display = new THREE.Group();
-  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.92, 0.07), matOuterChassis);
-  addCrispEdges(lidMesh, 'display', 0x94a3b8, 0.75);
-  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.82, 1.72), matScreenPanel);
-  lcdMesh.position.z = 0.04;
-  addCrispEdges(lcdMesh, 'display', 0x64748b, 0.5);
-  const hingeMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 2.2, 16), matOuterChassis);
-  hingeMesh.rotation.z = Math.PI / 2;
-  hingeMesh.position.set(0, -0.95, 0);
+  // Rear hinge pivot at y = 0.14, z = -0.98
+  display.position.set(0, 0.14, -0.98);
+
+  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 1.96, 0.065), matOuterChassis);
+  lidMesh.position.set(0, 0.98, 0);
+  addCrispEdges(lidMesh, 'display', 0x94a3b8, 0.8);
+
+  const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.86), matBezel);
+  bezelMesh.position.set(0, 0.98, 0.034);
+
+  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.68), matScreenPanel);
+  lcdMesh.position.set(0, 0.98, 0.036);
+  addCrispEdges(lcdMesh, 'display', 0x64748b, 0.55);
+
+  // Subtle glowing code/UI bars on the screen
+  const uiBarMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.35 });
+  for (let i = 0; i < 5; i++) {
+    const barW = 0.8 + (i % 3) * 0.45;
+    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.045), uiBarMat);
+    bar.position.set(-1.1 + barW / 2, 1.42 - i * 0.16, 0.038);
+    display.add(bar);
+  }
+
+  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.45, 16), matOuterChassis);
+  hingeL.rotation.z = Math.PI / 2;
+  hingeL.position.set(-0.85, 0, 0);
+  const hingeR = hingeL.clone();
+  hingeR.position.set(0.85, 0, 0);
+
   const displayAnchor = new THREE.Object3D();
-  displayAnchor.position.set(0, 0, 0.05);
-  display.add(lidMesh, lcdMesh, hingeMesh, displayAnchor);
-  display.position.set(0, 1.02, -0.95);
-  display.rotation.x = -0.15;
+  displayAnchor.position.set(0, 0.98, 0.04);
+  display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
-  // 2. Logic Board (The Mission)
-  const logicBoard = new THREE.Group();
-  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.58, 0.06, 1.54), matLogicPcb);
-  addCrispEdges(pcb, 'logicBoard', 0x94a3b8, 0.8);
-  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.11, 0.68), matCpuCore);
-  cpuDie.position.set(0, 0.06, 0);
-  addCrispEdges(cpuDie, 'logicBoard', 0xcbd5e1, 0.9);
-  const heatPipe = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.045, 0.16), matHeatPipe);
-  heatPipe.position.set(0, 0.07, -0.42);
-  addCrispEdges(heatPipe, 'logicBoard', 0x94a3b8, 0.7);
-  const fanL = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.07, 20), matOuterChassis);
-  const fanR = fanL.clone();
-  fanL.position.set(-0.8, 0.05, -0.35);
-  fanR.position.set(0.8, 0.05, -0.35);
-  addCrispEdges(fanL, 'logicBoard', 0x94a3b8, 0.65);
-  addCrispEdges(fanR, 'logicBoard', 0x94a3b8, 0.65);
-  const logicAnchor = new THREE.Object3D();
-  logicAnchor.position.set(0, 0.08, 0);
-  logicBoard.add(pcb, cpuDie, heatPipe, fanL, fanR, logicAnchor);
-  logicBoard.position.set(0, 0.02, 0);
+  // =========================================================================
+  // 2. MOTHERBOARD (Complex PCB + Gold Wiring Traces + Braided Wires + Dual Fans + VRM)
+  // =========================================================================
+  const motherboard = new THREE.Group();
+  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.055, 1.58), matMotherboardPcb);
+  addCrispEdges(pcb, 'motherboard', 0x94a3b8, 0.82);
+  motherboard.add(pcb);
 
-  // 3. Keyboard (Technical Skills)
+  // CPU Socket & Die
+  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.07, 0.76), matOuterChassis);
+  cpuSocket.position.set(0, 0.035, -0.08);
+  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.1, 0.54), matCpuPackage);
+  cpuDie.position.set(0, 0.055, -0.08);
+  addCrispEdges(cpuDie, 'motherboard', 0xcbd5e1, 0.92);
+  motherboard.add(cpuSocket, cpuDie);
+
+  // Twin Copper Heatpipes
+  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.035, 0.11), matCopperPipe);
+  pipe1.position.set(0, 0.065, -0.42);
+  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.035, 0.08), matCopperPipe);
+  pipe2.position.set(0, 0.065, -0.26);
+  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.75);
+  motherboard.add(pipe1, pipe2);
+
+  // Dual Multi-Blade Cooling Fans
+  function createCoolingFan(xPos) {
+    const fanGroup = new THREE.Group();
+    fanGroup.position.set(xPos, 0.045, -0.38);
+    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.06, 24), matOuterChassis);
+    addCrispEdges(shroud, 'motherboard', 0x94a3b8, 0.7);
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.075, 16), matCpuPackage);
+    fanGroup.add(shroud, hub);
+    for (let b = 0; b < 8; b++) {
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.04, 0.035), matKeyCap);
+      const angle = (b / 8) * Math.PI * 2;
+      blade.position.set(Math.cos(angle) * 0.18, 0.02, Math.sin(angle) * 0.18);
+      blade.rotation.y = -angle + 0.4;
+      fanGroup.add(blade);
+    }
+    return fanGroup;
+  }
+  const fanL = createCoolingFan(-0.82);
+  const fanR = createCoolingFan(0.82);
+  motherboard.add(fanL, fanR);
+
+  // VRM Choke Coils & Capacitors Array
+  for (let v = 0; v < 6; v++) {
+    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.08, 0.11), matStorageSink);
+    vrm.position.set(-0.38 + v * 0.15, 0.045, -0.62);
+    addCrispEdges(vrm, 'motherboard', 0x94a3b8, 0.6);
+    motherboard.add(vrm);
+  }
+  for (let c = 0; c < 5; c++) {
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.085, 12), matGoldContacts);
+    cap.position.set(-1.12, 0.045, -0.2 + c * 0.16);
+    motherboard.add(cap);
+  }
+
+  // Gold & Copper PCB Circuit Traces + 3D Wiring Harness on Motherboard
+  const tracePoints = [];
+  const traceCoords = [
+    [-1.1, 0.032, 0.55, -0.4, 0.032, 0.55],
+    [-0.4, 0.032, 0.55, -0.15, 0.032, 0.25],
+    [1.1, 0.032, 0.55, 0.4, 0.032, 0.55],
+    [0.4, 0.032, 0.55, 0.15, 0.032, 0.25],
+    [-0.95, 0.032, 0.35, -0.35, 0.032, 0.35],
+    [0.95, 0.032, 0.35, 0.35, 0.032, 0.35],
+    [-0.25, 0.032, 0.68, 0.25, 0.032, 0.68],
+    [-0.6, 0.032, -0.08, -0.38, 0.032, -0.08],
+    [0.38, 0.032, -0.08, 0.6, 0.032, -0.08]
+  ];
+  traceCoords.forEach(([x1, y1, z1, x2, y2, z2]) => {
+    tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
+  });
+  const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.78 });
+  motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
+
+  // 3D Arched Wiring Cables connecting motherboard subsystems
+  function addWireArc(p1, p2, midHeight, hexColor) {
+    const mid = new THREE.Vector3((p1.x + p2.x) * 0.5, midHeight, (p1.z + p2.z) * 0.5);
+    const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
+    const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.016, 8, false);
+    const tubeMat = new THREE.MeshStandardMaterial({ color: hexColor, metalness: 0.5, roughness: 0.3 });
+    motherboard.add(new THREE.Mesh(tubeGeo, tubeMat));
+  }
+  addWireArc(new THREE.Vector3(-1.1, 0.04, 0.45), new THREE.Vector3(-0.35, 0.05, -0.05), 0.16, 0x38bdf8);
+  addWireArc(new THREE.Vector3(-1.05, 0.04, 0.52), new THREE.Vector3(-0.35, 0.05, 0.02), 0.14, 0xf59e0b);
+  addWireArc(new THREE.Vector3(1.1, 0.04, 0.45), new THREE.Vector3(0.35, 0.05, -0.05), 0.16, 0xa855f7);
+  addWireArc(new THREE.Vector3(1.05, 0.04, 0.52), new THREE.Vector3(0.35, 0.05, 0.02), 0.14, 0x10b981);
+
+  const motherboardAnchor = new THREE.Object3D();
+  motherboardAnchor.position.set(0, 0.07, 0);
+  motherboard.add(motherboardAnchor);
+
+  // =========================================================================
+  // 3. KEYBOARD (Technical Skills)
+  // =========================================================================
   const keyboard = new THREE.Group();
-  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.68, 0.04, 1.16), matKeyDeck);
+  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.72, 0.038, 1.18), matKeyDeck);
   deckPlate.position.set(0, 0.08, -0.14);
-  addCrispEdges(deckPlate, 'keyboard', 0x94a3b8, 0.75);
+  addCrispEdges(deckPlate, 'keyboard', 0x94a3b8, 0.78);
   keyboard.add(deckPlate);
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 11; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.055, 0.19), matKeyCap);
-      key.position.set(-1.0 + c * 0.2, 0.12, -0.52 + r * 0.24);
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.05, 0.19), matKeyCap);
+      key.position.set(-1.0 + c * 0.2, 0.115, -0.52 + r * 0.24);
       addCrispEdges(key, 'keyboard', 0x64748b, 0.45);
       keyboard.add(key);
     }
@@ -1692,63 +1902,101 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   keyboardAnchor.position.set(0, 0.12, -0.14);
   keyboard.add(keyboardAnchor);
 
-  // 4. Speakers (Languages I Know)
-  const speakers = new THREE.Group();
-  const spkL = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.09, 1.5), matSpeakerBody);
-  const spkR = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.09, 1.5), matSpeakerBody);
-  spkL.position.set(-1.32, 0.1, 0);
-  spkR.position.set(1.32, 0.1, 0);
-  addCrispEdges(spkL, 'speakers', 0x94a3b8, 0.8);
-  addCrispEdges(spkR, 'speakers', 0x94a3b8, 0.8);
-  const speakerAnchor = new THREE.Object3D();
-  speakerAnchor.position.set(0, 0.05, 0);
-  spkR.add(speakerAnchor);
-  speakers.add(spkL, spkR);
+  // =========================================================================
+  // 4. RAM STICKS (Dual DDR5 Modules that Visibly Slide/Eject Out While Scrolling!)
+  // =========================================================================
+  const ram = new THREE.Group();
+  function createRamStick(side) {
+    const stickGroup = new THREE.Group();
+    const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.045, 0.32), matRamSpreader);
+    addCrispEdges(board, 'ram', 0xf59e0b, 0.85);
+    stickGroup.add(board);
 
-  // 5. Touchpad (Detaches at scroll end with Download CV button on it)
+    // Gold Edge Connector Pins
+    const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.048, 0.045), matGoldContacts);
+    goldStrip.position.set(0, 0, side > 0 ? -0.145 : 0.145);
+    stickGroup.add(goldStrip);
+
+    // 4 Memory IC Packages per stick
+    for (let m = 0; m < 4; m++) {
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.06, 0.16), matRamChip);
+      chip.position.set(-0.255 + m * 0.17, 0.01, 0);
+      addCrispEdges(chip, 'ram', 0x94a3b8, 0.7);
+      stickGroup.add(chip);
+    }
+    return stickGroup;
+  }
+  const ramL = createRamStick(-1);
+  const ramR = createRamStick(1);
+  ramL.position.set(-0.62, 0.055, 0.22);
+  ramR.position.set(0.62, 0.055, 0.22);
+
+  const ramAnchor = new THREE.Object3D();
+  ramAnchor.position.set(0, 0.05, 0);
+  ramR.add(ramAnchor);
+  ram.add(ramL, ramR);
+
+  // =========================================================================
+  // 5. STORAGE (NVMe M.2 Solid-State Array & Lower Unibody Base)
+  // =========================================================================
+  const storage = new THREE.Group();
+  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.11, 2.02), matOuterChassis);
+  baseMesh.position.y = -0.14;
+  addCrispEdges(baseMesh, 'storage', 0x94a3b8, 0.72);
+
+  // Dual NVMe M.2 SSD Modules with Finned Heatsinks & NAND Chips
+  function createNvmeSsd(xOffset) {
+    const ssdGroup = new THREE.Group();
+    ssdGroup.position.set(xOffset, -0.02, 0.38);
+    const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.05, 0.42), matStoragePcb);
+    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.85);
+    const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.075, 0.36), matStorageSink);
+    heatsink.position.set(-0.06, 0.02, 0);
+    addCrispEdges(heatsink, 'storage', 0xcbd5e1, 0.8);
+    const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.052, 0.34), matGoldContacts);
+    connector.position.set(0.48, 0, 0);
+    ssdGroup.add(ssdPcb, heatsink, connector);
+    return ssdGroup;
+  }
+  const ssd1 = createNvmeSsd(-0.64);
+  const ssd2 = createNvmeSsd(0.64);
+  const storageAnchor = new THREE.Object3D();
+  storageAnchor.position.set(0, 0.04, 0.38);
+  storage.add(baseMesh, ssd1, ssd2, storageAnchor);
+
+  // =========================================================================
+  // 6. TOUCHPAD (Detaches Forward in Unobstructed Front View with Download CV Button)
+  // =========================================================================
   const touchpad = new THREE.Group();
   const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.06, 0.045, 0.68),
-    new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8, roughness: 0.2 })
+    new THREE.BoxGeometry(1.08, 0.045, 0.68),
+    new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.82, roughness: 0.2 })
   );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.055, 0.62), matTouchpadSurface);
-  padRim.position.set(0, 0.11, 0.6);
-  padMesh.position.set(0, 0.115, 0.6);
-  addCrispEdges(padMesh, 'touchpad', 0xcbd5e1, 0.85);
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.055, 0.62), matTouchpadSurface);
+  padRim.position.set(0, 0.1, 0.62);
+  padMesh.position.set(0, 0.105, 0.62);
+  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.9);
   padMesh.userData.isTouchpad = true;
   const touchpadAnchor = new THREE.Object3D();
-  touchpadAnchor.position.set(0, 0.12, 0.6);
+  touchpadAnchor.position.set(0, 0.12, 0.62);
   touchpad.add(padRim, padMesh, touchpadAnchor);
 
-  // 6. Battery (Courses & Achievements)
-  const battery = new THREE.Group();
-  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.12, 2.0), matOuterChassis);
-  baseMesh.position.y = -0.12;
-  addCrispEdges(baseMesh, 'battery', 0x94a3b8, 0.75);
-  const cellsMesh = new THREE.Mesh(new THREE.BoxGeometry(2.38, 0.1, 0.82), matBatteryPack);
-  cellsMesh.position.set(0, -0.02, 0.4);
-  addCrispEdges(cellsMesh, 'battery', 0x94a3b8, 0.8);
-  const batteryAnchor = new THREE.Object3D();
-  batteryAnchor.position.set(0, -0.05, 0.25);
-  battery.add(baseMesh, cellsMesh, batteryAnchor);
-
-  const parts = { display, logicBoard, keyboard, speakers, touchpad, battery };
+  const parts = { display, motherboard, keyboard, ram, touchpad, storage };
   const anchors = {
     display: displayAnchor,
-    logicBoard: logicAnchor,
+    motherboard: motherboardAnchor,
     keyboard: keyboardAnchor,
-    speakers: speakerAnchor,
+    ram: ramAnchor,
     touchpad: touchpadAnchor,
-    battery: batteryAnchor
+    storage: storageAnchor
   };
 
-  // Simple, candid hover labels (no slash jargon)
   const partLabels = {
     display: "Display",
-    logicBoard: "Logic Board",
+    motherboard: "Motherboard",
     keyboard: "Keyboard",
-    speakers: "Speakers",
-    battery: "Battery",
+    ram: "RAM Sticks",
+    storage: "Storage",
     touchpad: "Touchpad — Click to Download CV"
   };
 
@@ -1763,7 +2011,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     root.add(group);
   });
 
-  // Strictly Scoped Raycaster on #laptop-canvas Only (Zero Background Hover Glitch!)
+  // Initialize in closed state at progress = 0
+  display.rotation.x = Math.PI / 2;
+
+  // Strictly Scoped Raycaster on #laptop-canvas Only
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2(-999, -999);
   let currentActiveKey = 'display';
@@ -1775,7 +2026,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   canvas.addEventListener('pointermove', (e) => {
-    // Only show hover tooltip when inside the active laptop scroll range and directly on the canvas
     if (e.target !== canvas || currentProgress <= 0.005 || currentProgress >= 0.995) {
       clearHover();
       return;
@@ -1811,7 +2061,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     if (hits.length > 0 && onTouchpadClick) onTouchpadClick();
   });
 
-  // Project exact 3D anchor world position to 2D viewport coordinates
   const tempWorldVec = new THREE.Vector3();
   function getAnchorScreenCoords(anchorObj) {
     anchorObj.getWorldPosition(tempWorldVec);
@@ -1822,56 +2071,76 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     };
   }
 
-  // 3-Phase Disassembly Choreography:
-  // Phase 1 (0.00 -> 0.18): Laptop starts centered (x = 0), opens up, starts disassembling, and moves left (x = -1.35)
-  // Phase 2 (0.18 -> 0.82): Laptop stays on the left while sections scroll on the right, parts separated cleanly
-  // Phase 3 (0.82 -> 1.00): Touchpad detaches forward with Download CV button on it
+  // Disassembly Choreography:
+  // 1. Starts 100% CLOSED flat in the center (progress = 0)
+  // 2. Opens lid smoothly & shifts left (0.00 -> 0.16)
+  // 3. Explodes with compact vertical gaps so ALL parts + ejecting RAM sticks remain simultaneously visible
+  // 4. Never rotates its back to the camera — at completion (progress >= 0.80), faces front-three-quarter with Touchpad front-and-center!
   function setDisassemblyState(progress, activeKey, hexAccent) {
     currentProgress = progress;
     currentActiveKey = activeKey;
 
-    const introShift = Math.min(1, progress / 0.18);
-    const smoothIntro = 1 - Math.pow(1 - introShift, 2.2);
+    // Lid Hinge Opening: 0.00 -> 0.14 opens lid from flat closed (Math.PI / 2) to open viewing angle (-0.22)
+    const openRatio = Math.min(1, progress / 0.14);
+    const smoothOpen = 1 - Math.pow(1 - openRatio, 2.5);
+    const closedAngle = Math.PI / 2;
+    const openAngle = -0.22;
 
-    const spread = Math.min(1, Math.pow(Math.min(1, progress * 1.15), 0.85));
-    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.80) / 0.18));
+    // Explosion Spread starts after the lid begins opening (0.08 -> 0.82)
+    const rawSpread = Math.max(0, Math.min(1, (progress - 0.08) / 0.72));
+    const spread = 1 - Math.pow(1 - rawSpread, 1.8);
 
-    // Lid opens from closed/semi-closed in the center to wide open exploded state
-    display.position.set(0, 1.02 + spread * 2.05, -0.95 - spread * 0.78);
-    display.rotation.x = 0.35 * (1 - smoothIntro) - 0.16 - spread * 0.25;
+    // Shift to left as About Me arrives
+    const leftShift = Math.max(0, Math.min(1, (progress - 0.05) / 0.13));
+    const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    keyboard.position.set(0, spread * 1.15, spread * 0.18);
-    logicBoard.position.set(0, 0.02 + spread * 0.22, 0);
+    // Final Touchpad Detach stage (progress >= 0.80)
+    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.79) / 0.18));
 
-    spkL.position.x = -1.32 - spread * 1.05;
-    spkR.position.x = 1.32 + spread * 1.05;
-    speakers.position.y = spread * 0.52;
+    // Compact vertical gaps so every single part fits comfortably inside the viewport at the same time
+    display.position.set(0, 0.14 + spread * 1.12, -0.98 - spread * 0.42);
+    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.14) * smoothOpen;
 
-    battery.position.set(0, -spread * 1.55, -spread * 0.15);
+    keyboard.position.set(0, spread * 0.62, spread * 0.08);
+    motherboard.position.set(0, spread * 0.12, 0);
 
+    // RAM Sticks visibly unclip and slide/eject outward from the laptop while scrolling!
+    const ramOut = Math.max(0, Math.min(1, (progress - 0.12) / 0.55));
+    ramL.position.set(-0.62 - ramOut * 1.18, 0.055 + spread * 0.34, 0.22 + ramOut * 0.22);
+    ramR.position.set(0.62 + ramOut * 1.18, 0.055 + spread * 0.34, 0.22 + ramOut * 0.22);
+    ramL.rotation.z = ramOut * 0.12;
+    ramR.rotation.z = -ramOut * 0.12;
+
+    // Storage array & base separate cleanly downward
+    storage.position.set(0, -spread * 0.62, 0);
+    ssd1.position.y = -0.02 + spread * 0.24;
+    ssd2.position.y = -0.02 + spread * 0.24;
+
+    // Touchpad stays front-and-center and detaches forward toward camera at completion
     touchpad.position.set(
-      touchpadDetach * 1.05,
-      spread * 0.42 - touchpadDetach * 0.2,
-      spread * 1.45 + touchpadDetach * 0.85
+      touchpadDetach * 0.35,
+      spread * 0.28 + touchpadDetach * 0.08,
+      spread * 0.75 + touchpadDetach * 1.05
     );
-    touchpad.rotation.x = touchpadDetach * 0.36;
-    touchpad.rotation.y = -touchpadDetach * 0.28;
+    touchpad.rotation.x = touchpadDetach * 0.28;
 
-    // X Position: Starts at 0 (center), glides to -1.35 (left) as About Me arrives, then shifts toward -0.35 at final touchpad stage
-    root.position.x = -1.35 * smoothIntro + touchpadDetach * 0.95;
-    root.rotation.y = 0.35 + progress * Math.PI * 0.68;
-    root.rotation.x = 0.26 + spread * 0.08;
+    // Root Position & Front-Facing Isometric Rotation (Never rotates its back to the camera!)
+    root.position.x = -1.32 * smoothLeft + touchpadDetach * 0.85;
+    root.position.y = -0.15;
+    // Gentle front-facing yaw sweep between +0.34 and -0.28 rad, ending at +0.16 rad so touchpad is 100% visible!
+    root.rotation.y = 0.28 - Math.sin(progress * Math.PI) * 0.52 + touchpadDetach * 0.12;
+    root.rotation.x = 0.24 + spread * 0.08;
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
-    // Highlight active subsystem's crisp edge lines so it stands out unmistakably
+    // Highlight active subsystem's crisp edge lines
     Object.entries(parts).forEach(([key, group]) => {
-      const isFocused = (touchpadDetach > 0.5 && key === 'touchpad') || (introShift >= 0.85 && touchpadDetach <= 0.5 && key === activeKey);
-      group.scale.setScalar(isFocused ? 1.12 : 0.98);
+      const isFocused = (touchpadDetach > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && touchpadDetach <= 0.45 && key === activeKey);
+      group.scale.setScalar(isFocused ? 1.08 : 0.99);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
         lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#8b95a9');
-        lMat.opacity = isFocused ? 0.98 : 0.55;
+        lMat.opacity = isFocused ? 0.98 : 0.58;
       });
     });
   }
@@ -1884,6 +2153,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   function animate() {
     requestAnimationFrame(animate);
+    // Subtle turbine fan spin on motherboard
+    fanL.rotation.y += 0.025;
+    fanR.rotation.y -= 0.025;
+
     renderer.render(scene, camera);
     scene.updateMatrixWorld(true);
 
@@ -1909,7 +2182,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 import { PORTFOLIO_DATA } from '../data/portfolioData.js';
 import { initLaptop3D } from './laptop3d.js';
 
-// Generate an authentic SVG fallback contribution chart if offline/blocked
 function buildFallbackGithubChartSvg() {
   const cols = 52;
   const rows = 7;
@@ -1933,16 +2205,17 @@ function buildFallbackGithubChartSvg() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const { profile, laptopStages, reelFrames, projects } = PORTFOLIO_DATA;
+  const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Template Repository Loading Screen Animation
+  // 0. Initial Template Repository Loading Screen (Longer ~3.0s smooth duration)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
 
   let loadVal = 0;
   const loadTimer = setInterval(() => {
-    loadVal = Math.min(100, loadVal + Math.floor(Math.random() * 14) + 8);
+    const step = loadVal < 35 ? 2 : loadVal < 78 ? 1 : 2;
+    loadVal = Math.min(100, loadVal + step);
     if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
     if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
     if (loadVal >= 100) {
@@ -1950,18 +2223,15 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-      }, 220);
+      }, 420);
     }
-  }, 65);
+  }, 42);
 
   // 1. Populate Hero
   document.getElementById('hero-first').textContent = profile.firstName;
   document.getElementById('hero-last').textContent = profile.lastName;
 
-  // 2. Render Laptop Disassembly Stages:
-  //    - Lead-In Intro Stage (Laptop starts centered, opens & moves left while disassembling BEFORE About Me appears)
-  //    - 5 Content Stages (Simple labels, candid copy, compact Languages I Know + GitHub Graph + Quote)
-  //    - Final Detached Touchpad Hold Stage
+  // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
   const dotsContainer = document.getElementById('stage-dots');
 
@@ -2009,8 +2279,22 @@ window.addEventListener('DOMContentLoaded', () => {
             onerror="this.onerror=null;this.src='${fallbackChartUri}';"
           />
         </div>
+        <div class="github-badges-row">
+          <span class="badges-title">${st.badgesTitle || 'Badges'}</span>
+          <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
+        </div>
       </div>
-      <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
+      <div class="stage-mini-quote-wrap">
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
+        </svg>
+        <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
+        </svg>
+      </div>
     ` : '';
 
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
@@ -2030,7 +2314,7 @@ window.addEventListener('DOMContentLoaded', () => {
     section.innerHTML = `
       <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
         <span class="stage-part-chip">${st.partLabel}</span>
-        <h2 class="stage-title">${st.title}</h2>
+        <h2 class="stage-title ${st.isCompactLanguages ? 'small-stage-title' : ''}">${st.title}</h2>
         ${paragraphsHtml}
         ${st.quote ? `<blockquote class="stage-quote">“${st.quote}”</blockquote>` : ''}
         ${cardsHtml}
@@ -2077,8 +2361,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      // Show simple part pointer only while the 5 content cards are active (0.16 -> 0.81)
-      if (progress >= 0.16 && progress < 0.81) {
+      if (progress >= 0.16 && progress < 0.79) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -2088,8 +2371,7 @@ window.addEventListener('DOMContentLoaded', () => {
         calloutEl.classList.remove('visible');
       }
 
-      // Show Download CV button directly on the disassembled 3D Touchpad when scroll completes
-      if (progress >= 0.82) {
+      if (progress >= 0.79) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -2119,41 +2401,78 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Horizontally Stacked Library-Book Project Layers
+  // 4. Render 8 Horizontally Stacked Project Layers (Template Repo Style: Hovering Moves Card to Center!)
   const projectsStack = document.getElementById('projects-stack');
-  projects.forEach((proj) => {
-    const layer = document.createElement('article');
+  const totalLayers = projects.length;
+  const middleIdx = (totalLayers - 1) / 2;
+
+  projects.forEach((proj, idx) => {
+    const card = document.createElement('article');
+    card.style.zIndex = String(totalLayers - idx);
+    // Calculate horizontal shift needed to bring this card to the exact center of the horizontal stack when hovered
+    const offsetSteps = middleIdx - idx;
+    const shiftPx = offsetSteps * 42;
+    card.style.setProperty('--center-shift', `${shiftPx}px`);
 
     if (!proj.isPlaceholder) {
-      layer.className = 'library-layer active-book';
-      layer.innerHTML = `
-        <div class="active-book-top">
+      card.className = 'stack-card active-project-card';
+      card.innerHTML = `
+        <div class="stack-card-top">
           <div>
-            <h3 class="stage-title" style="font-size:2.3rem">${proj.title}</h3>
-            <p class="mono-tag" style="color:#f59e0b;margin-top:0.25rem">${proj.subtitle}</p>
+            <h3 class="stage-title" style="font-size:1.95rem">${proj.title}</h3>
+            <p class="mono-tag" style="color:#f59e0b;margin-top:0.2rem;font-size:0.65rem">${proj.subtitle}</p>
           </div>
-          <span class="book-index-num">${proj.slot}</span>
+          <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="84" height="84" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="64" height="64" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <span class="project-logo-caption">View SanitX on GitHub ↗</span>
         </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent}">${t}</span>`).join('')}</div>
+        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.7rem;padding:0.25rem 0.55rem">${t}</span>`).join('')}</div>
         <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
-      layer.className = 'library-layer stacked-book';
-      layer.setAttribute('aria-hidden', 'true');
-      layer.innerHTML = `
-        <span class="stacked-book-num">${proj.slot}</span>
-        <div class="grey-photo-frame"></div>
-        <span class="stacked-book-dot"></span>`;
+      card.className = 'stack-card grey-layer-card';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = `
+        <div class="stack-card-top">
+          <span class="stack-slot-num">${proj.slot}</span>
+        </div>
+        <div class="grey-photo-frame"></div>`;
     }
-    projectsStack.appendChild(layer);
+    projectsStack.appendChild(card);
   });
+
+  // Hovering the active project card smoothly moves it to the center and parts the rest of the stack
+  const allStackCards = projectsStack.querySelectorAll('.stack-card');
+  const activeProjectCard = projectsStack.querySelector('.active-project-card');
+
+  function focusCardToCenter(targetIdx) {
+    allStackCards.forEach((c, i) => {
+      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+      if (i === targetIdx) {
+        c.classList.add('is-centered');
+      } else if (i < targetIdx) {
+        c.classList.add('pushed-left');
+      } else {
+        c.classList.add('pushed-right');
+      }
+    });
+  }
+
+  function resetStack() {
+    allStackCards.forEach((c) => {
+      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+    });
+  }
+
+  if (activeProjectCard) {
+    activeProjectCard.addEventListener('pointerenter', () => focusCardToCenter(0));
+    projectsStack.addEventListener('pointerleave', resetStack);
+  }
 
   // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
@@ -2167,8 +2486,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        // 0.00 -> 0.16 is the opening lead-in; 0.16 -> 0.81 covers the 5 content stages; 0.81 -> 1.00 holds touchpad CV
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.65));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.63));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -2199,7 +2517,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Scroll-Driven 35mm Camera Reel Animation & Sequential Frame Reveal
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -2237,6 +2554,54 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // 5. Julian Garnier (juliangarnier.com) Auto-Typing Chat-Form Contact Me Section (No Buttons, No Phone Number)
+  const chatMessagesEl = document.getElementById('chat-messages');
+
+  function appendChatBubble(html) {
+    const b = document.createElement('div');
+    b.className = 'minimal-bubble';
+    b.innerHTML = html;
+    chatMessagesEl.appendChild(b);
+  }
+
+  function showTypingThenBubble(html, delay = 650) {
+    return new Promise((resolve) => {
+      const typing = document.createElement('div');
+      typing.className = 'minimal-typing';
+      typing.innerHTML = '<span></span><span></span><span></span>';
+      chatMessagesEl.appendChild(typing);
+      setTimeout(() => {
+        typing.remove();
+        appendChatBubble(html);
+        resolve();
+      }, delay);
+    });
+  }
+
+  let contactStarted = false;
+  async function startJulianGarnierChat() {
+    if (contactStarted || !chatMessagesEl) return;
+    contactStarted = true;
+    for (const msg of contactMessages) {
+      await showTypingThenBubble(msg, 620);
+    }
+  }
+
+  const contactSection = document.getElementById('section-contact');
+  if ('IntersectionObserver' in window && contactSection) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startJulianGarnierChat();
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    obs.observe(contactSection);
+  } else {
+    startJulianGarnierChat();
+  }
 });
 ```
 
@@ -2246,6 +2611,6 @@ window.addEventListener('DOMContentLoaded', () => {
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
 git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js
-git commit -m "feat: implement v4 final refinements (black-grey 3D laptop, lead-in disassembly, candid copy, GitHub graph, quotes, preloader, horizontal book layers, static Julian Garner contact, hover fix)"
+git commit -m "feat: implement v5 refinements (longer loader, philosophical leaf quotes, closed-to-open laptop with Motherboard/RAM/Storage, hover-to-center project stack, Julian Garnier chat Contact Me)"
 git push origin main
 ```

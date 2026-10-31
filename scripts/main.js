@@ -1,7 +1,6 @@
 import { PORTFOLIO_DATA } from '../data/portfolioData.js';
 import { initLaptop3D } from './laptop3d.js';
 
-// Generate an authentic SVG fallback contribution chart if offline/blocked
 function buildFallbackGithubChartSvg() {
   const cols = 52;
   const rows = 7;
@@ -25,16 +24,17 @@ function buildFallbackGithubChartSvg() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  const { profile, laptopStages, reelFrames, projects } = PORTFOLIO_DATA;
+  const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Template Repository Loading Screen Animation
+  // 0. Initial Template Repository Loading Screen (Longer ~3.0s smooth duration)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
 
   let loadVal = 0;
   const loadTimer = setInterval(() => {
-    loadVal = Math.min(100, loadVal + Math.floor(Math.random() * 14) + 8);
+    const step = loadVal < 35 ? 2 : loadVal < 78 ? 1 : 2;
+    loadVal = Math.min(100, loadVal + step);
     if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
     if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
     if (loadVal >= 100) {
@@ -42,18 +42,15 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-      }, 220);
+      }, 420);
     }
-  }, 65);
+  }, 42);
 
   // 1. Populate Hero
   document.getElementById('hero-first').textContent = profile.firstName;
   document.getElementById('hero-last').textContent = profile.lastName;
 
-  // 2. Render Laptop Disassembly Stages:
-  //    - Lead-In Intro Stage (Laptop starts centered, opens & moves left while disassembling BEFORE About Me appears)
-  //    - 5 Content Stages (Simple labels, candid copy, compact Languages I Know + GitHub Graph + Quote)
-  //    - Final Detached Touchpad Hold Stage
+  // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
   const dotsContainer = document.getElementById('stage-dots');
 
@@ -101,8 +98,22 @@ window.addEventListener('DOMContentLoaded', () => {
             onerror="this.onerror=null;this.src='${fallbackChartUri}';"
           />
         </div>
+        <div class="github-badges-row">
+          <span class="badges-title">${st.badgesTitle || 'Badges'}</span>
+          <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
+        </div>
       </div>
-      <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
+      <div class="stage-mini-quote-wrap">
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
+        </svg>
+        <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
+        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
+        </svg>
+      </div>
     ` : '';
 
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
@@ -122,7 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
     section.innerHTML = `
       <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
         <span class="stage-part-chip">${st.partLabel}</span>
-        <h2 class="stage-title">${st.title}</h2>
+        <h2 class="stage-title ${st.isCompactLanguages ? 'small-stage-title' : ''}">${st.title}</h2>
         ${paragraphsHtml}
         ${st.quote ? `<blockquote class="stage-quote">“${st.quote}”</blockquote>` : ''}
         ${cardsHtml}
@@ -169,8 +180,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      // Show simple part pointer only while the 5 content cards are active (0.16 -> 0.81)
-      if (progress >= 0.16 && progress < 0.81) {
+      if (progress >= 0.16 && progress < 0.79) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -180,8 +190,7 @@ window.addEventListener('DOMContentLoaded', () => {
         calloutEl.classList.remove('visible');
       }
 
-      // Show Download CV button directly on the disassembled 3D Touchpad when scroll completes
-      if (progress >= 0.82) {
+      if (progress >= 0.79) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -211,41 +220,78 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Horizontally Stacked Library-Book Project Layers
+  // 4. Render 8 Horizontally Stacked Project Layers (Template Repo Style: Hovering Moves Card to Center!)
   const projectsStack = document.getElementById('projects-stack');
-  projects.forEach((proj) => {
-    const layer = document.createElement('article');
+  const totalLayers = projects.length;
+  const middleIdx = (totalLayers - 1) / 2;
+
+  projects.forEach((proj, idx) => {
+    const card = document.createElement('article');
+    card.style.zIndex = String(totalLayers - idx);
+    // Calculate horizontal shift needed to bring this card to the exact center of the horizontal stack when hovered
+    const offsetSteps = middleIdx - idx;
+    const shiftPx = offsetSteps * 42;
+    card.style.setProperty('--center-shift', `${shiftPx}px`);
 
     if (!proj.isPlaceholder) {
-      layer.className = 'library-layer active-book';
-      layer.innerHTML = `
-        <div class="active-book-top">
+      card.className = 'stack-card active-project-card';
+      card.innerHTML = `
+        <div class="stack-card-top">
           <div>
-            <h3 class="stage-title" style="font-size:2.3rem">${proj.title}</h3>
-            <p class="mono-tag" style="color:#f59e0b;margin-top:0.25rem">${proj.subtitle}</p>
+            <h3 class="stage-title" style="font-size:1.95rem">${proj.title}</h3>
+            <p class="mono-tag" style="color:#f59e0b;margin-top:0.2rem;font-size:0.65rem">${proj.subtitle}</p>
           </div>
-          <span class="book-index-num">${proj.slot}</span>
+          <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="84" height="84" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="64" height="64" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <span class="project-logo-caption">View SanitX on GitHub ↗</span>
         </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent}">${t}</span>`).join('')}</div>
+        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.7rem;padding:0.25rem 0.55rem">${t}</span>`).join('')}</div>
         <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
-      layer.className = 'library-layer stacked-book';
-      layer.setAttribute('aria-hidden', 'true');
-      layer.innerHTML = `
-        <span class="stacked-book-num">${proj.slot}</span>
-        <div class="grey-photo-frame"></div>
-        <span class="stacked-book-dot"></span>`;
+      card.className = 'stack-card grey-layer-card';
+      card.setAttribute('aria-hidden', 'true');
+      card.innerHTML = `
+        <div class="stack-card-top">
+          <span class="stack-slot-num">${proj.slot}</span>
+        </div>
+        <div class="grey-photo-frame"></div>`;
     }
-    projectsStack.appendChild(layer);
+    projectsStack.appendChild(card);
   });
+
+  // Hovering the active project card smoothly moves it to the center and parts the rest of the stack
+  const allStackCards = projectsStack.querySelectorAll('.stack-card');
+  const activeProjectCard = projectsStack.querySelector('.active-project-card');
+
+  function focusCardToCenter(targetIdx) {
+    allStackCards.forEach((c, i) => {
+      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+      if (i === targetIdx) {
+        c.classList.add('is-centered');
+      } else if (i < targetIdx) {
+        c.classList.add('pushed-left');
+      } else {
+        c.classList.add('pushed-right');
+      }
+    });
+  }
+
+  function resetStack() {
+    allStackCards.forEach((c) => {
+      c.classList.remove('is-centered', 'pushed-left', 'pushed-right');
+    });
+  }
+
+  if (activeProjectCard) {
+    activeProjectCard.addEventListener('pointerenter', () => focusCardToCenter(0));
+    projectsStack.addEventListener('pointerleave', resetStack);
+  }
 
   // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
@@ -259,8 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        // 0.00 -> 0.16 is the opening lead-in; 0.16 -> 0.81 covers the 5 content stages; 0.81 -> 1.00 holds touchpad CV
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.65));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.63));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -291,7 +336,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Scroll-Driven 35mm Camera Reel Animation & Sequential Frame Reveal
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -328,5 +372,53 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+  }
+
+  // 5. Julian Garnier (juliangarnier.com) Auto-Typing Chat-Form Contact Me Section (No Buttons, No Phone Number)
+  const chatMessagesEl = document.getElementById('chat-messages');
+
+  function appendChatBubble(html) {
+    const b = document.createElement('div');
+    b.className = 'minimal-bubble';
+    b.innerHTML = html;
+    chatMessagesEl.appendChild(b);
+  }
+
+  function showTypingThenBubble(html, delay = 650) {
+    return new Promise((resolve) => {
+      const typing = document.createElement('div');
+      typing.className = 'minimal-typing';
+      typing.innerHTML = '<span></span><span></span><span></span>';
+      chatMessagesEl.appendChild(typing);
+      setTimeout(() => {
+        typing.remove();
+        appendChatBubble(html);
+        resolve();
+      }, delay);
+    });
+  }
+
+  let contactStarted = false;
+  async function startJulianGarnierChat() {
+    if (contactStarted || !chatMessagesEl) return;
+    contactStarted = true;
+    for (const msg of contactMessages) {
+      await showTypingThenBubble(msg, 620);
+    }
+  }
+
+  const contactSection = document.getElementById('section-contact');
+  if ('IntersectionObserver' in window && contactSection) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          startJulianGarnierChat();
+          obs.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    obs.observe(contactSection);
+  } else {
+    startJulianGarnierChat();
   }
 });

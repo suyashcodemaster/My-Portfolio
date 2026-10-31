@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
@@ -16,7 +16,7 @@
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
 <body class="is-loading">
-  <!-- INITIAL TEMPLATE REPO LOADING SCREEN -->
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (Longer, Smooth Progression) -->
   <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
     <div class="loader-inner">
       <span class="loader-brand">SUYASH SHARMA</span>
@@ -44,7 +44,7 @@
       </h1>
     </div>
 
-    <!-- Bottom-Left Direct Jump Button (Simple Language) -->
+    <!-- Bottom-Left Direct Jump Button -->
     <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
       <span class="btn-main-text">Explore Projects ↓</span>
     </a>
@@ -56,11 +56,27 @@
     </div>
   </section>
 
-  <!-- QUOTE INTERLUDE 1 -->
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (With Peaceful Botanical Leaves on Left & Right Ends) -->
   <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “You don't have to be great to get started, but you have to get started to be great.”
-    </blockquote>
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “You don't have to be great to get started, but you have to get started to be great.”
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
   <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
@@ -68,7 +84,7 @@
     <div class="laptop-sticky-viewport">
       <canvas id="laptop-canvas"></canvas>
 
-      <!-- Clean, Simple 3D Part Pointer (Anchored accurately to active 3D part center) -->
+      <!-- Clean, Simple 3D Part Pointer -->
       <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
         <span class="callout-dot"></span>
         <span class="callout-line"></span>
@@ -80,7 +96,7 @@
       <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
       <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
 
-      <!-- Detached 3D Touchpad "Download CV" Button (Appears on the touchpad when scroll finishes) -->
+      <!-- Detached 3D Touchpad "Download CV" Button (Appears directly on the unobstructed touchpad when scroll finishes) -->
       <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
         <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
           <span class="touchpad-btn-dot"></span>
@@ -93,15 +109,31 @@
       </div>
     </div>
 
-    <!-- Scroll Stages: Lead-In Disassembly Stage -> 5 Info Stages -> Final Detached Touchpad Hold -->
+    <!-- Scroll Stages: Closed-to-Open Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
 
-  <!-- QUOTE INTERLUDE 2 -->
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
   <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
-    </blockquote>
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
   <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES & ASPIRATIONS) -->
@@ -138,65 +170,51 @@
     </div>
   </section>
 
-  <!-- QUOTE INTERLUDE 3 -->
-  <div class="quote-interlude">
-    <blockquote class="interlude-text">
-      “Life is either a daring adventure or nothing at all.”
-      <cite class="interlude-cite">— Helen Keller</cite>
-    </blockquote>
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 (Tight bottom spacing beneath Helen Keller quote) -->
+  <div class="quote-interlude helen-keller-quote">
+    <div class="quote-frame">
+      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+      <blockquote class="interlude-text">
+        “Life is either a daring adventure or nothing at all.”
+        <cite class="interlude-cite">— Helen Keller</cite>
+      </blockquote>
+      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
+      </svg>
+    </div>
   </div>
 
-  <!-- 4. 8 HORIZONTALLY STACKED LIBRARY-BOOK PROJECT LAYERS -->
+  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Template Repo Style: Hovering Moves Card to Center) -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
       <h2 class="section-heading">Projects</h2>
     </div>
-    <div id="projects-stack" class="projects-library-stack"></div>
+    <div id="projects-stack" class="template-horizontal-stack"></div>
   </section>
 
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. STATIC MINIMALIST WHITE CONTACT SECTION (JULIAN GARNER STYLE) -->
+  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (No Buttons, No Phone Number) -->
   <section id="section-contact" class="minimal-white-contact">
-    <div class="julian-contact-container">
-      <div class="julian-contact-top">
-        <p class="julian-eyebrow">Get in touch</p>
-        <h2 class="julian-heading">Let's build something real together.</h2>
-        <p class="julian-sub">
-          First-year CSE undergraduate at VIT Vellore. Always happy to connect about internships, hackathons, collaborations, or a good conversation.
-        </p>
-      </div>
+    <div class="minimal-contact-inner">
+      <h2 class="contact-me-title">Contact Me</h2>
+      <div class="minimal-chat-stream" id="chat-messages"></div>
 
-      <div class="julian-contact-grid">
-        <div class="julian-contact-row">
-          <span class="julian-label">Email</span>
-          <a href="mailto:sharma.suyash.in@gmail.com" class="julian-value-link">sharma.suyash.in@gmail.com ↗</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Phone</span>
-          <a href="tel:+917888222223" class="julian-value-link">+91 7888222223</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Social</span>
-          <div class="julian-inline-links">
-            <a href="https://linkedin.com/in/suyashsharmadev" target="_blank" rel="noopener" class="julian-value-link">LinkedIn ↗</a>
-            <a href="https://github.com/suyashcodemaster" target="_blank" rel="noopener" class="julian-value-link">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Resume</span>
-          <a id="contact-cv-link" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="julian-value-link">Download CV (PDF) ↓</a>
-        </div>
-        <div class="julian-contact-row">
-          <span class="julian-label">Location</span>
-          <span class="julian-value-static">Vellore, Tamil Nadu &amp; Pune, India</span>
-        </div>
-      </div>
-
-      <footer class="julian-footer">
+      <footer class="minimal-contact-footer">
         <span>© 2026 Suyash Sharma</span>
-        <a href="#section-hero" class="julian-back-top">Back to top ↑</a>
+        <span class="footer-sep">·</span>
+        <a href="#section-hero">Back to top ↑</a>
       </footer>
     </div>
   </section>

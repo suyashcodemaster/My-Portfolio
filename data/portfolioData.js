@@ -6,14 +6,13 @@ export const PORTFOLIO_DATA = {
     cvUrl: "./Suyash-CV.pdf",
     cvDownloadName: "Suyash-Sharma-CV.pdf",
     email: "sharma.suyash.in@gmail.com",
-    phone: "+91 7888222223",
     linkedin: "https://linkedin.com/in/suyashsharmadev",
     github: "https://github.com/suyashcodemaster",
     githubUsername: "suyashcodemaster",
     location: "Vellore, Tamil Nadu & Pune, India"
   },
 
-  // 3 Impactful Editorial Quotes Sprinkled Across Spaces Between Sections
+  // 3 Philosophical Quotes Sprinkled Across Spaces Between Sections
   interludeQuotes: [
     {
       id: "quote-1",
@@ -32,7 +31,8 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections (Simple, candid labels — no slash jargon)
+  // 5 Core Laptop Disassembly Sections
+  // (Display -> Motherboard -> Keyboard -> RAM Sticks -> Storage, plus Touchpad at completion for Download CV)
   laptopStages: [
     {
       id: "about",
@@ -70,8 +70,8 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "mission",
-      partKey: "logicBoard",
-      partLabel: "Logic Board",
+      partKey: "motherboard",
+      partLabel: "Motherboard",
       title: "The Mission",
       accent: "#a855f7",
       quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
@@ -94,8 +94,8 @@ export const PORTFOLIO_DATA = {
     },
     {
       id: "languages",
-      partKey: "speakers",
-      partLabel: "Speakers",
+      partKey: "ram",
+      partLabel: "RAM Sticks",
       title: "Languages I Know",
       accent: "#f59e0b",
       isCompactLanguages: true,
@@ -104,12 +104,14 @@ export const PORTFOLIO_DATA = {
         { name: "Hindi", level: "Native Fluency" }
       ],
       githubUsername: "suyashcodemaster",
+      badgesTitle: "Badges",
+      badgesPlaceholder: "Yet to earn",
       stageQuote: "If it doesn't challenge you, it won't change you."
     },
     {
       id: "achievements",
-      partKey: "battery",
-      partLabel: "Battery",
+      partKey: "storage",
+      partLabel: "Storage",
       title: "Courses & Achievements",
       accent: "#6366f1",
       cards: [
@@ -149,7 +151,7 @@ export const PORTFOLIO_DATA = {
     { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Library-Book Project Layers (Layer 01 Open + Layers 02-08 Non-Interactive Grey Photo Frames)
+  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center like template repo)
   projects: [
     {
       slot: "01",
@@ -172,5 +174,15 @@ export const PORTFOLIO_DATA = {
     { slot: "06", isPlaceholder: true },
     { slot: "07", isPlaceholder: true },
     { slot: "08", isPlaceholder: true }
+  ],
+
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (No buttons, no phone number)
+  contactMessages: [
+    "Hey there 👋",
+    "I'm Suyash — a first-year CSE student at VIT Vellore.",
+    "I love building things from scratch and exploring C++, Data Structures & Algorithms, and AI.",
+    "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",
+    "Or find me on <a href=\"https://linkedin.com/in/suyashsharmadev\" target=\"_blank\" rel=\"noopener\">LinkedIn ↗</a> and <a href=\"https://github.com/suyashcodemaster\" target=\"_blank\" rel=\"noopener\">GitHub ↗</a>",
+    "Looking for my resume? <a href=\"./Suyash-CV.pdf\" download=\"Suyash-Sharma-CV.pdf\" class=\"chat-inline-cv\" data-cv-download=\"true\">Download my CV (PDF) ↓</a>"
   ]
 };
