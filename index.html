@@ -15,10 +15,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
-<body>
+<body class="is-loading">
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN -->
+  <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
+    <div class="loader-inner">
+      <span class="loader-brand">SUYASH SHARMA</span>
+      <div class="loader-counter-wrap">
+        <span id="loader-count" class="loader-count">000</span>
+        <span class="loader-percent">%</span>
+      </div>
+      <div class="loader-bar-track">
+        <div id="loader-bar-fill" class="loader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- 1. HERO SECTION (Clean like template repository: single-line name + inline photo, no tagline) -->
+  <!-- 1. HERO SECTION -->
   <section id="section-hero" class="hero-section">
     <div class="hero-center">
       <h1 class="hero-title">
@@ -30,38 +44,43 @@
       </h1>
     </div>
 
-    <!-- Bottom-Left Direct Jump Button -->
+    <!-- Bottom-Left Direct Jump Button (Simple Language) -->
     <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
-      <span class="mono-index">01 // ARCHIVE</span>
-      <span class="btn-main-text">JUMP TO PROJECTS ↓</span>
+      <span class="btn-main-text">Explore Projects ↓</span>
     </a>
 
     <!-- Bottom-Center Scroll Prompt -->
     <div class="hero-scroll-indicator">
-      <span class="mono-tag">SCROLL TO DISASSEMBLE</span>
+      <span class="mono-tag">Scroll</span>
       <div class="scroll-line"><div class="scroll-pulse"></div></div>
     </div>
   </section>
+
+  <!-- QUOTE INTERLUDE 1 -->
+  <div class="quote-interlude">
+    <blockquote class="interlude-text">
+      “You don't have to be great to get started, but you have to get started to be great.”
+    </blockquote>
+  </div>
 
   <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
   <section id="section-laptop" class="laptop-section">
     <div class="laptop-sticky-viewport">
       <canvas id="laptop-canvas"></canvas>
 
-      <!-- Live 3D Part-to-Section Callout Overlay (Visibly connects disassembled part to what makes Suyash who he is) -->
+      <!-- Clean, Simple 3D Part Pointer (Anchored accurately to active 3D part center) -->
       <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
         <span class="callout-dot"></span>
         <span class="callout-line"></span>
         <div class="callout-badge">
-          <span id="callout-part-name" class="callout-part">DISPLAY PANEL &amp; OPTICS</span>
-          <span id="callout-trait-name" class="callout-trait">→ VISION &amp; FOUNDATION</span>
+          <span id="callout-part-name" class="callout-part">Display</span>
         </div>
       </div>
 
-      <!-- Hover Tooltip for 3D Disassembled Parts -->
+      <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
       <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
 
-      <!-- Detached 3D Touchpad "Download CV" Button (Appears directly on the disassembled touchpad when scroll completes) -->
+      <!-- Detached 3D Touchpad "Download CV" Button (Appears on the touchpad when scroll finishes) -->
       <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
         <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
           <span class="touchpad-btn-dot"></span>
@@ -74,36 +93,41 @@
       </div>
     </div>
 
-    <!-- Scroll Stages + Final Full Disassembly Hold Stage for Touchpad CV -->
+    <!-- Scroll Stages: Lead-In Disassembly Stage -> 5 Info Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
+
+  <!-- QUOTE INTERLUDE 2 -->
+  <div class="quote-interlude">
+    <blockquote class="interlude-text">
+      “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
+    </blockquote>
+  </div>
 
   <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES & ASPIRATIONS) -->
   <section id="section-reel" class="reel-scroll-section">
     <div class="reel-sticky-viewport">
       <div class="reel-top-bar">
         <div>
-          <span class="mono-tag" style="color:#f59e0b;">02 // 35MM ARCHIVAL FILM REEL</span>
           <h2 class="section-heading">Hobbies &amp; Aspirations</h2>
         </div>
         <div class="reel-counter-box">
-          <span class="mono-tag">ACTIVE EXPOSURE</span>
-          <span id="reel-active-indicator" class="reel-counter-val">FRAME 01A / 07A</span>
+          <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
         </div>
       </div>
 
       <div class="film-strip-stage">
         <div class="film-strip-wrapper" id="film-strip-wrapper">
           <div class="film-edge-code top-edge">
-            <span>KODAK 400TX // SUYASH ARCHIVE</span>
-            <span>► 01A</span><span>► 02A</span><span>► 03A</span><span>► 04A</span><span>► 05A</span><span>► 06A</span><span>► 07A</span>
+            <span>35MM FILM</span>
+            <span>01A</span><span>02A</span><span>03A</span><span>04A</span><span>05A</span><span>06A</span><span>07A</span><span>08A</span>
           </div>
           <div class="sprocket-row"></div>
           <div id="reel-track" class="reel-track"></div>
           <div class="sprocket-row"></div>
           <div class="film-edge-code bottom-edge">
-            <span>SAFETY FILM 5063</span>
-            <span>SCROLL DOWN TO ADVANCE REEL ──►</span>
+            <span>SUYASH SHARMA</span>
+            <span>SCROLL TO ADVANCE REEL →</span>
           </div>
         </div>
       </div>
@@ -114,11 +138,18 @@
     </div>
   </section>
 
-  <!-- 4. 8 STACKED LIBRARY-BOOK PROJECT LAYERS -->
+  <!-- QUOTE INTERLUDE 3 -->
+  <div class="quote-interlude">
+    <blockquote class="interlude-text">
+      “Life is either a daring adventure or nothing at all.”
+      <cite class="interlude-cite">— Helen Keller</cite>
+    </blockquote>
+  </div>
+
+  <!-- 4. 8 HORIZONTALLY STACKED LIBRARY-BOOK PROJECT LAYERS -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
-      <span class="mono-tag" style="color:#10b981;">03 // ARCHIVAL STACK</span>
-      <h2 class="section-heading">Project Layers</h2>
+      <h2 class="section-heading">Projects</h2>
     </div>
     <div id="projects-stack" class="projects-library-stack"></div>
   </section>
@@ -126,20 +157,46 @@
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. MINIMALIST WHITE CONTACT SECTION (JULIAN GARNER STYLE) -->
+  <!-- 5. STATIC MINIMALIST WHITE CONTACT SECTION (JULIAN GARNER STYLE) -->
   <section id="section-contact" class="minimal-white-contact">
-    <div class="minimal-contact-inner">
-      <div class="minimal-chat-stream" id="chat-messages"></div>
-      <div class="minimal-chat-prompts" id="chat-prompts"></div>
+    <div class="julian-contact-container">
+      <div class="julian-contact-top">
+        <p class="julian-eyebrow">Get in touch</p>
+        <h2 class="julian-heading">Let's build something real together.</h2>
+        <p class="julian-sub">
+          First-year CSE undergraduate at VIT Vellore. Always happy to connect about internships, hackathons, collaborations, or a good conversation.
+        </p>
+      </div>
 
-      <footer class="minimal-contact-footer">
-        <a href="mailto:sharma.suyash.in@gmail.com">sharma.suyash.in@gmail.com</a>
-        <span class="footer-sep">/</span>
-        <a href="tel:+917888222223">+91 7888222223</a>
-        <span class="footer-sep">/</span>
-        <a href="https://linkedin.com/in/suyashsharmadev" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <span class="footer-sep">/</span>
-        <a href="https://github.com/suyashcodemaster" target="_blank" rel="noopener">GitHub ↗</a>
+      <div class="julian-contact-grid">
+        <div class="julian-contact-row">
+          <span class="julian-label">Email</span>
+          <a href="mailto:sharma.suyash.in@gmail.com" class="julian-value-link">sharma.suyash.in@gmail.com ↗</a>
+        </div>
+        <div class="julian-contact-row">
+          <span class="julian-label">Phone</span>
+          <a href="tel:+917888222223" class="julian-value-link">+91 7888222223</a>
+        </div>
+        <div class="julian-contact-row">
+          <span class="julian-label">Social</span>
+          <div class="julian-inline-links">
+            <a href="https://linkedin.com/in/suyashsharmadev" target="_blank" rel="noopener" class="julian-value-link">LinkedIn ↗</a>
+            <a href="https://github.com/suyashcodemaster" target="_blank" rel="noopener" class="julian-value-link">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="julian-contact-row">
+          <span class="julian-label">Resume</span>
+          <a id="contact-cv-link" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="julian-value-link">Download CV (PDF) ↓</a>
+        </div>
+        <div class="julian-contact-row">
+          <span class="julian-label">Location</span>
+          <span class="julian-value-static">Vellore, Tamil Nadu &amp; Pune, India</span>
+        </div>
+      </div>
+
+      <footer class="julian-footer">
+        <span>© 2026 Suyash Sharma</span>
+        <a href="#section-hero" class="julian-back-top">Back to top ↑</a>
       </footer>
     </div>
   </section>

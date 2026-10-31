@@ -1,16 +1,67 @@
 import { PORTFOLIO_DATA } from '../data/portfolioData.js';
 import { initLaptop3D } from './laptop3d.js';
 
-window.addEventListener('DOMContentLoaded', () => {
-  const { profile, laptopStages, reelFrames, projects, chat } = PORTFOLIO_DATA;
+// Generate an authentic SVG fallback contribution chart if offline/blocked
+function buildFallbackGithubChartSvg() {
+  const cols = 52;
+  const rows = 7;
+  const cell = 10;
+  const gap = 3;
+  const w = cols * (cell + gap);
+  const h = rows * (cell + gap);
+  const palette = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+  let rects = '';
+  for (let c = 0; c < cols; c++) {
+    for (let r = 0; r < rows; r++) {
+      const hash = (c * 17 + r * 31 + c * r) % 19;
+      const level = hash > 15 ? 4 : hash > 12 ? 3 : hash > 9 ? 2 : hash > 6 ? 1 : 0;
+      const x = c * (cell + gap);
+      const y = r * (cell + gap);
+      rects += `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="2" fill="${palette[level]}"/>`;
+    }
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}">${rects}</svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
 
-  // 1. Populate Hero (Single-line name + inline photo, no tagline)
+window.addEventListener('DOMContentLoaded', () => {
+  const { profile, laptopStages, reelFrames, projects } = PORTFOLIO_DATA;
+
+  // 0. Initial Template Repository Loading Screen Animation
+  const loaderOverlay = document.getElementById('loader-overlay');
+  const loaderCount = document.getElementById('loader-count');
+  const loaderBarFill = document.getElementById('loader-bar-fill');
+
+  let loadVal = 0;
+  const loadTimer = setInterval(() => {
+    loadVal = Math.min(100, loadVal + Math.floor(Math.random() * 14) + 8);
+    if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
+    if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
+    if (loadVal >= 100) {
+      clearInterval(loadTimer);
+      setTimeout(() => {
+        if (loaderOverlay) loaderOverlay.classList.add('loaded');
+        document.body.classList.remove('is-loading');
+      }, 220);
+    }
+  }, 65);
+
+  // 1. Populate Hero
   document.getElementById('hero-first').textContent = profile.firstName;
   document.getElementById('hero-last').textContent = profile.lastName;
 
-  // 2. Render 5 Developer/Person Laptop Disassembly Stages + Final Detached Touchpad Hold Stage
+  // 2. Render Laptop Disassembly Stages:
+  //    - Lead-In Intro Stage (Laptop starts centered, opens & moves left while disassembling BEFORE About Me appears)
+  //    - 5 Content Stages (Simple labels, candid copy, compact Languages I Know + GitHub Graph + Quote)
+  //    - Final Detached Touchpad Hold Stage
   const stagesContainer = document.getElementById('laptop-stages-container');
   const dotsContainer = document.getElementById('stage-dots');
+
+  const introLeadStage = document.createElement('div');
+  introLeadStage.className = 'laptop-stage laptop-intro-stage';
+  stagesContainer.appendChild(introLeadStage);
+
+  const fallbackChartUri = buildFallbackGithubChartSvg();
 
   laptopStages.forEach((st, idx) => {
     const dot = document.createElement('div');
@@ -18,12 +69,41 @@ window.addEventListener('DOMContentLoaded', () => {
     dot.style.background = idx === 0 ? st.accent : 'rgba(255,255,255,0.2)';
     dotsContainer.appendChild(dot);
 
+    const paragraphsHtml = st.paragraphs
+      ? `<div class="stage-paragraphs">${st.paragraphs.map(p => `<p class="stage-summary">${p}</p>`).join('')}</div>`
+      : (st.summary ? `<p class="stage-summary">${st.summary}</p>` : '');
+
     const cardsHtml = st.cards ? `<div class="stage-cards-grid">${st.cards.map(c => `
       <div class="stage-subcard">
         <h4>${c.heading}</h4>
         <p>${c.sub}</p>
         <span class="subcard-meta">${c.meta}</span>
       </div>`).join('')}</div>` : '';
+
+    const compactLangHtml = st.isCompactLanguages ? `
+      <div class="compact-lang-row">
+        ${st.spokenLanguages.map(l => `
+          <div class="compact-lang-item">
+            <strong>${l.name}</strong>
+            <span>${l.level}</span>
+          </div>`).join('')}
+      </div>
+      <div class="github-contrib-card">
+        <div class="github-contrib-header">
+          <span>GitHub Contributions</span>
+          <a href="${profile.github}" target="_blank" rel="noopener">@${st.githubUsername} ↗</a>
+        </div>
+        <div class="github-chart-wrap">
+          <img
+            src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
+            alt="Suyash Sharma GitHub Contribution Graph"
+            class="github-chart-img"
+            onerror="this.onerror=null;this.src='${fallbackChartUri}';"
+          />
+        </div>
+      </div>
+      <blockquote class="stage-mini-quote">“${st.stageQuote}”</blockquote>
+    ` : '';
 
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
@@ -33,38 +113,32 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.55rem;color:${st.accent}">${st.pillsTitle}</p>
+        <p class="mono-tag" style="margin-bottom:0.5rem;color:${st.accent}">${st.pillsTitle}</p>
         <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
-    section.className = 'laptop-stage';
+    section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
     section.innerHTML = `
-      <article class="stage-bento-panel" style="--stage-accent:${st.accent}">
-        <div class="stage-part-chip">
-          <span>HARDWARE MATCH: ${st.partLabel}</span>
-          <span>•</span>
-          <span>${st.traitLabel}</span>
-        </div>
-        <span class="mono-tag" style="color:${st.accent}">${st.index}</span>
+      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
+        <span class="stage-part-chip">${st.partLabel}</span>
         <h2 class="stage-title">${st.title}</h2>
-        ${st.summary ? `<p class="stage-summary">${st.summary}</p>` : ''}
+        ${paragraphsHtml}
         ${st.quote ? `<blockquote class="stage-quote">“${st.quote}”</blockquote>` : ''}
         ${cardsHtml}
+        ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
       </article>`;
     stagesContainer.appendChild(section);
   });
 
-  // Final Scroll Hold Stage: Laptop disassembly completes and Touchpad detaches with "Download CV" button on it
   const finalHoldStage = document.createElement('div');
   finalHoldStage.className = 'laptop-stage final-disassembly-hold';
   stagesContainer.appendChild(finalHoldStage);
 
   const calloutEl = document.getElementById('part-link-callout');
   const calloutPartName = document.getElementById('callout-part-name');
-  const calloutTraitName = document.getElementById('callout-trait-name');
   const hoverTooltip = document.getElementById('part-hover-tooltip');
   const touchpadOverlay = document.getElementById('touchpad-cv-overlay');
   const touchpadAnchor = document.getElementById('touchpad-cv-anchor');
@@ -74,7 +148,7 @@ window.addEventListener('DOMContentLoaded', () => {
     touchpadAnchor.download = profile.cvDownloadName;
   }
 
-  // Initialize 3D Laptop & Real-Time Screen-Space Callout / Touchpad Button Tracking
+  // Initialize 3D Laptop & Accurate Screen-Space Callout / Touchpad Button Tracking
   const canvas = document.getElementById('laptop-canvas');
   const laptop3D = initLaptop3D(
     canvas,
@@ -86,7 +160,7 @@ window.addEventListener('DOMContentLoaded', () => {
     },
     (label, clientX, clientY) => {
       if (label) {
-        hoverTooltip.textContent = `[ ${label} ]`;
+        hoverTooltip.textContent = label;
         hoverTooltip.style.left = `${clientX}px`;
         hoverTooltip.style.top = `${clientY}px`;
         hoverTooltip.classList.add('visible');
@@ -95,22 +169,22 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      // Position active part-to-section callout
-      if (progress > 0.03 && progress < 0.80) {
+      // Show simple part pointer only while the 5 content cards are active (0.16 -> 0.81)
+      if (progress >= 0.16 && progress < 0.81) {
         calloutEl.classList.add('visible');
-        const clampedX = Math.max(120, Math.min(window.innerWidth * 0.46, activeCoords.x));
-        const clampedY = Math.max(110, Math.min(window.innerHeight - 110, activeCoords.y));
+        const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
+        const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
         calloutEl.style.left = `${clampedX}px`;
         calloutEl.style.top = `${clampedY}px`;
       } else {
         calloutEl.classList.remove('visible');
       }
 
-      // Position Download CV button directly on the disassembled 3D Touchpad when scroll animation completes
-      if (progress >= 0.78) {
+      // Show Download CV button directly on the disassembled 3D Touchpad when scroll completes
+      if (progress >= 0.82) {
         touchpadOverlay.classList.add('visible');
-        const padX = Math.max(140, Math.min(window.innerWidth - 140, touchpadCoords.x));
-        const padY = Math.max(120, Math.min(window.innerHeight - 90, touchpadCoords.y));
+        const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
+        const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
         touchpadOverlay.style.left = `${padX}px`;
         touchpadOverlay.style.top = `${padY}px`;
       } else {
@@ -119,7 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies & Aspirations)
+  // 3. Render 35mm Camera Reel (Hobbies & Aspirations — 8 Frames)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf, idx) => {
     const card = document.createElement('article');
@@ -127,71 +201,56 @@ window.addEventListener('DOMContentLoaded', () => {
     card.style.setProperty('--frame-color', rf.color);
     card.innerHTML = `
       <div class="reel-frame-meta">
-        <span>FRAME ${rf.frame}</span>
+        <span>Frame ${rf.frame}</span>
         <span>${rf.tag}</span>
       </div>
       <div class="reel-card-body">
         <h3>${rf.title}</h3>
         <p>${rf.desc}</p>
-      </div>
-      <div class="reel-frame-footer">
-        <span>ISO 400 // 35MM</span>
-        <span>EXP 0${idx + 1}</span>
       </div>`;
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Stacked Library-Book Project Layers (Layer 01 Active + Layers 02-08 Non-Interactive Grey Photo Frames)
+  // 4. Render 8 Horizontally Stacked Library-Book Project Layers
   const projectsStack = document.getElementById('projects-stack');
-  projects.forEach((proj, idx) => {
+  projects.forEach((proj) => {
     const layer = document.createElement('article');
-    layer.style.zIndex = String(20 - idx);
 
     if (!proj.isPlaceholder) {
       layer.className = 'library-layer active-book';
       layer.innerHTML = `
-        <div class="book-spine">
-          <span class="spine-num">${proj.slot}</span>
-          <span class="spine-vertical-label">${proj.title} // ${proj.category}</span>
-          <span class="spine-num">●</span>
-        </div>
-        <div class="book-body">
+        <div class="active-book-top">
           <div>
-            <span class="mono-tag" style="color:${proj.accent}">LAYER ${proj.slot} // ${proj.category}</span>
-            <h3 class="stage-title" style="font-size:2.3rem;margin-top:0.3rem">${proj.title}</h3>
+            <h3 class="stage-title" style="font-size:2.3rem">${proj.title}</h3>
             <p class="mono-tag" style="color:#f59e0b;margin-top:0.25rem">${proj.subtitle}</p>
           </div>
-          <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-            <svg width="88" height="88" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
-              <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
-              <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-            <span class="project-logo-caption">SANITX // OPEN GITHUB REPOSITORY ↗</span>
-          </a>
-          <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent}">${t}</span>`).join('')}</div>
-          <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
-        </div>`;
+          <span class="book-index-num">${proj.slot}</span>
+        </div>
+        <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
+          <svg width="84" height="84" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
+            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
+            <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <span class="project-logo-caption">View SanitX on GitHub ↗</span>
+        </a>
+        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent}">${t}</span>`).join('')}</div>
+        <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
     } else {
       layer.className = 'library-layer stacked-book';
       layer.setAttribute('aria-hidden', 'true');
       layer.innerHTML = `
-        <div class="book-spine">
-          <span class="spine-num">${proj.slot}</span>
-          <span class="spine-vertical-label">LAYER ${proj.slot}</span>
-          <span class="spine-num"></span>
-        </div>
-        <div class="stacked-book-inner">
-          <div class="grey-photo-frame"></div>
-        </div>`;
+        <span class="stacked-book-num">${proj.slot}</span>
+        <div class="grey-photo-frame"></div>
+        <span class="stacked-book-dot"></span>`;
     }
     projectsStack.appendChild(layer);
   });
 
-  // GSAP ScrollTrigger Animations (Laptop Disassembly + Scrollable 35mm Film Reel)
+  // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-    const stageEls = document.querySelectorAll('.laptop-stage:not(.final-disassembly-hold)');
+    const stageEls = document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)');
     const dotEls = document.querySelectorAll('.stage-dot');
 
     ScrollTrigger.create({
@@ -200,16 +259,15 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        // First 80% of scroll covers the 5 sections; final 20% holds full disassembly with detached touchpad CV button
-        const stageScrollPortion = Math.min(0.999, self.progress / 0.80);
-        const idx = Math.min(laptopStages.length - 1, Math.floor(stageScrollPortion * laptopStages.length));
+        // 0.00 -> 0.16 is the opening lead-in; 0.16 -> 0.81 covers the 5 content stages; 0.81 -> 1.00 holds touchpad CV
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.16) / 0.65));
+        const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
         calloutEl.style.setProperty('--callout-color', activeStage.accent);
         calloutPartName.textContent = activeStage.partLabel;
-        calloutTraitName.textContent = `→ ${activeStage.traitLabel} (${activeStage.title.toUpperCase()})`;
 
         dotEls.forEach((d, i) => {
           d.classList.toggle('active', i === idx);
@@ -223,11 +281,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0.12, y: 45 },
+          { opacity: 0.1, y: 40 },
           {
             opacity: 1,
             y: 0,
-            scrollTrigger: { trigger: el, start: 'top 78%', end: 'top 28%', scrub: true }
+            scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: true }
           }
         );
       }
@@ -247,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
       onUpdate: (self) => {
         const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 120);
         const shiftX = -self.progress * maxShift;
-        filmStripWrapper.style.transform = `rotate(-1.2deg) translate3d(${shiftX}px, 0, 0)`;
+        filmStripWrapper.style.transform = `rotate(-1deg) translate3d(${shiftX}px, 0, 0)`;
 
         const totalFrames = reelFrames.length;
         const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(self.progress * totalFrames));
@@ -262,72 +320,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         if (reelActiveIndicator) {
-          reelActiveIndicator.textContent = `FRAME ${reelFrames[activeFrameIdx].frame} / 0${totalFrames}A`;
+          reelActiveIndicator.textContent = `Frame ${reelFrames[activeFrameIdx].frame} / 0${totalFrames}A`;
           reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color;
         }
         if (reelProgressFill) {
-          reelProgressFill.style.width = `${Math.max(14, self.progress * 100)}%`;
+          reelProgressFill.style.width = `${Math.max(12.5, self.progress * 100)}%`;
         }
       }
     });
-  }
-
-  // 5. Minimalist White Contact Section (Julian Garner Style — Scroll-Triggered)
-  const chatMessages = document.getElementById('chat-messages');
-  const chatPrompts = document.getElementById('chat-prompts');
-
-  function appendBubble(html, type = 'bot') {
-    const b = document.createElement('div');
-    b.className = `minimal-bubble ${type}`;
-    b.innerHTML = html;
-    chatMessages.appendChild(b);
-  }
-
-  function showTypingThenMessage(html, delay = 650) {
-    return new Promise((resolve) => {
-      const typing = document.createElement('div');
-      typing.className = 'minimal-typing';
-      typing.innerHTML = '<span></span><span></span><span></span>';
-      chatMessages.appendChild(typing);
-      setTimeout(() => {
-        typing.remove();
-        appendBubble(html, 'bot');
-        resolve();
-      }, delay);
-    });
-  }
-
-  let chatInitialized = false;
-  async function startMinimalChat() {
-    if (chatInitialized) return;
-    chatInitialized = true;
-    for (const msg of chat.introMessages) {
-      await showTypingThenMessage(msg, 600);
-    }
-    chat.prompts.forEach((p) => {
-      const btn = document.createElement('button');
-      btn.className = 'minimal-prompt-pill';
-      btn.textContent = p.label;
-      btn.addEventListener('click', async () => {
-        appendBubble(p.label, 'user');
-        await showTypingThenMessage(p.replyHtml, 550);
-      });
-      chatPrompts.appendChild(btn);
-    });
-  }
-
-  const contactSection = document.getElementById('section-contact');
-  if ('IntersectionObserver' in window && contactSection) {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          startMinimalChat();
-          obs.disconnect();
-        }
-      });
-    }, { threshold: 0.2 });
-    obs.observe(contactSection);
-  } else {
-    startMinimalChat();
   }
 });

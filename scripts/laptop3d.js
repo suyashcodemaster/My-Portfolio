@@ -1,116 +1,169 @@
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.35, 6.2);
+  const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 1.35, 6.3);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.25;
 
-  // Dynamic Multi-Point Lighting
-  const ambient = new THREE.AmbientLight(0xffffff, 0.75);
-  const keyLight = new THREE.DirectionalLight(0x38bdf8, 2.0);
+  // High-Contrast Studio Lighting so the Black-Grey Laptop Pops Clearly Against the Dark Background
+  const ambient = new THREE.AmbientLight(0xffffff, 0.95);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0xa855f7, 1.4);
-  rimLight.position.set(-5, 3, -4);
-  const accentLight = new THREE.PointLight(0xf59e0b, 2.5, 16);
-  accentLight.position.set(-2.5, 2, 4);
-  scene.add(ambient, keyLight, rimLight, accentLight);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.8);
+  rimLight.position.set(-5, 4, -4);
+  const bottomFill = new THREE.DirectionalLight(0x64748b, 1.1);
+  bottomFill.position.set(0, -5, 3);
+  const accentLight = new THREE.PointLight(0x38bdf8, 1.8, 16);
+  accentLight.position.set(-2.2, 2.0, 4.2);
+  scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  root.position.set(-1.35, -0.1, 0);
-  root.rotation.set(0.28, 0.52, 0);
+  // Starts centered (x = 0) before moving left during disassembly
+  root.position.set(0, -0.08, 0);
+  root.rotation.set(0.26, 0.35, 0);
   scene.add(root);
 
-  // PBR Materials
-  const matChassis = new THREE.MeshStandardMaterial({ color: 0x242734, metalness: 0.82, roughness: 0.24 });
-  const matScreen = new THREE.MeshStandardMaterial({ color: 0x0b1528, emissive: 0x38bdf8, emissiveIntensity: 0.45, roughness: 0.12 });
-  const matBoard = new THREE.MeshStandardMaterial({ color: 0x0e2a1f, emissive: 0x10b981, emissiveIntensity: 0.35, metalness: 0.65, roughness: 0.28 });
-  const matCpu = new THREE.MeshStandardMaterial({ color: 0x3b1d5e, emissive: 0xa855f7, emissiveIntensity: 0.75, metalness: 0.7, roughness: 0.2 });
-  const matCopper = new THREE.MeshStandardMaterial({ color: 0xd97706, emissive: 0xf59e0b, emissiveIntensity: 0.25, metalness: 0.88, roughness: 0.2 });
-  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x181a24, metalness: 0.7, roughness: 0.35 });
-  const matKey = new THREE.MeshStandardMaterial({ color: 0x101218, emissive: 0x10b981, emissiveIntensity: 0.28, roughness: 0.35 });
-  const matSpeaker = new THREE.MeshStandardMaterial({ color: 0x2e2518, emissive: 0xf59e0b, emissiveIntensity: 0.5, metalness: 0.75, roughness: 0.25 });
-  const matTouchpad = new THREE.MeshStandardMaterial({ color: 0x2d122b, emissive: 0xec4899, emissiveIntensity: 0.65, roughness: 0.12, metalness: 0.55 });
-  const matBattery = new THREE.MeshStandardMaterial({ color: 0x161936, emissive: 0x6366f1, emissiveIntensity: 0.45, metalness: 0.65, roughness: 0.28 });
+  // Cohesive Black-Grey / Brushed Space-Grey / Gunmetal Palette
+  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x323642, metalness: 0.72, roughness: 0.28 });
+  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x161922, emissive: 0x1e293b, emissiveIntensity: 0.45, roughness: 0.15 });
+  const matLogicPcb = new THREE.MeshStandardMaterial({ color: 0x232730, metalness: 0.55, roughness: 0.35 });
+  const matCpuCore = new THREE.MeshStandardMaterial({ color: 0x646b7d, emissive: 0x475569, emissiveIntensity: 0.4, metalness: 0.85, roughness: 0.18 });
+  const matHeatPipe = new THREE.MeshStandardMaterial({ color: 0x4b5162, metalness: 0.8, roughness: 0.22 });
+  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x282c37, metalness: 0.65, roughness: 0.32 });
+  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x15171e, roughness: 0.4 });
+  const matSpeakerBody = new THREE.MeshStandardMaterial({ color: 0x383d4b, metalness: 0.75, roughness: 0.25 });
+  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x252934, emissive: 0x334155, emissiveIntensity: 0.35, roughness: 0.15, metalness: 0.6 });
+  const matBatteryPack = new THREE.MeshStandardMaterial({ color: 0x1f232d, metalness: 0.6, roughness: 0.3 });
 
-  // 1. Display Subsystem (About Me — Vision & Foundation)
+  const pickableMeshes = [];
+  const partEdgeLines = {};
+
+  function addCrispEdges(mesh, partKey, edgeColor = 0x8b95a9, opacity = 0.65) {
+    const edges = new THREE.EdgesGeometry(mesh.geometry);
+    const lineMat = new THREE.LineBasicMaterial({ color: edgeColor, transparent: true, opacity });
+    const line = new THREE.LineSegments(edges, lineMat);
+    mesh.add(line);
+    if (!partEdgeLines[partKey]) partEdgeLines[partKey] = [];
+    partEdgeLines[partKey].push(lineMat);
+  }
+
+  // 1. Display (About Me)
   const display = new THREE.Group();
-  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.92, 0.07), matChassis);
-  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.82, 1.72), matScreen);
+  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.92, 0.07), matOuterChassis);
+  addCrispEdges(lidMesh, 'display', 0x94a3b8, 0.75);
+  const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.82, 1.72), matScreenPanel);
   lcdMesh.position.z = 0.04;
-  const hingeMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 2.2, 16), matChassis);
+  addCrispEdges(lcdMesh, 'display', 0x64748b, 0.5);
+  const hingeMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 2.2, 16), matOuterChassis);
   hingeMesh.rotation.z = Math.PI / 2;
   hingeMesh.position.set(0, -0.95, 0);
-  display.add(lidMesh, lcdMesh, hingeMesh);
+  const displayAnchor = new THREE.Object3D();
+  displayAnchor.position.set(0, 0, 0.05);
+  display.add(lidMesh, lcdMesh, hingeMesh, displayAnchor);
   display.position.set(0, 1.02, -0.95);
-  display.rotation.x = -0.16;
+  display.rotation.x = -0.15;
 
-  // 2. Logic Board & CPU Core (The Mission — Core Processing & Mindset)
+  // 2. Logic Board (The Mission)
   const logicBoard = new THREE.Group();
-  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.55, 0.05, 1.52), matBoard);
-  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.1, 0.62), matCpu);
-  cpuDie.position.set(0, 0.05, -0.1);
-  const heatPipe = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.04, 0.14), matCopper);
-  heatPipe.position.set(0, 0.06, -0.42);
-  const fanL = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.06, 20), matChassis);
+  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.58, 0.06, 1.54), matLogicPcb);
+  addCrispEdges(pcb, 'logicBoard', 0x94a3b8, 0.8);
+  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.11, 0.68), matCpuCore);
+  cpuDie.position.set(0, 0.06, 0);
+  addCrispEdges(cpuDie, 'logicBoard', 0xcbd5e1, 0.9);
+  const heatPipe = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.045, 0.16), matHeatPipe);
+  heatPipe.position.set(0, 0.07, -0.42);
+  addCrispEdges(heatPipe, 'logicBoard', 0x94a3b8, 0.7);
+  const fanL = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.07, 20), matOuterChassis);
   const fanR = fanL.clone();
-  fanL.position.set(-0.78, 0.04, -0.35);
-  fanR.position.set(0.78, 0.04, -0.35);
-  logicBoard.add(pcb, cpuDie, heatPipe, fanL, fanR);
+  fanL.position.set(-0.8, 0.05, -0.35);
+  fanR.position.set(0.8, 0.05, -0.35);
+  addCrispEdges(fanL, 'logicBoard', 0x94a3b8, 0.65);
+  addCrispEdges(fanR, 'logicBoard', 0x94a3b8, 0.65);
+  const logicAnchor = new THREE.Object3D();
+  logicAnchor.position.set(0, 0.08, 0);
+  logicBoard.add(pcb, cpuDie, heatPipe, fanL, fanR, logicAnchor);
   logicBoard.position.set(0, 0.02, 0);
 
-  // 3. Keyboard Matrix & Engine (Technical Skills — Execution & Toolkit)
+  // 3. Keyboard (Technical Skills)
   const keyboard = new THREE.Group();
-  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.65, 0.03, 1.15), matKeyDeck);
+  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.68, 0.04, 1.16), matKeyDeck);
   deckPlate.position.set(0, 0.08, -0.14);
+  addCrispEdges(deckPlate, 'keyboard', 0x94a3b8, 0.75);
   keyboard.add(deckPlate);
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 11; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.055, 0.19), matKey);
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.055, 0.19), matKeyCap);
       key.position.set(-1.0 + c * 0.2, 0.12, -0.52 + r * 0.24);
+      addCrispEdges(key, 'keyboard', 0x64748b, 0.45);
       keyboard.add(key);
     }
   }
+  const keyboardAnchor = new THREE.Object3D();
+  keyboardAnchor.position.set(0, 0.12, -0.14);
+  keyboard.add(keyboardAnchor);
 
-  // 4. Acoustic & I/O Array (Languages I Know — Voice & Collaboration)
+  // 4. Speakers (Languages I Know)
   const speakers = new THREE.Group();
-  const spkL = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.08, 1.48), matSpeaker);
-  const spkR = spkL.clone();
+  const spkL = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.09, 1.5), matSpeakerBody);
+  const spkR = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.09, 1.5), matSpeakerBody);
   spkL.position.set(-1.32, 0.1, 0);
   spkR.position.set(1.32, 0.1, 0);
+  addCrispEdges(spkL, 'speakers', 0x94a3b8, 0.8);
+  addCrispEdges(spkR, 'speakers', 0x94a3b8, 0.8);
+  const speakerAnchor = new THREE.Object3D();
+  speakerAnchor.position.set(0, 0.05, 0);
+  spkR.add(speakerAnchor);
   speakers.add(spkL, spkR);
 
-  // 5. Precision Glass Touchpad (Detaches at scroll end with Download CV button on it)
+  // 5. Touchpad (Detaches at scroll end with Download CV button on it)
   const touchpad = new THREE.Group();
   const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.06, 0.04, 0.68),
-    new THREE.MeshStandardMaterial({ color: 0xf43f5e, emissive: 0xec4899, emissiveIntensity: 0.45, metalness: 0.8, roughness: 0.2 })
+    new THREE.BoxGeometry(1.06, 0.045, 0.68),
+    new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8, roughness: 0.2 })
   );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.05, 0.62), matTouchpad);
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.055, 0.62), matTouchpadSurface);
   padRim.position.set(0, 0.11, 0.6);
   padMesh.position.set(0, 0.115, 0.6);
+  addCrispEdges(padMesh, 'touchpad', 0xcbd5e1, 0.85);
   padMesh.userData.isTouchpad = true;
-  touchpad.add(padRim, padMesh);
+  const touchpadAnchor = new THREE.Object3D();
+  touchpadAnchor.position.set(0, 0.12, 0.6);
+  touchpad.add(padRim, padMesh, touchpadAnchor);
 
-  // 6. Battery & Lower Unibody Chassis (Courses & Achievements — Endurance & Milestones)
+  // 6. Battery (Courses & Achievements)
   const battery = new THREE.Group();
-  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.12, 2.0), matChassis);
-  const cellsMesh = new THREE.Mesh(new THREE.BoxGeometry(2.35, 0.09, 0.78), matBattery);
-  cellsMesh.position.set(0, -0.02, 0.42);
+  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.0, 0.12, 2.0), matOuterChassis);
   baseMesh.position.y = -0.12;
-  battery.add(baseMesh, cellsMesh);
+  addCrispEdges(baseMesh, 'battery', 0x94a3b8, 0.75);
+  const cellsMesh = new THREE.Mesh(new THREE.BoxGeometry(2.38, 0.1, 0.82), matBatteryPack);
+  cellsMesh.position.set(0, -0.02, 0.4);
+  addCrispEdges(cellsMesh, 'battery', 0x94a3b8, 0.8);
+  const batteryAnchor = new THREE.Object3D();
+  batteryAnchor.position.set(0, -0.05, 0.25);
+  battery.add(baseMesh, cellsMesh, batteryAnchor);
 
   const parts = { display, logicBoard, keyboard, speakers, touchpad, battery };
+  const anchors = {
+    display: displayAnchor,
+    logicBoard: logicAnchor,
+    keyboard: keyboardAnchor,
+    speakers: speakerAnchor,
+    touchpad: touchpadAnchor,
+    battery: batteryAnchor
+  };
+
+  // Simple, candid hover labels (no slash jargon)
   const partLabels = {
-    display: "01 // DISPLAY PANEL & OPTICS — ABOUT ME",
-    logicBoard: "02 // LOGIC BOARD & CPU CORE — THE MISSION",
-    keyboard: "03 // KEYBOARD MATRIX — TECHNICAL SKILLS",
-    speakers: "04 // ACOUSTIC TRANSDUCERS — LANGUAGES I KNOW",
-    battery: "05 // POWER CORE & CELLS — ACHIEVEMENTS",
-    touchpad: "PRECISION TOUCHPAD — CLICK TO DOWNLOAD CV"
+    display: "Display",
+    logicBoard: "Logic Board",
+    keyboard: "Keyboard",
+    speakers: "Speakers",
+    battery: "Battery",
+    touchpad: "Touchpad — Click to Download CV"
   };
 
   Object.entries(parts).forEach(([key, group]) => {
@@ -118,99 +171,122 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       if (child.isMesh) {
         child.userData.partKey = key;
         child.userData.partLabel = partLabels[key];
+        pickableMeshes.push(child);
       }
     });
     root.add(group);
   });
 
-  // Raycaster for Hover Tooltips + 3D Touchpad Click
+  // Strictly Scoped Raycaster on #laptop-canvas Only (Zero Background Hover Glitch!)
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2(-999, -999);
+  let currentActiveKey = 'display';
+  let currentProgress = 0;
 
-  window.addEventListener('mousemove', (e) => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  function clearHover() {
+    canvas.style.cursor = 'default';
+    if (onPartHover) onPartHover(null, 0, 0);
+  }
+
+  canvas.addEventListener('pointermove', (e) => {
+    // Only show hover tooltip when inside the active laptop scroll range and directly on the canvas
+    if (e.target !== canvas || currentProgress <= 0.005 || currentProgress >= 0.995) {
+      clearHover();
+      return;
+    }
+    const rect = canvas.getBoundingClientRect();
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) {
+      clearHover();
+      return;
+    }
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(root.children, true);
+
+    const hits = raycaster.intersectObjects(pickableMeshes, false);
     if (hits.length > 0) {
       const hitMesh = hits[0].object;
       canvas.style.cursor = hitMesh.userData.partKey === 'touchpad' ? 'pointer' : 'crosshair';
       if (onPartHover) onPartHover(hitMesh.userData.partLabel, e.clientX, e.clientY);
     } else {
-      canvas.style.cursor = 'default';
-      if (onPartHover) onPartHover(null, 0, 0);
+      clearHover();
     }
   });
 
-  window.addEventListener('click', (e) => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  canvas.addEventListener('pointerleave', clearHover);
+  window.addEventListener('scroll', clearHover, { passive: true });
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(touchpad.children, true);
+    const hits = raycaster.intersectObjects([padMesh, padRim], false);
     if (hits.length > 0 && onTouchpadClick) onTouchpadClick();
   });
 
-  // Helper to project a 3D group's world center onto 2D viewport coordinates
-  function getScreenCoords(group, localOffset = new THREE.Vector3(0, 0, 0)) {
-    const worldPos = localOffset.clone();
-    group.localToWorld(worldPos);
-    worldPos.project(camera);
+  // Project exact 3D anchor world position to 2D viewport coordinates
+  const tempWorldVec = new THREE.Vector3();
+  function getAnchorScreenCoords(anchorObj) {
+    anchorObj.getWorldPosition(tempWorldVec);
+    tempWorldVec.project(camera);
     return {
-      x: (worldPos.x * 0.5 + 0.5) * window.innerWidth,
-      y: (-(worldPos.y * 0.5) + 0.5) * window.innerHeight
+      x: (tempWorldVec.x * 0.5 + 0.5) * window.innerWidth,
+      y: (-(tempWorldVec.y * 0.5) + 0.5) * window.innerHeight
     };
   }
 
-  let currentActiveKey = 'display';
-  let currentProgress = 0;
-
-  // High-Separation Disassembly State Controller (Stays fully disassembled at scroll completion!)
+  // 3-Phase Disassembly Choreography:
+  // Phase 1 (0.00 -> 0.18): Laptop starts centered (x = 0), opens up, starts disassembling, and moves left (x = -1.35)
+  // Phase 2 (0.18 -> 0.82): Laptop stays on the left while sections scroll on the right, parts separated cleanly
+  // Phase 3 (0.82 -> 1.00): Touchpad detaches forward with Download CV button on it
   function setDisassemblyState(progress, activeKey, hexAccent) {
     currentProgress = progress;
     currentActiveKey = activeKey;
 
-    // Monotonic ease-out explosion curve: 0 -> assembled, 1 -> stays wide open in full exploded state!
-    const spread = Math.min(1, Math.pow(Math.min(1, progress * 1.18), 0.82));
-    // Extra touchpad detachment when scrolling finishes (progress > 0.78)
-    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.74) / 0.22));
+    const introShift = Math.min(1, progress / 0.18);
+    const smoothIntro = 1 - Math.pow(1 - introShift, 2.2);
 
-    // Wide vertical, lateral, and depth separation so every single part is unmistakably distinct
-    display.position.set(0, 1.02 + spread * 2.15, -0.95 - spread * 0.85);
-    display.rotation.x = -0.16 - spread * 0.28;
+    const spread = Math.min(1, Math.pow(Math.min(1, progress * 1.15), 0.85));
+    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.80) / 0.18));
 
-    keyboard.position.set(0, spread * 1.18, spread * 0.22);
+    // Lid opens from closed/semi-closed in the center to wide open exploded state
+    display.position.set(0, 1.02 + spread * 2.05, -0.95 - spread * 0.78);
+    display.rotation.x = 0.35 * (1 - smoothIntro) - 0.16 - spread * 0.25;
 
-    logicBoard.position.set(0, 0.02 + spread * 0.25, -spread * 0.15);
+    keyboard.position.set(0, spread * 1.15, spread * 0.18);
+    logicBoard.position.set(0, 0.02 + spread * 0.22, 0);
 
-    // Separate Left and Right Speakers far outward on X axis
-    spkL.position.x = -1.32 - spread * 1.15;
-    spkR.position.x = 1.32 + spread * 1.15;
-    speakers.position.y = spread * 0.55;
+    spkL.position.x = -1.32 - spread * 1.05;
+    spkR.position.x = 1.32 + spread * 1.05;
+    speakers.position.y = spread * 0.52;
 
-    // Battery & Unibody drops far down
-    battery.position.set(0, -spread * 1.65, -spread * 0.2);
+    battery.position.set(0, -spread * 1.55, -spread * 0.15);
 
-    // Touchpad disassembles forward and detaches toward viewer at completion
     touchpad.position.set(
-      touchpadDetach * 1.15,
-      spread * 0.45 - touchpadDetach * 0.25,
-      spread * 1.55 + touchpadDetach * 0.85
+      touchpadDetach * 1.05,
+      spread * 0.42 - touchpadDetach * 0.2,
+      spread * 1.45 + touchpadDetach * 0.85
     );
-    touchpad.rotation.x = touchpadDetach * 0.38;
-    touchpad.rotation.y = -touchpadDetach * 0.32;
+    touchpad.rotation.x = touchpadDetach * 0.36;
+    touchpad.rotation.y = -touchpadDetach * 0.28;
 
-    // Smoothly orbit root model to showcase internal layers and center at completion
-    root.position.x = -1.35 + touchpadDetach * 0.95;
-    root.rotation.y = 0.52 + progress * Math.PI * 0.78;
-    root.rotation.x = 0.28 + spread * 0.1;
+    // X Position: Starts at 0 (center), glides to -1.35 (left) as About Me arrives, then shifts toward -0.35 at final touchpad stage
+    root.position.x = -1.35 * smoothIntro + touchpadDetach * 0.95;
+    root.rotation.y = 0.35 + progress * Math.PI * 0.68;
+    root.rotation.x = 0.26 + spread * 0.08;
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
-    // Spotlight the active section's matching 3D subsystem
+    // Highlight active subsystem's crisp edge lines so it stands out unmistakably
     Object.entries(parts).forEach(([key, group]) => {
-      const isFocused = (touchpadDetach > 0.5 && key === 'touchpad') || (touchpadDetach <= 0.5 && key === activeKey);
-      const targetScale = isFocused ? 1.16 : 0.96;
-      group.scale.setScalar(targetScale);
+      const isFocused = (touchpadDetach > 0.5 && key === 'touchpad') || (introShift >= 0.85 && touchpadDetach <= 0.5 && key === activeKey);
+      group.scale.setScalar(isFocused ? 1.12 : 0.98);
+      const lines = partEdgeLines[key] || [];
+      lines.forEach((lMat) => {
+        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#8b95a9');
+        lMat.opacity = isFocused ? 0.98 : 0.55;
+      });
     });
   }
 
@@ -223,11 +299,12 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    scene.updateMatrixWorld(true);
 
     if (onScreenProjectUpdate) {
-      const activeGroup = parts[currentActiveKey] || display;
-      const activeCoords = getScreenCoords(activeGroup, new THREE.Vector3(0, 0.1, 0));
-      const touchpadCoords = getScreenCoords(touchpad, new THREE.Vector3(0, 0.12, 0.6));
+      const activeAnchor = anchors[currentActiveKey] || anchors.display;
+      const activeCoords = getAnchorScreenCoords(activeAnchor);
+      const touchpadCoords = getAnchorScreenCoords(anchors.touchpad);
       onScreenProjectUpdate({
         activeCoords,
         touchpadCoords,
