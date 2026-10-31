@@ -1,9 +1,10 @@
-# Project Handoff Document: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio
+# Project Handoff Document: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`handoff-antigravity`)
 
-**Document Version:** 2.0 (Post-Production Release & Live Verification)  
+**Document Name:** `handoff-antigravity.md`  
+**Version:** 2.0 (Post-Production Release & Live Verification)  
 **Date:** October 31, 2026  
 **Repository:** [github.com/suyashcodemaster/My-Portfolio](https://github.com/suyashcodemaster/My-Portfolio)  
-**Live Deployment:** [suyashcodemaster.vercel.app](https://suyashcodemaster.vercel.app)  
+**Live Production URL:** [suyashcodemaster.vercel.app](https://suyashcodemaster.vercel.app)  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
@@ -35,6 +36,7 @@ E:\Website Portfolio\My-Portfolio\
 ├── data\
 │   └── portfolioData.js          # Central content manifest (Profile, 6 Stages, 7 Reel Frames, Projects, Chat)
 ├── favicon.svg                   # Vector camera lens / shutter favicon
+├── handoff-antigravity.md        # This handoff documentation
 ├── index.html                    # Single HTML5 entrypoint with CDNs and semantic layout
 ├── logo.svg                      # Monochrome vector brand logo
 ├── package.json                  # Project manifest with npm start / dev scripts
