@@ -1,45 +1,30 @@
-# Project Handoff Document v6.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v7.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v6.md`  
-**Version:** 6.0 (All 11 Final Refinements + Security Hardening Implemented)  
+**Document Name:** `handoff-v7.md`  
+**Version:** 7.0 (All 5 Final Scroll, 3D Geometry, Dome Curvature & Quote Centering Fixes Implemented)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 11 Refinements & Security Fixes in v6.0
+## 1. Summary of All 5 Fixes in v7.0
 
-1. **Slower Initial Loading Screen (+1s), Removed Name from Loader & Added Landing Page Typewriter Effect (`index.html`, `styles/main.css`, `scripts/main.js`)**:
-   - Removed `SUYASH SHARMA` from `#loader-overlay` and slowed the counter by 1 second (~4.1s total duration).
-   - Once the loading screen finishes, `SUYASH` and `SHARMA` automatically type out character-by-character on the landing page (`runHeroTypewriter`) with a blinking cursor (non-scrollable).
-2. **100% Flush-Closed Laptop at Start & Removed 3D Arched Wires (`scripts/laptop3d.js`)**:
-   - Aligned the rear hinge pivot (`(0, 0.00, -1.00)`) and lid geometry (`z = -0.03`) with the top face of the base (`y = 0.00`) so when `display.rotation.x = Math.PI / 2` at `progress = 0`, the laptop is **100% flush-closed** with zero gap.
-   - Kept internal boards hidden inside the closed clamshell until the lid hinges open past `openRatio > 0.12` so zero wires or parts ever poke out before disassembly begins.
-   - Removed the 3D `TubeGeometry` arched wires while preserving the flat embedded PCB circuit lines and the dual spinning cooling fans.
-3. **Steeply Angled Project Stack + Hover Pulls Card Forward to Exact Center + Blurs Website & Other Tabs (`index.html`, `styles/main.css`, `scripts/main.js`)**:
-   - Angled the 8 horizontal cards more steeply (`rotateY(-40deg) rotateX(4deg)`) with `overflow: hidden` and clean internal spacing so text never spills out when angled.
-   - On hovering Card `01` (*SanitX*), it computes the exact pixel distance to the viewport center and glides forward in 3D to the center (`translate3d(var(--center-shift), -16px, 220px) rotateY(0deg) scale(1.08)`) while blurring out the rest of the tabs (`.blurred-left` / `.blurred-right`) and the entire website (`#projects-focus-backdrop` with `backdrop-filter: blur(10px)`).
-4. **Longer, Slower (~6s) *Contact Me* Bubble Stream Without Redundant Intro Messages (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
-   - Removed the *"I'm Suyash..."* and *"I love building..."* bubbles.
-   - Increased vertical spacing between bubbles and set the typing/reveal cadence to `1150ms` typing + `350ms` pause per bubble across the 4 bubbles (`6.0 seconds` total animation duration).
-5. **Halved Vertical Space After the First Quote (`styles/main.css`, `scripts/main.js`)**:
-   - Reduced `.first-quote-interlude` bottom padding to `0.4rem` and halved `.laptop-intro-stage` height from `118vh` to `55vh` without breaking any scroll physics or subsequent sections.
-6. **Futuristic Curved Dome Keycap Pop-Out (`scripts/laptop3d.js`)**:
-   - As the laptop disassembles, all 44 individual keycaps levitate upward and outward in a smooth 3D parabolic dome curve (`domeHeight = Math.max(0, 1 - (nx*nx*0.62 + nz*nz*0.62))`) with subtle radial tilt.
-7. **Moved `"If it doesn't challenge you, it won't change you."` Outside the *Languages I Know* Card (`scripts/main.js`, `styles/main.css`)**:
-   - Rendered the quote in a standalone `.stage-outside-quote-wrap` block flanked by botanical leaf sprigs directly below `<article class="stage-bento-panel">`.
-8. **Scroll-Triggered Illumination for Frame `01A` (*Building Human Connections*) (`scripts/main.js`, `styles/main.css`)**:
-   - Started all 8 camera reel cards (including Frame `01A — Building Human Connections`) unlit/dimmed so Frame `01A` lights up (`revealed`) after scrolling into `#section-reel` (`self.progress >= 0.04`) just like the other cards.
-9. **Added `"yet to build😝"` Inside Empty Grey Project Tabs (`02`–`08`) (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
-   - Displayed `yet to build😝` centered inside `.grey-photo-frame` on Layers `02` through `08`.
-10. **Darker Matte Laptop Finish + Sharper 3D Part Outlines (`scripts/laptop3d.js`)**:
-    - Deepened all laptop materials to a stealth matte obsidian/carbon finish (`color: 0x0c0e14` to `0x1f2433`, `roughness: 0.68–0.88`, low metalness) with high-contrast edge outlines (`#e2e8f0` / `#cbd5e1` at `0.88–1.0` opacity) while keeping the dual spinning fans.
-11. **Security Audit & Fixes (`server.js`, `vercel.json`, `index.html`, `scripts/main.js`)**:
-    - Fixed directory traversal (`../`) and dotfile exposure (`.git`, `.env`) in `server.js` using `path.resolve` + `path.relative` boundary validation.
-    - Wrapped `decodeURIComponent` in `try/catch` and blocked null bytes (`\0`) in `server.js` to prevent `URIError` DoS crashes on malformed URLs.
-    - Replaced wildcard CORS (`Access-Control-Allow-Origin: *`) in `vercel.json` and `server.js` with `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy`.
-    - Replaced inline `onerror="..."` HTML attribute injection with programmatic `addEventListener('error', ...)` and enforced `rel="noopener noreferrer"` and `referrerpolicy="no-referrer"` across external resources.
+1. **1.7 Seconds Faster Initial Loading Screen (`scripts/main.js`, `styles/main.css`)**:
+   - Reduced the loader tick interval from `36ms` (`~4.05s` total) down to `20ms` (`100 × 20ms = 2.0s` + `0.35s` hold = **`2.35s` total**, exactly 1.7 seconds faster).
+2. **Eliminated "See-Through / Mushed Together" Laptop Opening (`scripts/laptop3d.js`)**:
+   - Added a full-size solid opaque unibody palmrest/top-case deck (`topCasePalmrest`, `3.04 × 0.04 × 2.00`) under the keyboard and touchpad so internal components (`Motherboard`, `RAM Sticks`, `Storage`) are completely sealed inside an opaque chassis when the lid opens before disassembly begins.
+   - Added distinct vertical baseline planes (`display` at `+0.025`, `keyboard` at `0.00`, `motherboard` at `-0.14`, `storage` at `-0.26`) and `polygonOffset: true` on all matte materials so parts never Z-fight or mush together.
+3. **Fixed Laptop & Card Scroll Visibility (3/4th Vertical Hold), Closer Display Distance, True Dome Key Curvature & Continuous Right-to-Left Rotation (`styles/main.css`, `scripts/laptop3d.js`, `scripts/main.js`)**:
+   - **Scroll Visibility & 3/4th Vertical Hold**: Restored `.laptop-intro-stage` to `122vh` to match `margin-top: -100vh` on `.laptop-stages-container` so *About Me* never scrolls off early before the sticky viewport locks. Made each `.laptop-stage` `135vh` tall with `position: sticky; top: 15vh;` on `.stage-bento-panel` so *About Me* and all subsequent cards remain locked and clearly visible in the lower/middle 3/4ths of the screen until the stage ends.
+   - **Closer Display Distance**: Reduced the Display vertical disassembly offset from `1.18` down to `0.52` (`display.position.set(0, 0.025 + spread * 0.52, -1.00 - spread * 0.14)`) so the lid stays tight and cohesive with the rest of the laptop.
+   - **Keyboard Keys Follow Dome Curvature**: Applied true surface-normal tangent rotations (`mesh.rotation.x = +nz * keyDomeFactor * 0.58`, `mesh.rotation.z = -nx * keyDomeFactor * 0.52`) so the 44 keycaps tilt outward along the 3D dome's curvature rather than staying upright.
+   - **Continuous Unidirectional Rotation (Right Side → Left Side)**: Set `root.rotation.y = 0.62 - progress * 1.20` so the laptop starts facing the **right side** (`+0.62 rad`) and rotates continuously in one single direction to face the **left side** (`-0.58 rad`) at completion without ever reversing direction midway.
+4. **Fixed *Hobbies & Aspirations* (`#section-reel`) Scroll Timing & First Card Visibility (`scripts/main.js`, `styles/main.css`)**:
+   - Changed the ScrollTrigger start from `'top 65%'` back to `'top top'` so the reel does not start moving before the section pins.
+   - Added a `15%` initial stationary hold (`holdEnd = 0.15`, `shiftX = 0`) while Card `01A` (*Building Human Connections*) lights up at `progress >= 0.02`, giving Card `01A` full visibility before the film strip glides horizontally across Cards `02A`–`08A`.
+5. **Centered, Larger & Bolder *"If it doesn't challenge you, it won't change you."* Quote Between *Languages I Know* and *Courses & Achievements* (`scripts/main.js`, `styles/main.css`)**:
+   - Placed the quote in a full-width centered interlude stage (`.challenge-quote-interlude`, `width: 100%`, `justify-content: center`) directly between the *Languages I Know* stage and the *Courses & Achievements* stage, and increased its font size and weight to `clamp(1.5rem, 2.5vw, 2.2rem)` and `font-weight: 600`.
 
 ---
 
@@ -467,7 +452,7 @@ export const PORTFOLIO_DATA = {
 ```css
 :root {
   --bg-dark: #09090d;
-  --bg-panel: rgba(15, 16, 22, 0.86);
+  --bg-panel: rgba(15, 16, 22, 0.88);
   --text-main: #f4f1ea;
   --text-muted: #9ca3af;
   --border-subtle: rgba(244, 241, 234, 0.12);
@@ -483,7 +468,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN (No Name, ~4.1s Smooth Duration)
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total — 1.7s Faster than v6)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -493,7 +478,7 @@ body.is-loading { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.95s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.7s ease;
+  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.6s ease;
 }
 
 .loader-overlay.loaded {
@@ -539,7 +524,7 @@ body.is-loading { overflow: hidden; }
   width: 0%;
   height: 100%;
   background: #f4f1ea;
-  transition: width 0.06s linear;
+  transition: width 0.04s linear;
 }
 
 .grain-overlay {
@@ -714,7 +699,7 @@ body.is-loading { overflow: hidden; }
    PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 3.6rem 5vw;
+  padding: 3.4rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -723,14 +708,14 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
-/* Halved space after the first quote without breaking scroll animations */
+/* Compact spacing after the first quote so the 3D laptop appears right away */
 .quote-interlude.first-quote-interlude {
-  padding: 2.2rem 5vw 0.4rem;
+  padding: 1.8rem 5vw 0.5rem;
 }
 
-/* Remove majority of space beneath the Helen Keller quote */
+/* Minimal space beneath the Helen Keller quote */
 .quote-interlude.helen-keller-quote {
-  padding: 3rem 5vw 0.25rem;
+  padding: 2.8rem 5vw 0.2rem;
 }
 
 .quote-frame {
@@ -739,7 +724,7 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   gap: clamp(0.85rem, 2vw, 1.65rem);
   max-width: 820px;
-  padding: 0.6rem 1.5rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .quote-leaf {
@@ -782,7 +767,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   2. 3D LAPTOP DISASSEMBLY SECTION
+   2. 3D LAPTOP DISASSEMBLY SECTION (Proper Sticky Visibility & 3/4th Hold)
    ========================================================================== */
 .laptop-section {
   position: relative;
@@ -989,38 +974,36 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Halved Opening Lead-In Stage so there isn't excessive space after the first quote */
+/* Lead-in stage MUST be >= 115vh because margin-top is -100vh:
+   First 100vh overlaps the initial sticky viewport right below Quote 1 (so zero blank space after Quote 1!),
+   and the remaining 22vh lets the pinned laptop open & glide left BEFORE About Me enters! */
 .laptop-stage.laptop-intro-stage {
-  min-height: 55vh;
+  min-height: 122vh;
   pointer-events: none;
 }
 
+/* Each content stage holds its card comfortably in the viewport through at least 3/4ths of the stage scroll */
 .laptop-stage {
-  min-height: 100vh;
+  min-height: 135vh;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: center;
-  padding: 3rem 4.5vw;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  padding: 12vh 4.5vw 20vh;
 }
 
-/* Shorter, well-proportioned height for Languages I Know stage */
 .laptop-stage.compact-stage {
-  min-height: 76vh;
-  padding: 1.75rem 4.5vw;
+  min-height: 115vh;
+  padding: 12vh 4.5vw 16vh;
 }
 
-/* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
-.laptop-stage.final-disassembly-hold {
-  min-height: 108vh;
-  pointer-events: none;
-}
-
+/* Sticky behavior on each card so it stays locked in the lower 3/4ths of the screen while its stage scrolls! */
 .stage-bento-panel {
+  position: sticky;
+  top: 15vh;
   pointer-events: auto;
   width: min(50vw, 660px);
-  padding: 2.3rem;
+  padding: 2.25rem;
   border-radius: 22px;
   background: var(--bg-panel);
   backdrop-filter: blur(20px);
@@ -1029,22 +1012,61 @@ body.is-loading { overflow: hidden; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.2rem;
+  gap: 1.15rem;
 }
 
 .stage-bento-panel.compact-panel {
+  top: 18vh;
   padding: 1.7rem 2.05rem;
   gap: 0.9rem;
 }
 
-/* Standalone Quote Outside the Languages I Know Card */
-.stage-outside-quote-wrap {
-  width: min(50vw, 660px);
+/* Centered, Bold, Prominent Quote Between Languages I Know and Courses & Achievements */
+.challenge-quote-interlude {
+  width: 100%;
+  min-height: 46vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
-  padding: 0.6rem 1rem;
+  padding: 3rem 5vw;
+  pointer-events: none;
+}
+
+.challenge-quote-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2.2vw, 1.85rem);
+  padding: 1.35rem 2.25rem;
+  border-radius: 999px;
+  background: rgba(9, 9, 13, 0.78);
+  border: 1px solid rgba(245, 158, 11, 0.32);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+}
+
+.challenge-leaf {
+  width: clamp(38px, 4.5vw, 54px);
+  height: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px rgba(110, 231, 183, 0.25));
+}
+
+.challenge-quote-text {
+  font-family: var(--font-philo);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
+.laptop-stage.final-disassembly-hold {
+  min-height: 112vh;
   pointer-events: none;
 }
 
@@ -1224,23 +1246,6 @@ body.is-loading { overflow: hidden; }
   border: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
-.mini-leaf {
-  width: 28px;
-  height: auto;
-  opacity: 0.8;
-  flex-shrink: 0;
-}
-
-.stage-mini-quote {
-  font-family: var(--font-philo);
-  font-style: italic;
-  font-weight: 300;
-  font-size: 1.15rem;
-  letter-spacing: 0.03em;
-  color: #d6d3cd;
-  text-align: center;
-}
-
 .skill-groups-wrap {
   display: flex;
   flex-direction: column;
@@ -1289,7 +1294,7 @@ body.is-loading { overflow: hidden; }
    ========================================================================== */
 .reel-scroll-section {
   position: relative;
-  height: 360vh;
+  height: 380vh;
   z-index: 5;
 }
 
@@ -1376,7 +1381,7 @@ body.is-loading { overflow: hidden; }
 .reel-track {
   display: flex;
   gap: 2.1rem;
-  padding: 1.4rem 10vw;
+  padding: 1.4rem 8vw;
   min-width: max-content;
 }
 
@@ -1470,7 +1475,7 @@ body.is-loading { overflow: hidden; }
 }
 
 .projects-section {
-  padding: 0.9rem 4.5vw 7rem;
+  padding: 0.8rem 4.5vw 7rem;
   position: relative;
   z-index: 50;
   overflow: visible;
@@ -1523,13 +1528,11 @@ body.is-loading { overflow: hidden; }
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  /* Steeper 3D angle like books/plates in the template repository */
   transform: translate3d(0px, 0px, 0px) rotateY(-40deg) rotateX(4deg) scale(0.92);
   transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, filter 0.45s ease, opacity 0.45s ease;
   box-shadow: -22px 16px 42px rgba(0, 0, 0, 0.82);
 }
 
-/* When hovered, the card moves forward in 3D and translates to the exact horizontal center of the viewport! */
 .stack-card.is-centered {
   transform: translate3d(var(--center-shift, 0px), -16px, 220px) rotateY(0deg) rotateX(0deg) scale(1.08);
   box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 48px rgba(16, 185, 129, 0.32);
@@ -1537,7 +1540,6 @@ body.is-loading { overflow: hidden; }
   opacity: 1 !important;
 }
 
-/* Other tabs blur out and part away when a card is focused in the center */
 .stack-card.blurred-left {
   transform: translate3d(-150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
   filter: blur(6px) brightness(0.42);
@@ -1550,7 +1552,6 @@ body.is-loading { overflow: hidden; }
   opacity: 0.55;
 }
 
-/* Layer 01: Active Project Card (SanitX) — Strictly contained so text never overflows when angled */
 .stack-card.active-project-card {
   background: linear-gradient(155deg, rgba(16, 32, 28, 0.98), rgba(12, 13, 19, 0.99));
   border: 1.5px solid #10b981;
@@ -1638,7 +1639,6 @@ body.is-loading { overflow: hidden; }
   overflow: hidden;
 }
 
-/* Layers 02–08: Stacked Non-Interactive Grey Photo Frame Cards with "yet to build😝" */
 .stack-card.grey-layer-card {
   background: linear-gradient(160deg, #1a1b23 0%, #111218 100%);
   border: 1px solid rgba(255, 255, 255, 0.13);
@@ -1679,7 +1679,6 @@ body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
    5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION
-      (Longer Stream, ~6s Slow Cadence, No Intro Fluff, No Buttons, No Phone)
    ========================================================================== */
 .dark-to-white-transition {
   width: 100%;
@@ -1801,7 +1800,7 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel, .stage-outside-quote-wrap { width: 92vw; }
+  .stage-bento-panel { width: 92vw; }
   .part-link-callout { display: none; }
   .stack-card-slot { margin: 0 -100px; }
   .stack-card { width: 265px; height: 445px; }
@@ -1814,7 +1813,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 1.55, 6.2);
-  camera.lookAt(0, 0.12, 0);
+  camera.lookAt(0, 0.08, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1822,46 +1821,64 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.22;
 
-  // Directional Studio Lighting for Deep Matte Finish + Crisp 3D Silhouette
-  const ambient = new THREE.AmbientLight(0xffffff, 0.9);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.1);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.92);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.15);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.7);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.75);
   rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x475569, 1.0);
+  const bottomFill = new THREE.DirectionalLight(0x475569, 1.05);
   bottomFill.position.set(0, -5, 4);
-  const accentLight = new THREE.PointLight(0x38bdf8, 1.8, 16);
+  const accentLight = new THREE.PointLight(0x38bdf8, 1.85, 16);
   accentLight.position.set(-2.0, 2.2, 4.2);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
   root.position.set(0, -0.08, 0);
-  root.rotation.set(0.24, 0.28, 0);
+  // Starts facing the RIGHT side (+0.62 rad) and rotates continuously in one direction to the LEFT side (-0.58 rad)
+  root.rotation.set(0.24, 0.62, 0);
   scene.add(root);
 
-  // Darker, Deep Matte Stealth Carbon / Obsidian Materials (High Roughness, Low Metalness)
-  const matOuterChassis = new THREE.MeshStandardMaterial({ color: 0x161820, metalness: 0.22, roughness: 0.82 });
-  const matBezel = new THREE.MeshStandardMaterial({ color: 0x0d0f14, metalness: 0.15, roughness: 0.85 });
-  const matScreenPanel = new THREE.MeshStandardMaterial({ color: 0x0b101d, emissive: 0x172554, emissiveIntensity: 0.45, roughness: 0.35 });
-  const matMotherboardPcb = new THREE.MeshStandardMaterial({ color: 0x11141c, metalness: 0.25, roughness: 0.78 });
-  const matCpuPackage = new THREE.MeshStandardMaterial({ color: 0x262b38, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.45, roughness: 0.55 });
-  const matCopperPipe = new THREE.MeshStandardMaterial({ color: 0x92400e, emissive: 0x451a03, emissiveIntensity: 0.2, metalness: 0.55, roughness: 0.48 });
-  const matGoldContacts = new THREE.MeshStandardMaterial({ color: 0xd97706, emissive: 0x92400e, emissiveIntensity: 0.25, metalness: 0.65, roughness: 0.4 });
-  const matKeyDeck = new THREE.MeshStandardMaterial({ color: 0x141720, metalness: 0.2, roughness: 0.84 });
-  const matKeyCap = new THREE.MeshStandardMaterial({ color: 0x0c0e14, metalness: 0.12, roughness: 0.88 });
-  const matRamSpreader = new THREE.MeshStandardMaterial({ color: 0x181c26, emissive: 0x0f172a, emissiveIntensity: 0.25, metalness: 0.35, roughness: 0.72 });
-  const matRamChip = new THREE.MeshStandardMaterial({ color: 0x0b0d12, metalness: 0.2, roughness: 0.82 });
-  const matStoragePcb = new THREE.MeshStandardMaterial({ color: 0x131722, metalness: 0.28, roughness: 0.76 });
-  const matStorageSink = new THREE.MeshStandardMaterial({ color: 0x1f2433, metalness: 0.38, roughness: 0.68 });
-  const matTouchpadSurface = new THREE.MeshStandardMaterial({ color: 0x171a24, emissive: 0x1e293b, emissiveIntensity: 0.32, roughness: 0.65, metalness: 0.25 });
+  // Opaque Deep Matte Stealth Carbon Materials with polygonOffset so solid surfaces NEVER look see-through or Z-fight!
+  function makeMatteMaterial(opts) {
+    return new THREE.MeshStandardMaterial({
+      ...opts,
+      transparent: false,
+      depthWrite: true,
+      depthTest: true,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1
+    });
+  }
+
+  const matOuterChassis = makeMatteMaterial({ color: 0x151821, metalness: 0.22, roughness: 0.82 });
+  const matBezel = makeMatteMaterial({ color: 0x0c0e14, metalness: 0.15, roughness: 0.86 });
+  const matScreenPanel = makeMatteMaterial({ color: 0x0a0f1d, emissive: 0x172554, emissiveIntensity: 0.45, roughness: 0.38 });
+  const matMotherboardPcb = makeMatteMaterial({ color: 0x10141d, metalness: 0.25, roughness: 0.78 });
+  const matCpuPackage = makeMatteMaterial({ color: 0x252a38, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.45, roughness: 0.55 });
+  const matCopperPipe = makeMatteMaterial({ color: 0x92400e, emissive: 0x451a03, emissiveIntensity: 0.2, metalness: 0.55, roughness: 0.48 });
+  const matGoldContacts = makeMatteMaterial({ color: 0xd97706, emissive: 0x92400e, emissiveIntensity: 0.25, metalness: 0.65, roughness: 0.4 });
+  const matKeyDeck = makeMatteMaterial({ color: 0x141720, metalness: 0.2, roughness: 0.84 });
+  const matKeyCap = makeMatteMaterial({ color: 0x0b0d13, metalness: 0.12, roughness: 0.88 });
+  const matRamSpreader = makeMatteMaterial({ color: 0x181c26, emissive: 0x0f172a, emissiveIntensity: 0.25, metalness: 0.35, roughness: 0.72 });
+  const matRamChip = makeMatteMaterial({ color: 0x0a0c10, metalness: 0.2, roughness: 0.82 });
+  const matStoragePcb = makeMatteMaterial({ color: 0x121622, metalness: 0.28, roughness: 0.76 });
+  const matStorageSink = makeMatteMaterial({ color: 0x1e2332, metalness: 0.38, roughness: 0.68 });
+  const matTouchpadSurface = makeMatteMaterial({ color: 0x161a24, emissive: 0x1e293b, emissiveIntensity: 0.32, roughness: 0.65, metalness: 0.25 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
 
-  // Sharper, Higher-Contrast Edge Outlines so Every Part Looks Strongly 3D
-  function addCrispEdges(mesh, partKey, edgeColor = 0xcbd5e1, opacity = 0.88) {
+  function addCrispEdges(mesh, partKey, edgeColor = 0xcbd5e1, baseOpacity = 0.88) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
-    const lineMat = new THREE.LineBasicMaterial({ color: edgeColor, transparent: true, opacity });
+    const lineMat = new THREE.LineBasicMaterial({
+      color: edgeColor,
+      transparent: true,
+      opacity: baseOpacity,
+      depthTest: true,
+      depthWrite: false
+    });
+    lineMat.userData = { baseOpacity };
     const line = new THREE.LineSegments(edges, lineMat);
     mesh.add(line);
     if (!partEdgeLines[partKey]) partEdgeLines[partKey] = [];
@@ -1869,23 +1886,22 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   // =========================================================================
-  // 1. DISPLAY (Mathematically Flush-Closed at progress = 0: rests at y = 0.00)
+  // 1. DISPLAY (Stays much closer to the laptop during disassembly!)
+  //    Base y = +0.025, z = -1.00
   // =========================================================================
   const display = new THREE.Group();
-  // Rear hinge pivot sits on the exact top-rear edge of the base (y = 0.00, z = -1.00)
-  display.position.set(0, 0.00, -1.00);
+  display.position.set(0, 0.025, -1.00);
 
   const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.06), matOuterChassis);
-  // Offset z = -0.03 so when rotated +90 deg (Math.PI / 2), bottom face rests flush at y = 0.00!
   lidMesh.position.set(0, 1.00, -0.03);
-  addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.92);
+  addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.94);
 
   const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.88), matBezel);
   bezelMesh.position.set(0, 1.00, 0.002);
 
   const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.70), matScreenPanel);
   lcdMesh.position.set(0, 1.00, 0.004);
-  addCrispEdges(lcdMesh, 'display', 0x94a3b8, 0.75);
+  addCrispEdges(lcdMesh, 'display', 0x94a3b8, 0.78);
 
   const uiBarMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.38 });
   for (let i = 0; i < 5; i++) {
@@ -1898,7 +1914,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 16), matOuterChassis);
   hingeL.rotation.z = Math.PI / 2;
   hingeL.position.set(-0.85, 0, -0.03);
-  addCrispEdges(hingeL, 'display', 0x94a3b8, 0.7);
+  addCrispEdges(hingeL, 'display', 0x94a3b8, 0.72);
   const hingeR = hingeL.clone();
   hingeR.position.set(0.85, 0, -0.03);
 
@@ -1907,42 +1923,84 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. MOTHERBOARD (Embedded Flat PCB Line Wiring + Dual Spinning Fans + VRM — No 3D Tube Wires)
+  // 2. KEYBOARD & FULL OPAQUE TOP-CASE PALMREST DECK
+  //    (Covers 3.04 x 2.00 so internal parts are NEVER seen through the deck when opening!)
+  // =========================================================================
+  const keyboard = new THREE.Group();
+  // Full-size opaque palmrest / top-case deck plate sealing the top of the laptop base
+  const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.04, 2.00), matOuterChassis);
+  topCasePalmrest.position.set(0, -0.005, 0);
+  addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.9);
+  keyboard.add(topCasePalmrest);
+
+  const keyWellPlate = new THREE.Mesh(new THREE.BoxGeometry(2.68, 0.02, 1.12), matKeyDeck);
+  keyWellPlate.position.set(0, 0.012, -0.18);
+  addCrispEdges(keyWellPlate, 'keyboard', 0x94a3b8, 0.8);
+  keyboard.add(keyWellPlate);
+
+  const domeKeys = [];
+  const rows = 4;
+  const cols = 11;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.034, 0.185), matKeyCap);
+      const baseX = -1.0 + c * 0.2;
+      const baseY = 0.024;
+      const baseZ = -0.54 + r * 0.24;
+      key.position.set(baseX, baseY, baseZ);
+      addCrispEdges(key, 'keyboard', 0xcbd5e1, 0.82);
+      keyboard.add(key);
+
+      // Normalized (-1..1) coordinates for true spherical dome curvature & surface normal tilt
+      const nx = (c - (cols - 1) / 2) / ((cols - 1) / 2);
+      const nz = (r - (rows - 1) / 2) / ((rows - 1) / 2);
+      const rSq = nx * nx * 0.65 + nz * nz * 0.65;
+      const domeHeight = Math.max(0, 1 - rSq);
+      domeKeys.push({ mesh: key, baseX, baseY, baseZ, nx, nz, domeHeight });
+    }
+  }
+  const keyboardAnchor = new THREE.Object3D();
+  keyboardAnchor.position.set(0, 0.15, -0.18);
+  keyboard.add(keyboardAnchor);
+
+  // =========================================================================
+  // 3. MOTHERBOARD (Separated cleanly below the keyboard at y = -0.14 so parts never mush together!)
   // =========================================================================
   const motherboard = new THREE.Group();
+  motherboard.position.set(0, -0.14, 0);
+
   const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.045, 1.58), matMotherboardPcb);
   addCrispEdges(pcb, 'motherboard', 0xcbd5e1, 0.92);
   motherboard.add(pcb);
 
-  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.055, 0.76), matOuterChassis);
+  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.05, 0.76), matOuterChassis);
   cpuSocket.position.set(0, 0.025, -0.08);
   addCrispEdges(cpuSocket, 'motherboard', 0x94a3b8, 0.8);
-  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.075, 0.54), matCpuPackage);
-  cpuDie.position.set(0, 0.04, -0.08);
+  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.07, 0.54), matCpuPackage);
+  cpuDie.position.set(0, 0.038, -0.08);
   addCrispEdges(cpuDie, 'motherboard', 0xf8fafc, 0.96);
   motherboard.add(cpuSocket, cpuDie);
 
-  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.028, 0.11), matCopperPipe);
-  pipe1.position.set(0, 0.048, -0.42);
-  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.028, 0.08), matCopperPipe);
-  pipe2.position.set(0, 0.048, -0.26);
+  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.026, 0.11), matCopperPipe);
+  pipe1.position.set(0, 0.045, -0.42);
+  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.026, 0.08), matCopperPipe);
+  pipe2.position.set(0, 0.045, -0.26);
   addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.85);
   addCrispEdges(pipe2, 'motherboard', 0xf59e0b, 0.75);
   motherboard.add(pipe1, pipe2);
 
-  // Dual Multi-Blade Cooling Fans (Kept and highlighted with crisp outlines)
   function createCoolingFan(xPos) {
     const fanGroup = new THREE.Group();
-    fanGroup.position.set(xPos, 0.036, -0.38);
-    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.048, 24), matOuterChassis);
+    fanGroup.position.set(xPos, 0.035, -0.38);
+    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.045, 24), matOuterChassis);
     addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.9);
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.058, 16), matCpuPackage);
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.055, 16), matCpuPackage);
     addCrispEdges(hub, 'motherboard', 0xcbd5e1, 0.85);
     fanGroup.add(shroud, hub);
     for (let b = 0; b < 8; b++) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.032, 0.032), matKeyCap);
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.03, 0.03), matKeyCap);
       const angle = (b / 8) * Math.PI * 2;
-      blade.position.set(Math.cos(angle) * 0.18, 0.012, Math.sin(angle) * 0.18);
+      blade.position.set(Math.cos(angle) * 0.18, 0.01, Math.sin(angle) * 0.18);
       blade.rotation.y = -angle + 0.4;
       addCrispEdges(blade, 'motherboard', 0x94a3b8, 0.65);
       fanGroup.add(blade);
@@ -1954,43 +2012,43 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   motherboard.add(fanL, fanR);
 
   for (let v = 0; v < 6; v++) {
-    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.06, 0.11), matStorageSink);
-    vrm.position.set(-0.38 + v * 0.15, 0.035, -0.62);
+    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.055, 0.11), matStorageSink);
+    vrm.position.set(-0.38 + v * 0.15, 0.032, -0.62);
     addCrispEdges(vrm, 'motherboard', 0xcbd5e1, 0.8);
     motherboard.add(vrm);
   }
   for (let c = 0; c < 5; c++) {
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.06, 12), matGoldContacts);
-    cap.position.set(-1.12, 0.035, -0.2 + c * 0.16);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.055, 12), matGoldContacts);
+    cap.position.set(-1.12, 0.032, -0.2 + c * 0.16);
     addCrispEdges(cap, 'motherboard', 0xf59e0b, 0.75);
     motherboard.add(cap);
   }
 
-  // Embedded Flat PCB Line Wiring Traces Coming Out of the Logic Core on the Motherboard
+  // Embedded Flat PCB Line Wiring Traces
   const tracePoints = [];
   const traceCoords = [
-    [-1.15, 0.026, 0.56, -0.38, 0.026, 0.56],
-    [-0.38, 0.026, 0.56, -0.14, 0.026, 0.24],
-    [1.15, 0.026, 0.56, 0.38, 0.026, 0.56],
-    [0.38, 0.026, 0.56, 0.14, 0.026, 0.24],
-    [-1.05, 0.026, 0.42, -0.32, 0.026, 0.42],
-    [-0.32, 0.026, 0.42, -0.08, 0.026, 0.22],
-    [1.05, 0.026, 0.42, 0.32, 0.026, 0.42],
-    [0.32, 0.026, 0.42, 0.08, 0.026, 0.22],
-    [-0.95, 0.026, 0.28, -0.35, 0.026, 0.28],
-    [0.95, 0.026, 0.28, 0.35, 0.026, 0.28],
-    [-0.32, 0.026, 0.68, 0.32, 0.026, 0.68],
-    [-0.62, 0.026, -0.08, -0.38, 0.026, -0.08],
-    [0.38, 0.026, -0.08, 0.62, 0.026, -0.08],
-    [0, 0.026, 0.24, 0, 0.026, 0.72],
-    [-0.18, 0.026, -0.46, -0.18, 0.026, -0.72],
-    [0.18, 0.026, -0.46, 0.18, 0.026, -0.72]
+    [-1.15, 0.025, 0.56, -0.38, 0.025, 0.56],
+    [-0.38, 0.025, 0.56, -0.14, 0.025, 0.24],
+    [1.15, 0.025, 0.56, 0.38, 0.025, 0.56],
+    [0.38, 0.025, 0.56, 0.14, 0.025, 0.24],
+    [-1.05, 0.025, 0.42, -0.32, 0.025, 0.42],
+    [-0.32, 0.025, 0.42, -0.08, 0.025, 0.22],
+    [1.05, 0.025, 0.42, 0.32, 0.025, 0.42],
+    [0.32, 0.025, 0.42, 0.08, 0.025, 0.22],
+    [-0.95, 0.025, 0.28, -0.35, 0.025, 0.28],
+    [0.95, 0.025, 0.28, 0.35, 0.025, 0.28],
+    [-0.32, 0.025, 0.68, 0.32, 0.025, 0.68],
+    [-0.62, 0.025, -0.08, -0.38, 0.025, -0.08],
+    [0.38, 0.025, -0.08, 0.62, 0.025, -0.08],
+    [0, 0.025, 0.24, 0, 0.025, 0.72],
+    [-0.18, 0.025, -0.46, -0.18, 0.025, -0.72],
+    [0.18, 0.025, -0.46, 0.18, 0.025, -0.72]
   ];
   traceCoords.forEach(([x1, y1, z1, x2, y2, z2]) => {
     tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
   });
   const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
-  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.88 });
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.88, depthTest: true });
   motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
 
   const motherboardAnchor = new THREE.Object3D();
@@ -1998,40 +2056,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   motherboard.add(motherboardAnchor);
 
   // =========================================================================
-  // 3. KEYBOARD (With Futuristic Curved Dome Keycap Pop-Out During Disassembly!)
-  // =========================================================================
-  const keyboard = new THREE.Group();
-  const deckPlate = new THREE.Mesh(new THREE.BoxGeometry(2.72, 0.03, 1.18), matKeyDeck);
-  deckPlate.position.set(0, 0.02, -0.14);
-  addCrispEdges(deckPlate, 'keyboard', 0xcbd5e1, 0.9);
-  keyboard.add(deckPlate);
-
-  const domeKeys = [];
-  const rows = 4;
-  const cols = 11;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.036, 0.185), matKeyCap);
-      const baseX = -1.0 + c * 0.2;
-      const baseY = 0.042;
-      const baseZ = -0.50 + r * 0.24;
-      key.position.set(baseX, baseY, baseZ);
-      addCrispEdges(key, 'keyboard', 0x94a3b8, 0.78);
-      keyboard.add(key);
-
-      // Normalized (-1..1) coordinates for curved dome elevation & outward fan
-      const nx = (c - (cols - 1) / 2) / ((cols - 1) / 2);
-      const nz = (r - (rows - 1) / 2) / ((rows - 1) / 2);
-      const domeHeight = Math.max(0, 1 - (nx * nx * 0.62 + nz * nz * 0.62));
-      domeKeys.push({ mesh: key, baseX, baseY, baseZ, nx, nz, domeHeight });
-    }
-  }
-  const keyboardAnchor = new THREE.Object3D();
-  keyboardAnchor.position.set(0, 0.18, -0.14);
-  keyboard.add(keyboardAnchor);
-
-  // =========================================================================
-  // 4. RAM STICKS (Dual DDR5 Modules that Visibly Slide Out While Scrolling)
+  // 4. RAM STICKS (Seated on Motherboard plane and slide outward cleanly)
   // =========================================================================
   const ram = new THREE.Group();
   function createRamStick(side) {
@@ -2054,8 +2079,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
   const ramL = createRamStick(-1);
   const ramR = createRamStick(1);
-  ramL.position.set(-0.62, 0.02, 0.22);
-  ramR.position.set(0.62, 0.02, 0.22);
+  ramL.position.set(-0.62, -0.10, 0.22);
+  ramR.position.set(0.62, -0.10, 0.22);
 
   const ramAnchor = new THREE.Object3D();
   ramAnchor.position.set(0, 0.04, 0);
@@ -2066,14 +2091,13 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   // 5. STORAGE (NVMe M.2 Solid-State Array & Lower Unibody Base)
   // =========================================================================
   const storage = new THREE.Group();
-  // Top face of baseMesh sits at y = 0.00 so closed lid at y = 0.00 seals 100% flush!
-  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.11, 2.00), matOuterChassis);
-  baseMesh.position.set(0, -0.055, 0);
+  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.10, 2.00), matOuterChassis);
+  baseMesh.position.set(0, -0.26, 0);
   addCrispEdges(baseMesh, 'storage', 0xe2e8f0, 0.92);
 
   function createNvmeSsd(xOffset) {
     const ssdGroup = new THREE.Group();
-    ssdGroup.position.set(xOffset, -0.03, 0.38);
+    ssdGroup.position.set(xOffset, -0.19, 0.38);
     const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.04, 0.42), matStoragePcb);
     addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.92);
     const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.06, 0.36), matStorageSink);
@@ -2087,24 +2111,24 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const ssd1 = createNvmeSsd(-0.64);
   const ssd2 = createNvmeSsd(0.64);
   const storageAnchor = new THREE.Object3D();
-  storageAnchor.position.set(0, 0.02, 0.38);
+  storageAnchor.position.set(0, -0.18, 0.38);
   storage.add(baseMesh, ssd1, ssd2, storageAnchor);
 
   // =========================================================================
-  // 6. TOUCHPAD (Detaches Forward in Unobstructed Front View with Download CV Button)
+  // 6. TOUCHPAD (Flush on front palmrest at start; detaches forward at scroll end)
   // =========================================================================
   const touchpad = new THREE.Group();
   const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.08, 0.036, 0.66),
-    new THREE.MeshStandardMaterial({ color: 0x262b38, metalness: 0.35, roughness: 0.68 })
+    new THREE.BoxGeometry(1.08, 0.028, 0.64),
+    makeMatteMaterial({ color: 0x262b38, metalness: 0.35, roughness: 0.68 })
   );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.042, 0.60), matTouchpadSurface);
-  padRim.position.set(0, 0.02, 0.60);
-  padMesh.position.set(0, 0.024, 0.60);
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.034, 0.58), matTouchpadSurface);
+  padRim.position.set(0, 0.022, 0.62);
+  padMesh.position.set(0, 0.026, 0.62);
   addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.95);
   padMesh.userData.isTouchpad = true;
   const touchpadAnchor = new THREE.Object3D();
-  touchpadAnchor.position.set(0, 0.04, 0.60);
+  touchpadAnchor.position.set(0, 0.04, 0.62);
   touchpad.add(padRim, padMesh, touchpadAnchor);
 
   const parts = { display, motherboard, keyboard, ram, touchpad, storage };
@@ -2137,12 +2161,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     root.add(group);
   });
 
-  // Start 100% flush-closed with internal boards tucked inside the sealed clamshell
+  // Start 100% closed with internal boards hidden inside the sealed body until separation begins
   display.rotation.x = Math.PI / 2;
   motherboard.visible = false;
-  keyboard.visible = false;
   ram.visible = false;
-  touchpad.visible = false;
   ssd1.visible = false;
   ssd2.visible = false;
 
@@ -2207,82 +2229,82 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     currentProgress = progress;
     currentActiveKey = activeKey;
 
-    // Phase 1 (0.00 -> 0.11): Lid opens cleanly from 100% flush-closed (Math.PI / 2) to open angle (-0.22)
-    const openRatio = Math.min(1, progress / 0.11);
+    // 1. Lid Hinge Opening (0.00 -> 0.14): Opens from closed flat (Math.PI / 2) to open viewing angle (-0.18)
+    const openRatio = Math.min(1, progress / 0.14);
     const smoothOpen = 1 - Math.pow(1 - openRatio, 2.4);
     const closedAngle = Math.PI / 2;
-    const openAngle = -0.22;
+    const openAngle = -0.18;
 
-    // Reveal internal assemblies only once the lid has hinged open enough (openRatio > 0.12) so nothing ever pokes through when closed!
-    const showInternals = openRatio > 0.12;
+    // 2. Disassembly Spread (0.11 -> 0.80): Only reveal internal boards once separation starts so they NEVER show through the solid top deck!
+    const rawSpread = Math.max(0, Math.min(1, (progress - 0.11) / 0.69));
+    const spread = 1 - Math.pow(1 - rawSpread, 1.8);
+
+    const showInternals = rawSpread > 0.02;
     motherboard.visible = showInternals;
-    keyboard.visible = showInternals;
     ram.visible = showInternals;
-    touchpad.visible = showInternals;
     ssd1.visible = showInternals;
     ssd2.visible = showInternals;
 
-    // Phase 2 (0.08 -> 0.78): Disassembly spread
-    const rawSpread = Math.max(0, Math.min(1, (progress - 0.08) / 0.70));
-    const spread = 1 - Math.pow(1 - rawSpread, 1.8);
-
-    // Smooth shift to the left as About Me arrives
-    const leftShift = Math.max(0, Math.min(1, (progress - 0.04) / 0.10));
+    // 3. Smooth shift to left as About Me arrives (0.06 -> 0.16)
+    const leftShift = Math.max(0, Math.min(1, (progress - 0.06) / 0.10));
     const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    // Phase 3 (progress >= 0.79): Touchpad detaches forward in front view
-    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.79) / 0.18));
+    // 4. Final Touchpad Detach stage (progress >= 0.81)
+    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.81) / 0.16));
 
-    // Display hinges open from (0, 0.00, -1.00) and then rises smoothly
-    display.position.set(0, spread * 1.18, -1.00 - spread * 0.38);
-    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.14) * smoothOpen;
+    // Display stays close and cohesive above the keyboard (no excessive gap!)
+    display.position.set(0, 0.025 + spread * 0.52, -1.00 - spread * 0.14);
+    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08) * smoothOpen;
 
-    // Keyboard Deck & Futuristic Curved Dome Keycap Pop-Out
-    keyboard.position.set(0, spread * 0.62, spread * 0.08);
-    const keyDomeFactor = Math.max(0, Math.min(1, (progress - 0.12) / 0.45));
+    // Keyboard Deck rises slightly while keys form a true curved 3D dome with tangent surface-normal tilts!
+    keyboard.position.set(0, spread * 0.42, spread * 0.04);
+    const keyDomeFactor = Math.max(0, Math.min(1, (progress - 0.14) / 0.45));
     domeKeys.forEach(({ mesh, baseX, baseY, baseZ, nx, nz, domeHeight }) => {
       mesh.position.set(
-        baseX + nx * keyDomeFactor * 0.15,
-        baseY + keyDomeFactor * (0.08 + domeHeight * 0.28),
-        baseZ + nz * keyDomeFactor * 0.11
+        baseX + nx * keyDomeFactor * 0.18,
+        baseY + keyDomeFactor * (0.06 + domeHeight * 0.36),
+        baseZ + nz * keyDomeFactor * 0.14
       );
-      mesh.rotation.x = -nz * keyDomeFactor * 0.22;
-      mesh.rotation.z = nx * keyDomeFactor * 0.18;
+      // True dome surface normal curvature: front keys (+nz) tilt forward (+X rot), right keys (+nx) tilt right (-Z rot)
+      mesh.rotation.x = nz * keyDomeFactor * 0.58;
+      mesh.rotation.z = -nx * keyDomeFactor * 0.52;
     });
 
-    // Motherboard stays cleanly separated in the center plane
-    motherboard.position.set(0, spread * 0.12, 0);
+    // Motherboard stays cleanly separated in the middle plane (y = -0.05)
+    motherboard.position.set(0, -0.14 + spread * 0.09, 0);
 
     // RAM Sticks slide/eject outward from the motherboard slots
-    const ramOut = Math.max(0, Math.min(1, (progress - 0.12) / 0.52));
-    ramL.position.set(-0.62 - ramOut * 1.18, 0.02 + spread * 0.34, 0.22 + ramOut * 0.22);
-    ramR.position.set(0.62 + ramOut * 1.18, 0.02 + spread * 0.34, 0.22 + ramOut * 0.22);
-    ramL.rotation.z = ramOut * 0.12;
-    ramR.rotation.z = -ramOut * 0.12;
+    const ramOut = Math.max(0, Math.min(1, (progress - 0.14) / 0.50));
+    ramL.position.set(-0.62 - ramOut * 1.15, -0.10 + spread * 0.14, 0.22 + ramOut * 0.18);
+    ramR.position.set(0.62 + ramOut * 1.15, -0.10 + spread * 0.14, 0.22 + ramOut * 0.18);
+    ramL.rotation.z = ramOut * 0.14;
+    ramR.rotation.z = -ramOut * 0.14;
 
-    // Storage & Lower Chassis separate downward
-    storage.position.set(0, -spread * 0.58, 0);
-    ssd1.position.y = -0.03 + spread * 0.24;
-    ssd2.position.y = -0.03 + spread * 0.24;
+    // Storage & Lower Base separate cleanly downward so there is clear air space below Motherboard
+    storage.position.set(0, -0.02 - spread * 0.52, 0);
+    ssd1.position.y = -0.19 + spread * 0.18;
+    ssd2.position.y = -0.19 + spread * 0.18;
 
-    // Touchpad stays front-and-center and detaches forward toward camera at completion
+    // Touchpad rises with keyboard and detaches forward at scroll completion
     touchpad.position.set(
-      touchpadDetach * 0.32,
-      spread * 0.28 + touchpadDetach * 0.08,
-      spread * 0.72 + touchpadDetach * 1.05
+      touchpadDetach * 0.28,
+      spread * 0.42 - touchpadDetach * 0.12,
+      spread * 0.25 + touchpadDetach * 1.15
     );
-    touchpad.rotation.x = touchpadDetach * 0.28;
+    touchpad.rotation.x = touchpadDetach * 0.26;
 
-    root.position.x = -1.32 * smoothLeft + touchpadDetach * 0.85;
-    root.position.y = -0.12;
-    root.rotation.y = 0.28 - Math.sin(progress * Math.PI) * 0.48 + touchpadDetach * 0.12;
+    // Continuous, Unidirectional Rotation:
+    // Starts facing the RIGHT side (+0.62 rad) and rotates continuously in one single direction to face the LEFT side (-0.58 rad) at the end!
+    root.position.x = -1.32 * smoothLeft + touchpadDetach * 0.78;
+    root.position.y = -0.08;
+    root.rotation.y = 0.62 - progress * 1.20;
     root.rotation.x = 0.24 + spread * 0.08;
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
     Object.entries(parts).forEach(([key, group]) => {
       const isFocused = (touchpadDetach > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && touchpadDetach <= 0.45 && key === activeKey);
-      group.scale.setScalar(isFocused ? 1.07 : 0.99);
+      group.scale.setScalar(isFocused ? 1.06 : 0.99);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
         lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
@@ -2376,15 +2398,15 @@ function runHeroTypewriter(firstName, lastName) {
           clearInterval(lastTimer);
           setTimeout(() => lastEl.classList.remove('typing'), 450);
         }
-      }, 95);
+      }, 90);
     }
-  }, 95);
+  }, 90);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Loading Screen (~4.1s total — 1 second slower than v5, no name on loader)
+  // 0. Initial Loading Screen (~2.35s total — 1.7 seconds faster than v6)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
@@ -2399,10 +2421,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 320);
-      }, 450);
+        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 280);
+      }, 350);
     }
-  }, 36);
+  }, 20);
 
   // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
@@ -2459,20 +2481,6 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     ` : '';
 
-    const outsideQuoteHtml = st.outsideQuote ? `
-      <div class="stage-outside-quote-wrap">
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
-          <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
-        </svg>
-        <blockquote class="stage-mini-quote">“${st.outsideQuote}”</blockquote>
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
-          <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
-        </svg>
-      </div>
-    ` : '';
-
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
         <span class="skill-group-label" style="color:${g.color}">${g.label}</span>
@@ -2497,8 +2505,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>
-      ${outsideQuoteHtml}`;
+      </article>`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -2508,6 +2515,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
+
+    // Insert the centered, large, bold "If it doesn't challenge you..." quote block right between Languages I Know and Courses & Achievements!
+    if (st.outsideQuote) {
+      const quoteBlock = document.createElement('div');
+      quoteBlock.className = 'challenge-quote-interlude';
+      quoteBlock.innerHTML = `
+        <div class="challenge-quote-box">
+          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+          </svg>
+          <blockquote class="challenge-quote-text">“${st.outsideQuote}”</blockquote>
+          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+          </svg>
+        </div>`;
+      stagesContainer.appendChild(quoteBlock);
+    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -2545,7 +2573,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.10 && progress < 0.79) {
+      if (progress >= 0.14 && progress < 0.81) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -2555,7 +2583,7 @@ window.addEventListener('DOMContentLoaded', () => {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.79) {
+      if (progress >= 0.81) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -2567,7 +2595,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A lights up after scrolling into section!)
+  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A stays stationary first so it is clearly visible before horizontal glide!)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
@@ -2585,7 +2613,7 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Steeply Angled Horizontal Project Cards (Hovering Pulls Card to Exact Center + Blurs Website & Other Tabs!)
+  // 4. Render 8 Steeply Angled Horizontal Project Cards
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
@@ -2642,7 +2670,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const targetCard = allStackCards[targetIdx];
     if (!targetSlot || !targetCard) return;
 
-    // Calculate exact horizontal pixel delta from this slot's center to the viewport center
     const slotRect = targetSlot.getBoundingClientRect();
     const slotCenterX = slotRect.left + slotRect.width / 2;
     const viewportCenterX = window.innerWidth / 2;
@@ -2693,7 +2720,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.10) / 0.69));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.14) / 0.67));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -2709,22 +2736,25 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Cards fade in quickly upon entering and remain at full opacity (1.0) through >3/4ths of their vertical stage scroll!
     stageEls.forEach((el) => {
       const panel = el.querySelector('.stage-bento-panel');
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0.1, y: 40 },
+          { opacity: 0.15, y: 28 },
           {
             opacity: 1,
             y: 0,
-            scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: true }
+            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 62%', scrub: true }
           }
         );
       }
     });
 
-    // Scroll-Driven 35mm Camera Reel Animation (Card 01A lights up after scrolling into section: self.progress >= 0.04)
+    // Fixed ScrollTrigger Timing for 35mm Camera Reel:
+    // Pins at 'top top', holds horizontal position stationary for the first 15% of scroll so Card 01A lights up and is clearly visible,
+    // then glides smoothly across Cards 02A through 08A!
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -2732,19 +2762,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ScrollTrigger.create({
       trigger: '#section-reel',
-      start: 'top 65%',
+      start: 'top top',
       end: 'bottom bottom',
       scrub: 0.5,
       onUpdate: (self) => {
-        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 120);
-        const shiftX = -self.progress * maxShift;
+        // Hold horizontal movement at 0 for the first 15% of the pinned scroll so Card 01A is front-and-center after lighting up
+        const holdEnd = 0.15;
+        const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
+        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
+        const shiftX = -horizProgress * maxShift;
         filmStripWrapper.style.transform = `rotate(-1deg) translate3d(${shiftX}px, 0, 0)`;
 
         const totalFrames = reelFrames.length;
-        const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(self.progress * totalFrames));
+        const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(horizProgress * totalFrames));
 
         reelCards.forEach((card, i) => {
-          const threshold = 0.04 + (i / totalFrames) * 0.82;
+          const threshold = i === 0 ? 0.02 : holdEnd + ((i - 0.35) / (totalFrames - 1)) * 0.78;
           if (self.progress >= threshold) {
             card.classList.add('revealed');
           } else {
@@ -2791,7 +2824,6 @@ window.addEventListener('DOMContentLoaded', () => {
   async function startJulianGarnierChat() {
     if (contactStarted || !chatMessagesEl) return;
     contactStarted = true;
-    // 4 messages * (1150ms typing + 350ms pause) = 6000ms (~6 seconds total animation)
     for (const msg of contactMessages) {
       await showTypingThenBubble(msg, 1150, 350);
     }
@@ -2936,6 +2968,6 @@ http.createServer((req, res) => {
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
 git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js server.js vercel.json
-git commit -m "feat: implement v6 refinements and security hardening"
+git commit -m "feat: implement v7 fixes (1.7s faster loader, solid opaque laptop deck, 3/4th sticky card visibility, closer display, tangent dome keys, continuous right-to-left rotation, fixed reel timing, centered bold quote)"
 git push origin main
 ```

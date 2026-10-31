@@ -50,15 +50,15 @@ function runHeroTypewriter(firstName, lastName) {
           clearInterval(lastTimer);
           setTimeout(() => lastEl.classList.remove('typing'), 450);
         }
-      }, 95);
+      }, 90);
     }
-  }, 95);
+  }, 90);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Loading Screen (~4.1s total — 1 second slower than v5, no name on loader)
+  // 0. Initial Loading Screen (~2.35s total — 1.7 seconds faster than v6)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
@@ -73,10 +73,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 320);
-      }, 450);
+        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 280);
+      }, 350);
     }
-  }, 36);
+  }, 20);
 
   // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
@@ -133,20 +133,6 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     ` : '';
 
-    const outsideQuoteHtml = st.outsideQuote ? `
-      <div class="stage-outside-quote-wrap">
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M36 20C24 18 14 13 4 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
-          <path d="M24 17C22 11 16 9 12 10C14 15 19 17 24 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
-        </svg>
-        <blockquote class="stage-mini-quote">“${st.outsideQuote}”</blockquote>
-        <svg class="mini-leaf" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M4 20C16 18 26 13 36 4" stroke="#6ee7b7" stroke-width="1.3" stroke-linecap="round"/>
-          <path d="M16 17C18 11 24 9 28 10C26 15 21 17 16 17Z" fill="rgba(110,231,183,0.2)" stroke="#6ee7b7" stroke-width="1.1"/>
-        </svg>
-      </div>
-    ` : '';
-
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
         <span class="skill-group-label" style="color:${g.color}">${g.label}</span>
@@ -171,8 +157,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>
-      ${outsideQuoteHtml}`;
+      </article>`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -182,6 +167,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
+
+    // Insert the centered, large, bold "If it doesn't challenge you..." quote block right between Languages I Know and Courses & Achievements!
+    if (st.outsideQuote) {
+      const quoteBlock = document.createElement('div');
+      quoteBlock.className = 'challenge-quote-interlude';
+      quoteBlock.innerHTML = `
+        <div class="challenge-quote-box">
+          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+          </svg>
+          <blockquote class="challenge-quote-text">“${st.outsideQuote}”</blockquote>
+          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
+          </svg>
+        </div>`;
+      stagesContainer.appendChild(quoteBlock);
+    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -219,7 +225,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.10 && progress < 0.79) {
+      if (progress >= 0.14 && progress < 0.81) {
         calloutEl.classList.add('visible');
         const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
         const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
@@ -229,7 +235,7 @@ window.addEventListener('DOMContentLoaded', () => {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.79) {
+      if (progress >= 0.81) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -241,7 +247,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A lights up after scrolling into section!)
+  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A stays stationary first so it is clearly visible before horizontal glide!)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
@@ -259,7 +265,7 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Steeply Angled Horizontal Project Cards (Hovering Pulls Card to Exact Center + Blurs Website & Other Tabs!)
+  // 4. Render 8 Steeply Angled Horizontal Project Cards
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
@@ -316,7 +322,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const targetCard = allStackCards[targetIdx];
     if (!targetSlot || !targetCard) return;
 
-    // Calculate exact horizontal pixel delta from this slot's center to the viewport center
     const slotRect = targetSlot.getBoundingClientRect();
     const slotCenterX = slotRect.left + slotRect.width / 2;
     const viewportCenterX = window.innerWidth / 2;
@@ -367,7 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
       end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.10) / 0.69));
+        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.14) / 0.67));
         const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
         const activeStage = laptopStages[idx];
 
@@ -383,22 +388,25 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Cards fade in quickly upon entering and remain at full opacity (1.0) through >3/4ths of their vertical stage scroll!
     stageEls.forEach((el) => {
       const panel = el.querySelector('.stage-bento-panel');
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0.1, y: 40 },
+          { opacity: 0.15, y: 28 },
           {
             opacity: 1,
             y: 0,
-            scrollTrigger: { trigger: el, start: 'top 80%', end: 'top 30%', scrub: true }
+            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 62%', scrub: true }
           }
         );
       }
     });
 
-    // Scroll-Driven 35mm Camera Reel Animation (Card 01A lights up after scrolling into section: self.progress >= 0.04)
+    // Fixed ScrollTrigger Timing for 35mm Camera Reel:
+    // Pins at 'top top', holds horizontal position stationary for the first 15% of scroll so Card 01A lights up and is clearly visible,
+    // then glides smoothly across Cards 02A through 08A!
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -406,19 +414,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
     ScrollTrigger.create({
       trigger: '#section-reel',
-      start: 'top 65%',
+      start: 'top top',
       end: 'bottom bottom',
       scrub: 0.5,
       onUpdate: (self) => {
-        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 120);
-        const shiftX = -self.progress * maxShift;
+        // Hold horizontal movement at 0 for the first 15% of the pinned scroll so Card 01A is front-and-center after lighting up
+        const holdEnd = 0.15;
+        const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
+        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
+        const shiftX = -horizProgress * maxShift;
         filmStripWrapper.style.transform = `rotate(-1deg) translate3d(${shiftX}px, 0, 0)`;
 
         const totalFrames = reelFrames.length;
-        const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(self.progress * totalFrames));
+        const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(horizProgress * totalFrames));
 
         reelCards.forEach((card, i) => {
-          const threshold = 0.04 + (i / totalFrames) * 0.82;
+          const threshold = i === 0 ? 0.02 : holdEnd + ((i - 0.35) / (totalFrames - 1)) * 0.78;
           if (self.progress >= threshold) {
             card.classList.add('revealed');
           } else {
@@ -465,7 +476,6 @@ window.addEventListener('DOMContentLoaded', () => {
   async function startJulianGarnierChat() {
     if (contactStarted || !chatMessagesEl) return;
     contactStarted = true;
-    // 4 messages * (1150ms typing + 350ms pause) = 6000ms (~6 seconds total animation)
     for (const msg of contactMessages) {
       await showTypingThenBubble(msg, 1150, 350);
     }
