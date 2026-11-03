@@ -31,15 +31,15 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections — Ordered by Top-to-Bottom / Sideways Disassembly Visibility:
-  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Spoken Languages) -> 5. Storage (Courses & Achievements)
+  // 5 Core Laptop Disassembly Sections — Ordered Top-to-Bottom by Visibility:
+  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Languages) -> 5. Storage (Courses & Achievements)
   laptopStages: [
     {
       id: "about",
       partKey: "display",
       partLabel: "Display",
       title: "About Me",
-      accent: "#38bdf8",
+      accent: "#e2dfd7",
       paragraphs: [
         "Hey! I'm Suyash — a first-year CSE student at VIT Vellore who's genuinely fascinated by how things are built from the ground up. I fell into programming because I loved the idea of turning a blank screen into something real, something that actually works.",
         "Logic has always clicked with me — I'm the kind of person who needs to understand why something works before I'm satisfied with it. Whether it's a tricky algorithm or a confusing concept, I'll keep at it until it makes sense.",
@@ -73,13 +73,13 @@ export const PORTFOLIO_DATA = {
       partKey: "keyboard",
       partLabel: "Keyboard",
       title: "Technical Skills",
-      accent: "#10b981",
+      accent: "#d4a373",
       skillGroups: [
-        { label: "Programming Languages", color: "#10b981", items: ["Python", "HTML/CSS"] },
-        { label: "Currently Learning", color: "#f59e0b", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
-        { label: "Frameworks", color: "#38bdf8", items: ["Want to learn React"] },
-        { label: "Libraries", color: "#a855f7", items: ["pandas", "NumPy", "Matplotlib"] },
-        { label: "Developer Tools", color: "#f43f5e", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
+        { label: "Programming Languages", items: ["Python", "HTML/CSS"] },
+        { label: "Currently Learning", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
+        { label: "Frameworks", items: ["Want to learn React"] },
+        { label: "Libraries", items: ["pandas", "NumPy", "Matplotlib"] },
+        { label: "Developer Tools", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
       ]
     },
     {
@@ -87,7 +87,7 @@ export const PORTFOLIO_DATA = {
       partKey: "motherboard",
       partLabel: "Motherboard",
       title: "The Mission",
-      accent: "#a855f7",
+      accent: "#94a3b8",
       quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
       pillsTitle: "How I Work",
       pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
@@ -97,7 +97,7 @@ export const PORTFOLIO_DATA = {
       partKey: "ram",
       partLabel: "RAM Sticks",
       title: "",
-      accent: "#f59e0b",
+      accent: "#84a98c",
       isCompactLanguages: true,
       casualLanguagesText: "English & Hindi",
       githubUsername: "suyashcodemaster",
@@ -110,7 +110,7 @@ export const PORTFOLIO_DATA = {
       partKey: "storage",
       partLabel: "Storage",
       title: "Courses & Achievements",
-      accent: "#6366f1",
+      accent: "#cbd5e1",
       cards: [
         {
           heading: "CS50x: Introduction to Computer Science",
@@ -136,26 +136,25 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts shifted to the end: 08A)
+  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts at 08A)
   reelFrames: [
-    { frame: "01A", title: "Building Human Connections", tag: "Community", color: "#f43f5e", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
-    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", color: "#38bdf8", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
-    { frame: "03A", title: "Basketball & Sports", tag: "Sports", color: "#f59e0b", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
-    { frame: "04A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
-    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
-    { frame: "06A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
-    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
-    { frame: "08A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
+    { frame: "01A", title: "Building Human Connections", tag: "Community", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
+    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
+    { frame: "03A", title: "Basketball & Sports", tag: "Sports", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
+    { frame: "04A", title: "Finance & Markets", tag: "Finance", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
+    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
+    { frame: "06A", title: "Video Games", tag: "Gaming", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
+    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
+    { frame: "08A", title: "Martial Arts", tag: "Discipline", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
   ],
 
-  // Section 4: 6 Horizontally Stacked Project Cards (Template Repo Style: All 6 Animate on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link)
+  // Section 4: 6 Horizontally Stacked Project Cards (Minimalist Dark Resting Tabs -> Contrasting Warm Ivory Opened Card on Hover)
   projects: [
     {
       slot: "01",
       isPlaceholder: false,
       title: "SanitX",
       subtitle: "DevJams '26 Hackathon • Top 11 Finalist",
-      accent: "#10b981",
       githubUrl: "https://github.com/suyashcodemaster/SanitX",
       tech: ["Python", "FastAPI", "PyMuPDF", "Gemini API", "Next.js", "TypeScript", "Tailwind CSS"],
       bullets: [
@@ -171,7 +170,7 @@ export const PORTFOLIO_DATA = {
     { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
-  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total)
   contactMessages: [
     "Hey there 👋",
     "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",

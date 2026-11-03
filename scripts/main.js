@@ -8,7 +8,7 @@ function buildFallbackGithubChartSvg() {
   const gap = 3;
   const w = cols * (cell + gap);
   const h = rows * (cell + gap);
-  const palette = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+  const palette = ['#18191c', '#23382c', '#345943', '#568266', '#84a98c'];
   let rects = '';
   for (let c = 0; c < cols; c++) {
     for (let r = 0; r < rows; r++) {
@@ -23,7 +23,6 @@ function buildFallbackGithubChartSvg() {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
-// Non-scrollable Typewriter Effect for Landing Page Name After Loading Completes
 function runHeroTypewriter(firstName, lastName) {
   const firstEl = document.getElementById('hero-first');
   const lastEl = document.getElementById('hero-last');
@@ -91,7 +90,6 @@ window.addEventListener('DOMContentLoaded', () => {
   laptopStages.forEach((st, idx) => {
     const dot = document.createElement('div');
     dot.className = `stage-dot ${idx === 0 ? 'active' : ''}`;
-    dot.style.background = idx === 0 ? st.accent : 'rgba(255,255,255,0.2)';
     dotsContainer.appendChild(dot);
 
     const paragraphsHtml = st.paragraphs
@@ -105,7 +103,6 @@ window.addEventListener('DOMContentLoaded', () => {
         <span class="subcard-meta">${c.meta}</span>
       </div>`).join('')}</div>` : '';
 
-    // Casual, low-key mention of English & Hindi alongside GitHub Contribution Graph + Badges (No big Languages heading!)
     const compactLangHtml = st.isCompactLanguages ? `
       <div class="github-contrib-card">
         <div class="github-contrib-header">
@@ -114,7 +111,7 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="github-chart-wrap">
           <img
-            src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
+            src="https://ghchart.rshah.org/84a98c/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
             referrerpolicy="no-referrer"
@@ -131,42 +128,23 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     ` : '';
 
-    // Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes
-    const outsideQuoteHtml = st.outsideQuote ? `
-      <div class="stage-outside-quote-wrap">
-        <div class="quote-frame">
-          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-          </svg>
-          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
-          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-          </svg>
-        </div>
-      </div>
-    ` : '';
-
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
-        <span class="skill-group-label" style="color:${g.color}">${g.label}</span>
-        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill" style="--pill-color:${g.color}">${item}</span>`).join('')}</div>
+        <span class="skill-group-label">${g.label}</span>
+        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill">${item}</span>`).join('')}</div>
       </div>`).join('')}</div>` : '';
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.4rem;color:${st.accent}">${st.pillsTitle}</p>
-        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
+        <p class="mono-tag" style="margin-bottom:0.4rem">${st.pillsTitle}</p>
+        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
     section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
     section.dataset.stageIndex = String(idx);
     section.innerHTML = `
-      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
+      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}">
         <span class="stage-part-chip">${st.partLabel}</span>
         ${st.title ? `<h2 class="stage-title">${st.title}</h2>` : ''}
         ${paragraphsHtml}
@@ -175,8 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>
-      ${outsideQuoteHtml}`;
+      </article>`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -186,6 +163,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
+
+    // Centered Between the Languages/GitHub Tab and the Courses & Achievements Tab (Slightly Bigger Font Size)
+    if (st.outsideQuote) {
+      const betweenQuote = document.createElement('div');
+      betweenQuote.className = 'between-stages-quote';
+      betweenQuote.innerHTML = `
+        <div class="quote-frame">
+          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          </svg>
+          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
+          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          </svg>
+        </div>`;
+      stagesContainer.appendChild(betweenQuote);
+    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -223,17 +221,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.13 && progress < 0.82) {
+      if (progress >= 0.13 && progress < 0.81) {
         calloutEl.classList.add('visible');
-        const clampedX = Math.max(55, Math.min(window.innerWidth * 0.48, activeCoords.x));
-        const clampedY = Math.max(85, Math.min(window.innerHeight - 85, activeCoords.y));
+        const clampedX = Math.max(40, Math.min(window.innerWidth * 0.50, activeCoords.x));
+        const clampedY = Math.max(70, Math.min(window.innerHeight - 70, activeCoords.y));
         calloutEl.style.left = `${clampedX}px`;
         calloutEl.style.top = `${clampedY}px`;
       } else {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.82) {
+      if (progress >= 0.81) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -245,12 +243,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies — Martial Arts at 08A)
+  // 3. Render 35mm Camera Reel (Hobbies)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
     card.className = 'reel-card';
-    card.style.setProperty('--frame-color', rf.color);
     card.innerHTML = `
       <div class="reel-frame-meta">
         <span>Frame ${rf.frame}</span>
@@ -263,10 +260,10 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards (Template Repo Style:
-  //    All 6 Cards Animate to Center on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link!)
+  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards + Template Repo Index Tick Lines
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
+  const indexLinesContainer = document.getElementById('projects-index-lines');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
   const totalLayers = projects.length;
 
@@ -283,16 +280,15 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="stack-frame-label">PROJECT</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <!-- Resting State: Project Photo Frame with SanitX Logo (Just like Template Repo Photo Frame) -->
         <div class="project-photo-frame">
-          <svg width="92" height="92" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.14)"/>
-            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
-            <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+          <svg width="78" height="78" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#f2efe9" stroke-width="3.2" fill="rgba(242,239,233,0.06)"/>
+            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#d4a373" stroke-width="2.5"/>
+            <path d="M41 40H55M41 48H55M41 56H49" stroke="#84a98c" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
           <span class="photo-frame-title">${proj.title}</span>
         </div>
-        <!-- Hover Pop-Up State: Project Details Card + GitHub Repo Link -->
+        <!-- Contrasting Light Theme Pop-Up When Opened on Hover -->
         <div class="project-hover-popup">
           <div class="popup-header">
             <div class="stack-card-top">
@@ -301,7 +297,7 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
             <p>${proj.subtitle}</p>
           </div>
-          <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
+          <div class="popup-pills-wrap">${proj.tech.map(t => `<span class="popup-pill">${t}</span>`).join('')}</div>
           <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
           <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="popup-github-btn">
             <span>View on GitHub ↗</span>
@@ -321,10 +317,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
     slot.appendChild(card);
     projectsStack.appendChild(slot);
+
+    // Add Template Repository Index Tick Lines Beneath Each Tab
+    if (indexLinesContainer) {
+      const tickGroup = document.createElement('div');
+      tickGroup.className = 'index-tick-group';
+      tickGroup.innerHTML = `
+        <span class="index-tick"></span>
+        <span class="index-tick"></span>
+        <span class="index-tick major-tick" data-slot="${proj.slot}"></span>
+        <span class="index-tick"></span>
+        <span class="index-tick"></span>`;
+      indexLinesContainer.appendChild(tickGroup);
+    }
   });
 
   const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
+  const allMajorTicks = indexLinesContainer ? indexLinesContainer.querySelectorAll('.major-tick') : [];
 
   function focusCardToViewportCenter(targetIdx) {
     const targetSlot = allSlots[targetIdx];
@@ -340,6 +350,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
     allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
+    allMajorTicks.forEach((t, i) => t.classList.toggle('active', i === targetIdx));
 
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
@@ -358,19 +369,29 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.remove('active');
     if (projectsSection) projectsSection.classList.remove('has-focused-card');
     allSlots.forEach((s) => s.classList.remove('slot-focused'));
+    allMajorTicks.forEach((t) => t.classList.remove('active'));
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
       allSlots[i].style.zIndex = String(totalLayers - i);
     });
   }
 
-  // Bind hover animation to ALL 6 cards so every card in the stack animates to the center on hover!
+  // Hover-Intent Delay (165ms) so brushing past with the mouse never triggers an accidental pop-up!
+  let hoverIntentTimer = null;
   allSlots.forEach((slotEl, idx) => {
-    slotEl.addEventListener('pointerenter', () => focusCardToViewportCenter(idx));
-    slotEl.addEventListener('pointerleave', resetProjectStack);
+    slotEl.addEventListener('pointerenter', () => {
+      clearTimeout(hoverIntentTimer);
+      hoverIntentTimer = setTimeout(() => {
+        focusCardToViewportCenter(idx);
+      }, 165);
+    });
+    slotEl.addEventListener('pointerleave', () => {
+      clearTimeout(hoverIntentTimer);
+      resetProjectStack();
+    });
   });
 
-  // GSAP ScrollTrigger Animations with Exact Viewport-Center Card Tracking (Zero Part-Highlight Glitch!)
+  // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     const stageEls = Array.from(document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)'));
@@ -403,12 +424,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
-        calloutEl.style.setProperty('--callout-color', activeStage.accent);
         calloutPartName.textContent = activeStage.partLabel;
 
         dotEls.forEach((d, i) => {
           d.classList.toggle('active', i === idx);
-          d.style.background = i === idx ? laptopStages[i].accent : 'rgba(255,255,255,0.2)';
         });
       }
     });
@@ -444,7 +463,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
         const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
         const shiftX = -horizProgress * maxShift;
-        filmStripWrapper.style.transform = `rotate(-1deg) translate3d(${shiftX}px, 0, 0)`;
+        filmStripWrapper.style.transform = `rotate(-0.8deg) translate3d(${shiftX}px, 0, 0)`;
 
         const totalFrames = reelFrames.length;
         const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(horizProgress * totalFrames));
@@ -460,7 +479,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (reelActiveIndicator) {
           reelActiveIndicator.textContent = `Frame ${reelFrames[activeFrameIdx].frame} / 0${totalFrames}A`;
-          reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color;
         }
         if (reelProgressFill) {
           reelProgressFill.style.width = `${Math.max(0, self.progress * 100)}%`;

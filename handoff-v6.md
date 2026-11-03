@@ -1,49 +1,44 @@
-# Project Handoff Document v8.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v9.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v8.md`  
-**Version:** 8.0 (All 12 Final 3D Laptop, Scroll Sync, Casual Languages, Reel & 6-Card Template Stack Refinements Implemented)  
+**Document Name:** `handoff-v9.md`  
+**Version:** 9.0 (All 11 Final Refinements, WebGL Stability Guard & Joel Califa–Inspired Editorial Polish)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 12 Refinements in v8.0
+## 1. Summary of All 11 Fixes & Refinements in v9.0
 
-1. **Seamless Single-Body Unibody Laptop (Eliminated the "2 Slabs" Gap) (`scripts/laptop3d.js`)**:
-   - Aligned `baseMesh` (`y = -0.045`, top face at `y = 0.00`) directly flush with `topCasePalmrest` (`y = +0.015`, bottom face at `y = 0.00`) and enclosed `motherboard`, `ram`, and `ssd` inside the single unibody base when assembled (`spread = 0`) so the laptop starts and opens as one seamless unibody machine rather than two floating slabs.
-2. **Authentic Tech-Teardown Keycap Wave Cascade (`scripts/laptop3d.js`)**:
-   - Replaced the dome tilt with an Apple/iFixit-style **precision diagonal wave cascade** where the 44 scissor-switch keycaps levitate cleanly and flatly above a glowing **emerald/cyan backlit switch matrix plate** (`backlightPlate`).
-3. **Lower Laptop Position & Smaller Model + Card Proportions (`scripts/laptop3d.js`, `styles/main.css`)**:
-   - Scaled the 3D laptop to `0.76x` and lowered its screen position (`root.position.y = -0.44`, `camera.position.set(0, 1.65, 6.8)`) so it aligns horizontally with the section cards and leaves generous space around all parts and labels.
-   - Reduced `.stage-bento-panel` width to `min(41vw, 510px)` with tighter padding (`1.65rem 1.85rem`) so the cards never crowd the 3D viewport.
-4. **Linear Sideways + Vertical Exploded Echelon & Visibility-Matched Stage Order (`scripts/laptop3d.js`, `data/portfolioData.js`)**:
-   - Fanned the disassembled subsystems out **linearly sideways as well as vertically** (`Keyboard` shifts left `-0.65 * spread`, `Motherboard` shifts right `+0.38 * spread`, `RAM Sticks` slide out laterally `±1.05 * ramOut`, `Storage` steps down-right) so no part ever blocks the one beneath it.
-   - Reordered the stages to match the exact order parts become uncovered and visible:
-     1. **About Me** → `Display`
-     2. **Technical Skills** → `Keyboard` (lifts & shifts left, uncovering the Motherboard!)
-     3. **The Mission** → `Motherboard` (now 100% uncovered and spotlighted on the right!)
-     4. **GitHub & Spoken Languages** → `RAM Sticks`
-     5. **Courses & Achievements** → `Storage`
-5. **Glitch-Free Viewport-Center Part Highlight & Scroll Synchronization (`scripts/main.js`, `styles/main.css`)**:
-   - Removed conflicting CSS `position: sticky` inside `.laptop-stage` and replaced approximate scroll math with `getActiveStageIndexFromViewport()` (measuring each card's real-time `getBoundingClientRect()` distance to `window.innerHeight * 0.5`) so the active 3D part highlight, callout label, and progress dot switch in exact lockstep with the card on screen.
-6. **Original Position & Matching Philosophical Style for *"If it doesn't challenge you, it won't change you."* (`scripts/main.js`, `styles/main.css`)**:
-   - Placed the quote back in its original position directly below the Stage 4 card and styled it with the exact same `.quote-frame` and `.interlude-text` (`'Cormorant Garamond'` italic `clamp(1.12rem, 1.72vw, 1.44rem)`, `font-weight: 300`, with left/right botanical leaves) as the other three quotes.
-7. **Updated Camera Reel Heading to *"Hobbies"* & Shifted *Martial Arts* to the End (`index.html`, `data/portfolioData.js`)**:
-   - Changed the section heading from *"Hobbies & Aspirations"* to **`Hobbies`** and moved **Martial Arts** to the final frame (`08A`).
-8. **Template Repository 6-Card Photo-Frame Project Stack (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
-   - Reduced the stack from 8 cards to **6 cards (`01`–`06`)**.
-   - In its resting angled state, Card `01` displays the **SanitX Logo** inside a clean photo frame (`.project-photo-frame`) just like the template repository.
-   - Hovering **Card `01`** animates it to the center and pops up the **SanitX project card overlay** (`.project-hover-popup`) with the clickable **`View on GitHub ↗`** button (`https://github.com/suyashcodemaster/SanitX`).
-   - Made **Cards `02`–`06` (`yet to build😝`)** interactive on hover as well so hovering any of the 6 cards animates it forward to the center.
-9. **Polished Whole-Website Scroll Cadence (`scripts/main.js`, `styles/main.css`)**:
-   - Tuned `scrub: 0.45` and natural stage heights across all sections for smooth, predictable scrolling.
-10. **Casual One-Line Mention of *English & Hindi* (`scripts/main.js`, `styles/main.css`, `data/portfolioData.js`)**:
-    - Removed the big *"Languages I Know"* heading and added a casual, understated one-line footer (`Spoken Languages: English & Hindi`) inside the compact GitHub Contributions & Badges card.
-11. **Full Visibility for All Laptop Parts & Labels (`scripts/laptop3d.js`, `scripts/main.js`)**:
-    - Adjusted anchor positions and screen-space clamping so every part and callout badge remains 100% inside the left viewport.
-12. **More Exquisite, Detailed 3D Laptop & Higher Isometric Tilt (`scripts/laptop3d.js`)**:
-    - Added glowing cyan/violet LED halo rings inside the dual spinning cooling fans, a secondary GPU die alongside the CPU die, a backlit LED switch matrix under the levitating keys, a 3-bank lithium power cell array, side USB-C/Thunderbolt port cutouts, and increased forward isometric pitch (`rotation.x` up to `0.44 rad`) plus active-part `+Z` spotlight stepping so all motherboard details and fans are richly visible.
+1. **Permanent WebGL Context Loss & White-Screen Glitch Fix (`scripts/laptop3d.js`, `styles/main.css`)**:
+   - Reduced GPU draw calls by ~80% by sharing geometry buffers (`sharedKeyGeo`, `sharedBladeGeo`, `sharedVrmGeo`, `sharedChipGeo`, `sharedBatGeo`) and attaching `EdgesGeometry` only to the 14 primary structural silhouettes instead of 100+ tiny sub-meshes.
+   - Capped `devicePixelRatio` at `1.5`, paused `renderer.render()` automatically via `IntersectionObserver` whenever `#section-laptop` is off-screen, and added `webglcontextlost` / `webglcontextrestored` handlers plus a solid dark `#141518` fallback background on `.laptop-sticky-viewport`.
+2. **Upward Laptop Tilt, Upper Parts Shifted Up & Accurate *Motherboard* + *RAM Sticks* Labelling (`scripts/laptop3d.js`)**:
+   - Kept all layers aligned on the central `x = 0` axis for visual consistency.
+   - Tilted the laptop upward (`root.rotation.x = 0.24 - spread * 0.12`) while shifting the upper parts (`Display` and `Keyboard`) cleanly upward (`display.position.y = 0.03 + spread * 0.68`, `keyboard.position.y = spread * 0.44`) to open a clear window into the **Motherboard**, **RAM Sticks**, and **Storage** underneath.
+   - Anchored `motherboardAnchor` to the front-left visible edge of the Motherboard (`(-0.35, 0.035, 0.48)`) and `ramAnchor` directly to the left ejecting RAM stick (`ramL`), projecting via `canvas.getBoundingClientRect()` for pixel-accurate pointers.
+3. **Centered, Slightly Larger *"If it doesn't challenge you..."* Quote Between *Languages* and *Courses* (`scripts/main.js`, `styles/main.css`)**:
+   - Placed the quote in a full-width centered container (`.between-stages-quote`, `width: 100%`, `align-self: center`) directly between the *GitHub / Spoken Languages* stage and the *Courses & Achievements* stage, and increased its font size to `clamp(1.32rem, 2.05vw, 1.68rem)`.
+4. **Slightly Bigger Laptop Model & Section Cards (`scripts/laptop3d.js`, `styles/main.css`)**:
+   - Increased the 3D laptop scale from `0.76` to `0.88` (`root.position.y = -0.32`) and expanded `.stage-bento-panel` cards from `min(41vw, 510px)` to `min(46vw, 575px)` (`padding: 2.05rem 2.25rem`) to fill the space with balanced presence.
+5. **Black-Grey Scale Background (`styles/main.css`)**:
+   - Shifted the base background to a neutral architectural matte black-grey scale (`#141518` / `#1b1c20`).
+6. **Bigger Touchpad Attached to the Laptop & Centered at Scroll Completion (`scripts/laptop3d.js`, `styles/main.css`)**:
+   - Enlarged the Touchpad to `1.38 × 0.74` and parented it directly to the front palmrest of the `keyboard` group so it stays attached to the laptop rather than detaching far away.
+   - At scroll completion (`progress >= 0.81`), the laptop smoothly glides back to the horizontal center of the screen (`root.position.x -> 0.0`) so the enlarged Touchpad + **Download CV** button sit centered to signify the end of the animation.
+7. **Smaller, More Angled Project Tabs + Template Repo Index Tick Lines + Less Sensitive Hover (`styles/main.css`, `scripts/main.js`)**:
+   - Sized the 6 resting tabs at `clamp(210px, 20.5vw, 258px) × 345px`, angled them more steeply (`rotateY(-48deg) rotateX(6deg)`), added the template repository's architectural ruler / tick lines beneath the tabs (`#projects-index-lines`), and added a `165ms` hover-intent delay so brushing past never triggers an accidental pop-up.
+8. **Minimalist & Clean Cards + Contrasting Theme Color After Opening Project Tabs (`styles/main.css`)**:
+   - Styled all section cards and resting project tabs in a clean, minimalist monochrome dark-slate palette (`#18181b` with subtle `1px solid rgba(242, 239, 233, 0.13)` hairlines).
+   - When a project tab is hovered and enlarges in the center (`.stack-card.is-centered`), it transitions from dark slate (`#18181b`) to a contrasting **Warm Editorial Alabaster Ivory (`#f4f1ea`)** card with crisp `#141413` dark typography.
+9. **Upgraded Quote & Body Typography (`index.html`, `styles/main.css`)**:
+   - Loaded `'Newsreader'` (optical-size variable editorial serif for quotes and headings) paired with `'Plus Jakarta Sans'` (humanist geometric sans for body text) and `'JetBrains Mono'`.
+10. **3 Intentional Section Color Chapters (`index.html`, `styles/main.css`)**:
+    - Chapter 1 (*Hero & 3D Laptop*): Matte Charcoal Black-Grey (`#141518`)
+    - Chapter 2 (*Hobbies 35mm Reel & Projects*): Warm Editorial Stone-Graphite (`#201f1c`)
+    - Chapter 3 (*Contact Me*): Minimalist Warm Alabaster White (`#f5f3ed`)
+11. **Refined, Intentional Design Polish Inspired by `joelcalifa.com` (`styles/main.css`)**:
+    - Replaced competing neon borders and multi-colored pills with restrained editorial hierarchy, warm ivory/stone contrast, subtle hairline borders, and deliberate pacing.
 
 ---
 
@@ -84,15 +79,15 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections — Ordered by Top-to-Bottom / Sideways Disassembly Visibility:
-  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Spoken Languages) -> 5. Storage (Courses & Achievements)
+  // 5 Core Laptop Disassembly Sections — Ordered Top-to-Bottom by Visibility:
+  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Languages) -> 5. Storage (Courses & Achievements)
   laptopStages: [
     {
       id: "about",
       partKey: "display",
       partLabel: "Display",
       title: "About Me",
-      accent: "#38bdf8",
+      accent: "#e2dfd7",
       paragraphs: [
         "Hey! I'm Suyash — a first-year CSE student at VIT Vellore who's genuinely fascinated by how things are built from the ground up. I fell into programming because I loved the idea of turning a blank screen into something real, something that actually works.",
         "Logic has always clicked with me — I'm the kind of person who needs to understand why something works before I'm satisfied with it. Whether it's a tricky algorithm or a confusing concept, I'll keep at it until it makes sense.",
@@ -126,13 +121,13 @@ export const PORTFOLIO_DATA = {
       partKey: "keyboard",
       partLabel: "Keyboard",
       title: "Technical Skills",
-      accent: "#10b981",
+      accent: "#d4a373",
       skillGroups: [
-        { label: "Programming Languages", color: "#10b981", items: ["Python", "HTML/CSS"] },
-        { label: "Currently Learning", color: "#f59e0b", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
-        { label: "Frameworks", color: "#38bdf8", items: ["Want to learn React"] },
-        { label: "Libraries", color: "#a855f7", items: ["pandas", "NumPy", "Matplotlib"] },
-        { label: "Developer Tools", color: "#f43f5e", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
+        { label: "Programming Languages", items: ["Python", "HTML/CSS"] },
+        { label: "Currently Learning", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
+        { label: "Frameworks", items: ["Want to learn React"] },
+        { label: "Libraries", items: ["pandas", "NumPy", "Matplotlib"] },
+        { label: "Developer Tools", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
       ]
     },
     {
@@ -140,7 +135,7 @@ export const PORTFOLIO_DATA = {
       partKey: "motherboard",
       partLabel: "Motherboard",
       title: "The Mission",
-      accent: "#a855f7",
+      accent: "#94a3b8",
       quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
       pillsTitle: "How I Work",
       pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
@@ -150,7 +145,7 @@ export const PORTFOLIO_DATA = {
       partKey: "ram",
       partLabel: "RAM Sticks",
       title: "",
-      accent: "#f59e0b",
+      accent: "#84a98c",
       isCompactLanguages: true,
       casualLanguagesText: "English & Hindi",
       githubUsername: "suyashcodemaster",
@@ -163,7 +158,7 @@ export const PORTFOLIO_DATA = {
       partKey: "storage",
       partLabel: "Storage",
       title: "Courses & Achievements",
-      accent: "#6366f1",
+      accent: "#cbd5e1",
       cards: [
         {
           heading: "CS50x: Introduction to Computer Science",
@@ -189,26 +184,25 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts shifted to the end: 08A)
+  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts at 08A)
   reelFrames: [
-    { frame: "01A", title: "Building Human Connections", tag: "Community", color: "#f43f5e", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
-    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", color: "#38bdf8", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
-    { frame: "03A", title: "Basketball & Sports", tag: "Sports", color: "#f59e0b", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
-    { frame: "04A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
-    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
-    { frame: "06A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
-    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
-    { frame: "08A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
+    { frame: "01A", title: "Building Human Connections", tag: "Community", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
+    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
+    { frame: "03A", title: "Basketball & Sports", tag: "Sports", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
+    { frame: "04A", title: "Finance & Markets", tag: "Finance", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
+    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
+    { frame: "06A", title: "Video Games", tag: "Gaming", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
+    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
+    { frame: "08A", title: "Martial Arts", tag: "Discipline", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
   ],
 
-  // Section 4: 6 Horizontally Stacked Project Cards (Template Repo Style: All 6 Animate on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link)
+  // Section 4: 6 Horizontally Stacked Project Cards (Minimalist Dark Resting Tabs -> Contrasting Warm Ivory Opened Card on Hover)
   projects: [
     {
       slot: "01",
       isPlaceholder: false,
       title: "SanitX",
       subtitle: "DevJams '26 Hackathon • Top 11 Finalist",
-      accent: "#10b981",
       githubUrl: "https://github.com/suyashcodemaster/SanitX",
       tech: ["Python", "FastAPI", "PyMuPDF", "Gemini API", "Next.js", "TypeScript", "Tailwind CSS"],
       bullets: [
@@ -224,7 +218,7 @@ export const PORTFOLIO_DATA = {
     { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
-  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)
+  // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total)
   contactMessages: [
     "Hey there 👋",
     "You can reach me by email at <a href=\"mailto:sharma.suyash.in@gmail.com\">sharma.suyash.in@gmail.com ↗</a>",
@@ -245,7 +239,7 @@ export const PORTFOLIO_DATA = {
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
@@ -267,185 +261,197 @@ export const PORTFOLIO_DATA = {
     </div>
   </div>
 
-  <div class="grain-overlay" aria-hidden="true"></div>
-
   <!-- Full-Viewport Blur Backdrop when Focusing a Project Card in Center -->
   <div id="projects-focus-backdrop" class="projects-focus-backdrop" aria-hidden="true"></div>
 
-  <!-- 1. HERO SECTION (Typewriter Name Effect After Loading Completes) -->
-  <section id="section-hero" class="hero-section">
-    <div class="hero-center">
-      <h1 class="hero-title">
-        <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
-        <span class="hero-photo-frame">
-          <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
-        </span>
-        <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
-      </h1>
-    </div>
-
-    <!-- Bottom-Left Direct Jump Button -->
-    <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
-      <span class="btn-main-text">Explore Projects ↓</span>
-    </a>
-
-    <!-- Bottom-Center Scroll Prompt -->
-    <div class="hero-scroll-indicator">
-      <span class="mono-tag">Scroll</span>
-      <div class="scroll-line"><div class="scroll-pulse"></div></div>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 -->
-  <div class="quote-interlude first-quote-interlude">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “You don't have to be great to get started, but you have to get started to be great.”
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
-  <section id="section-laptop" class="laptop-section">
-    <div class="laptop-sticky-viewport">
-      <canvas id="laptop-canvas"></canvas>
-
-      <!-- Clean, Simple 3D Part Pointer -->
-      <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
-        <span class="callout-dot"></span>
-        <span class="callout-line"></span>
-        <div class="callout-badge">
-          <span id="callout-part-name" class="callout-part">Display</span>
-        </div>
+  <!-- ========================================================================
+       COLOR CHAPTER 1: MATTE CHARCOAL BLACK-GREY (#131417)
+       ======================================================================== -->
+  <div class="chapter-charcoal">
+    <!-- 1. HERO SECTION -->
+    <section id="section-hero" class="hero-section">
+      <div class="hero-center">
+        <h1 class="hero-title">
+          <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
+          <span class="hero-photo-frame">
+            <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
+          </span>
+          <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
+        </h1>
       </div>
 
-      <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
-      <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
+      <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
+        <span class="btn-main-text">Explore Projects ↓</span>
+      </a>
 
-      <!-- Detached 3D Touchpad "Download CV" Button -->
-      <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
-        <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
-          <span class="touchpad-btn-dot"></span>
-          <span>Download CV</span>
-        </a>
+      <div class="hero-scroll-indicator">
+        <span class="mono-tag">Scroll</span>
+        <div class="scroll-line"><div class="scroll-pulse"></div></div>
       </div>
+    </section>
 
-      <div class="stage-progress-bar">
-        <div id="stage-dots" class="stage-dots"></div>
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 -->
+    <div class="quote-interlude first-quote-interlude">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “You don't have to be great to get started, but you have to get started to be great.”
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
       </div>
     </div>
 
-    <!-- Scroll Stages: Seamless Closed-to-Open Lead-In -> 5 Visibility-Ordered Stages -> Final Detached Touchpad Hold -->
-    <div id="laptop-stages-container" class="laptop-stages-container"></div>
-  </section>
+    <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
+    <section id="section-laptop" class="laptop-section">
+      <div class="laptop-sticky-viewport">
+        <canvas id="laptop-canvas"></canvas>
 
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
-  <div class="quote-interlude">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES — Heading without "Aspirations") -->
-  <section id="section-reel" class="reel-scroll-section">
-    <div class="reel-sticky-viewport">
-      <div class="reel-top-bar">
-        <div>
-          <h2 class="section-heading">Hobbies</h2>
-        </div>
-        <div class="reel-counter-box">
-          <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
-        </div>
-      </div>
-
-      <div class="film-strip-stage">
-        <div class="film-strip-wrapper" id="film-strip-wrapper">
-          <div class="film-edge-code top-edge">
-            <span>35MM FILM</span>
-            <span>01A</span><span>02A</span><span>03A</span><span>04A</span><span>05A</span><span>06A</span><span>07A</span><span>08A</span>
-          </div>
-          <div class="sprocket-row"></div>
-          <div id="reel-track" class="reel-track"></div>
-          <div class="sprocket-row"></div>
-          <div class="film-edge-code bottom-edge">
-            <span>SUYASH SHARMA</span>
-            <span>SCROLL TO ADVANCE REEL →</span>
+        <!-- Clean, Minimalist 3D Part Pointer -->
+        <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
+          <span class="callout-dot"></span>
+          <span class="callout-line"></span>
+          <div class="callout-badge">
+            <span id="callout-part-name" class="callout-part">Display</span>
           </div>
         </div>
+
+        <!-- Hover Tooltip -->
+        <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
+
+        <!-- Centered Touchpad "Download CV" Button at Scroll Completion -->
+        <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
+          <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
+            <span class="touchpad-btn-dot"></span>
+            <span>Download CV</span>
+          </a>
+        </div>
+
+        <div class="stage-progress-bar">
+          <div id="stage-dots" class="stage-dots"></div>
+        </div>
       </div>
 
-      <div class="reel-progress-bar-wrap">
-        <div id="reel-progress-fill" class="reel-progress-fill"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 (Tight bottom spacing beneath Helen Keller quote) -->
-  <div class="quote-interlude helen-keller-quote">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “Life is either a daring adventure or nothing at all.”
-        <cite class="interlude-cite">— Helen Keller</cite>
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
+      <div id="laptop-stages-container" class="laptop-stages-container"></div>
+    </section>
   </div>
 
-  <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS (Template Repo Design: All 6 Animate on Hover!) -->
-  <section id="section-projects" class="projects-section">
-    <div class="section-header-wrap">
-      <h2 class="section-heading">Projects</h2>
-    </div>
-    <div id="projects-stack" class="template-horizontal-stack"></div>
-  </section>
+  <!-- Seamless Transition 1: Matte Charcoal (#131417) -> Warm Editorial Stone-Graphite (#1e1d1a) -->
+  <div class="transition-charcoal-to-stone" aria-hidden="true"></div>
 
-  <!-- Seamless Visual Transition into Minimalist White Section -->
+  <!-- ========================================================================
+       COLOR CHAPTER 2: WARM EDITORIAL STONE-GRAPHITE (#1e1d1a)
+       ======================================================================== -->
+  <div class="chapter-stone">
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
+    <div class="quote-interlude">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES) -->
+    <section id="section-reel" class="reel-scroll-section">
+      <div class="reel-sticky-viewport">
+        <div class="reel-top-bar">
+          <div>
+            <h2 class="section-heading">Hobbies</h2>
+          </div>
+          <div class="reel-counter-box">
+            <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
+          </div>
+        </div>
+
+        <div class="film-strip-stage">
+          <div class="film-strip-wrapper" id="film-strip-wrapper">
+            <div class="film-edge-code top-edge">
+              <span>35MM ARCHIVE</span>
+              <span>01A</span><span>02A</span><span>03A</span><span>04A</span><span>05A</span><span>06A</span><span>07A</span><span>08A</span>
+            </div>
+            <div class="sprocket-row"></div>
+            <div id="reel-track" class="reel-track"></div>
+            <div class="sprocket-row"></div>
+            <div class="film-edge-code bottom-edge">
+              <span>SUYASH SHARMA</span>
+              <span>SCROLL TO ADVANCE →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reel-progress-bar-wrap">
+          <div id="reel-progress-fill" class="reel-progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 -->
+    <div class="quote-interlude helen-keller-quote">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “Life is either a daring adventure or nothing at all.”
+          <cite class="interlude-cite">— Helen Keller</cite>
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS + TEMPLATE REPO RULER LINES -->
+    <section id="section-projects" class="projects-section">
+      <div class="section-header-wrap">
+        <h2 class="section-heading">Projects</h2>
+      </div>
+      <div id="projects-stack" class="template-horizontal-stack"></div>
+      <!-- Template Repository Index Tick Lines Beneath the Tabs -->
+      <div id="projects-index-lines" class="projects-index-lines" aria-hidden="true"></div>
+    </section>
+  </div>
+
+  <!-- Seamless Transition 2: Warm Stone-Graphite (#1e1d1a) -> Minimalist Alabaster White (#f5f3ed) -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION -->
+  <!-- ========================================================================
+       COLOR CHAPTER 3: MINIMALIST WARM ALABASTER WHITE (#f5f3ed)
+       ======================================================================== -->
   <section id="section-contact" class="minimal-white-contact">
     <div class="minimal-contact-inner">
       <h2 class="contact-me-title">Contact Me</h2>
@@ -465,21 +471,51 @@ export const PORTFOLIO_DATA = {
 ### File 3: `styles/main.css`
 ```css
 :root {
-  --bg-dark: #09090d;
-  --bg-panel: rgba(15, 16, 22, 0.88);
-  --text-main: #f4f1ea;
-  --text-muted: #9ca3af;
-  --border-subtle: rgba(244, 241, 234, 0.12);
+  --bg-charcoal: #141518;
+  --bg-stone: #201f1c;
+  --bg-alabaster: #f5f3ed;
+  --bg-panel: rgba(24, 25, 29, 0.9);
+  --text-main: #f2efe9;
+  --text-muted: #9e9b93;
+  --border-subtle: rgba(242, 239, 233, 0.11);
+  --accent-warm: #d4a373;
+  --accent-sage: #84a98c;
   --font-display: 'Instrument Serif', Georgia, serif;
-  --font-philo: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-quote: 'Newsreader', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; background: var(--bg-dark); color: var(--text-main); font-family: var(--font-sans); }
-body { overflow-x: hidden; background: var(--bg-dark); }
+html { scroll-behavior: smooth; background: var(--bg-charcoal); color: var(--text-main); font-family: var(--font-sans); }
+body { overflow-x: hidden; background: var(--bg-charcoal); -webkit-font-smoothing: antialiased; }
 body.is-loading { overflow: hidden; }
+
+/* ==========================================================================
+   3 INTENTIONAL COLOR CHAPTERS & SEAMLESS TRANSITIONS
+   1. Matte Charcoal Black-Grey (#141518)
+   2. Warm Editorial Stone-Graphite (#201f1c)
+   3. Minimalist Warm Alabaster White (#f5f3ed)
+   ========================================================================== */
+.chapter-charcoal {
+  background: var(--bg-charcoal);
+}
+
+.transition-charcoal-to-stone {
+  width: 100%;
+  height: 140px;
+  background: linear-gradient(180deg, var(--bg-charcoal) 0%, var(--bg-stone) 100%);
+}
+
+.chapter-stone {
+  background: var(--bg-stone);
+}
+
+.dark-to-white-transition {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(180deg, var(--bg-stone) 0%, var(--bg-alabaster) 100%);
+}
 
 /* ==========================================================================
    0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total)
@@ -488,7 +524,7 @@ body.is-loading { overflow: hidden; }
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #09090d;
+  background: var(--bg-charcoal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -501,7 +537,7 @@ body.is-loading { overflow: hidden; }
 }
 
 .loader-inner {
-  width: min(360px, 82vw);
+  width: min(340px, 80vw);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -516,42 +552,35 @@ body.is-loading { overflow: hidden; }
 
 .loader-count {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 8.5vw, 5.8rem);
+  font-size: clamp(4rem, 8.5vw, 5.6rem);
   line-height: 1;
   color: var(--text-main);
 }
 
 .loader-percent {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  color: #f59e0b;
+  font-size: 0.95rem;
+  color: var(--accent-warm);
 }
 
 .loader-bar-track {
   width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.12);
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 
 .loader-bar-fill {
   width: 0%;
   height: 100%;
-  background: #f4f1ea;
+  background: var(--text-main);
   transition: width 0.04s linear;
-}
-
-.grain-overlay {
-  position: fixed; inset: 0; pointer-events: none; z-index: 999;
-  opacity: 0.03;
-  background-image: radial-gradient(#ffffff 1px, transparent 0);
-  background-size: 24px 24px;
 }
 
 .mono-tag {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -567,7 +596,7 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   padding: 4rem 2vw;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 18%, #151521 0%, #09090d 72%);
+  background: radial-gradient(circle at 50% 24%, #1d1f24 0%, var(--bg-charcoal) 70%);
 }
 
 .hero-center {
@@ -615,7 +644,7 @@ body.is-loading { overflow: hidden; }
   content: '|';
   display: inline-block;
   margin-left: 2px;
-  color: #f59e0b;
+  color: var(--accent-warm);
   font-weight: 300;
   animation: cursorBlink 0.65s steps(2, start) infinite;
 }
@@ -630,16 +659,16 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   width: clamp(140px, 18vw, 280px);
   height: clamp(180px, 23vw, 360px);
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  border: 2px solid rgba(245, 158, 11, 0.7);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 34px rgba(245, 158, 11, 0.28);
+  border: 1.5px solid rgba(242, 239, 233, 0.24);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
 }
 
 .hero-photo-frame:hover {
-  transform: scale(1.05) rotate(-1.5deg);
-  border-color: #38bdf8;
+  transform: scale(1.04) rotate(-1deg);
+  border-color: rgba(242, 239, 233, 0.55);
 }
 
 .hero-photo-frame img {
@@ -656,26 +685,26 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
   display: inline-flex;
   align-items: center;
-  padding: 0.8rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 999px;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(244, 241, 234, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
   color: var(--text-main);
   transition: all 0.25s ease;
 }
 
 .hero-projects-btn:hover {
   background: var(--text-main);
-  color: #09090d;
+  color: var(--bg-charcoal);
   transform: translateY(-2px);
 }
 
 .hero-projects-btn .btn-main-text {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.86rem;
-  letter-spacing: 0.02em;
+  font-size: 0.84rem;
+  letter-spacing: 0.01em;
 }
 
 .hero-scroll-indicator {
@@ -690,9 +719,9 @@ body.is-loading { overflow: hidden; }
 }
 
 .scroll-line {
-  width: 2px;
-  height: 44px;
-  background: rgba(255, 255, 255, 0.12);
+  width: 1.5px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -700,7 +729,7 @@ body.is-loading { overflow: hidden; }
 .scroll-pulse {
   width: 100%;
   height: 50%;
-  background: linear-gradient(180deg, transparent, #f59e0b, #38bdf8);
+  background: linear-gradient(180deg, transparent, var(--text-main));
   animation: pulseDown 1.6s infinite ease-in-out;
 }
 
@@ -710,10 +739,10 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
+   LITERARY QUOTES IN 'NEWSREADER' ITALIC WITH PEACEFUL BOTANICAL LEAVES
    ========================================================================== */
 .quote-interlude {
-  padding: 3.2rem 5vw;
+  padding: 3.4rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -734,17 +763,16 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(0.85rem, 2vw, 1.65rem);
-  max-width: 820px;
+  gap: clamp(0.9rem, 2.2vw, 1.75rem);
+  max-width: 840px;
   padding: 0.5rem 1.5rem;
 }
 
 .quote-leaf {
-  width: clamp(36px, 4.2vw, 52px);
+  width: clamp(36px, 4vw, 48px);
   height: auto;
   flex-shrink: 0;
-  opacity: 0.82;
-  filter: drop-shadow(0 0 8px rgba(110, 231, 183, 0.18));
+  opacity: 0.85;
   animation: leafBreeze 5s ease-in-out infinite alternate;
 }
 
@@ -758,32 +786,34 @@ body.is-loading { overflow: hidden; }
 }
 
 .interlude-text {
-  font-family: var(--font-philo);
+  font-family: var(--font-quote);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.12rem, 1.72vw, 1.44rem);
-  line-height: 1.5;
-  letter-spacing: 0.03em;
-  color: #d6d3cd;
+  font-size: clamp(1.16rem, 1.78vw, 1.48rem);
+  line-height: 1.52;
+  letter-spacing: -0.005em;
+  color: #dedad0;
 }
 
 .interlude-cite {
   display: block;
-  margin-top: 0.42rem;
-  font-family: var(--font-philo);
+  margin-top: 0.45rem;
+  font-family: var(--font-sans);
   font-style: normal;
-  font-size: 0.86rem;
-  letter-spacing: 0.1em;
+  font-weight: 400;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #8c8881;
+  color: var(--text-muted);
 }
 
 /* ==========================================================================
-   2. 3D LAPTOP DISASSEMBLY SECTION (Smaller Laptop & Cards, Smooth Scroll)
+   2. 3D LAPTOP DISASSEMBLY SECTION (Black-Grey Scale, Balanced Proportions)
    ========================================================================== */
 .laptop-section {
   position: relative;
   width: 100%;
+  background: var(--bg-charcoal);
 }
 
 .laptop-sticky-viewport {
@@ -793,16 +823,17 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 28% 58%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
+  background: radial-gradient(circle at 28% 54%, #202227 0%, var(--bg-charcoal) 68%);
 }
 
 #laptop-canvas {
   width: 100%;
   height: 100%;
   display: block;
+  background: transparent;
 }
 
-/* Accurate 3D Part Pointer */
+/* Minimalist 3D Part Pointer */
 .part-link-callout {
   position: absolute;
   left: 0;
@@ -810,7 +841,7 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
   z-index: 12;
   opacity: 0;
-  transition: opacity 0.22s ease;
+  transition: opacity 0.2s ease;
 }
 
 .part-link-callout.visible {
@@ -821,12 +852,12 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   left: 0;
   top: 0;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  background: var(--callout-color, #38bdf8);
-  box-shadow: 0 0 14px var(--callout-color, #38bdf8);
+  background: var(--text-main);
+  box-shadow: 0 0 12px rgba(242, 239, 233, 0.6);
 }
 
 .callout-dot::after {
@@ -834,43 +865,44 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 1.5px solid var(--callout-color, #38bdf8);
-  animation: pingRing 1.8s infinite ease-out;
+  border: 1px solid rgba(242, 239, 233, 0.65);
+  animation: pingRing 2s infinite ease-out;
 }
 
 @keyframes pingRing {
-  0% { transform: scale(0.8); opacity: 0.9; }
+  0% { transform: scale(0.85); opacity: 0.85; }
   100% { transform: scale(1.9); opacity: 0; }
 }
 
 .callout-line {
   position: absolute;
-  left: 6px;
-  top: -1px;
-  width: 34px;
-  height: 1.5px;
-  background: var(--callout-color, #38bdf8);
+  left: 5px;
+  top: -0.5px;
+  width: 32px;
+  height: 1px;
+  background: rgba(242, 239, 233, 0.55);
 }
 
 .callout-badge {
   position: absolute;
-  left: 42px;
+  left: 38px;
   top: 0;
   transform: translateY(-50%);
   white-space: nowrap;
-  padding: 0.3rem 0.68rem;
+  padding: 0.28rem 0.68rem;
   border-radius: 999px;
-  background: rgba(12, 13, 18, 0.92);
-  border: 1px solid var(--callout-color, #38bdf8);
+  background: rgba(20, 21, 24, 0.92);
+  border: 1px solid rgba(242, 239, 233, 0.24);
   backdrop-filter: blur(8px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .callout-part {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  color: #f4f1ea;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
 }
 
 /* 3D Part Hover Tooltip */
@@ -880,14 +912,14 @@ body.is-loading { overflow: hidden; }
   top: 0;
   pointer-events: none;
   z-index: 40;
-  padding: 0.36rem 0.72rem;
+  padding: 0.34rem 0.72rem;
   border-radius: 999px;
-  background: rgba(12, 13, 18, 0.94);
-  border: 1px solid rgba(244, 241, 234, 0.28);
+  background: rgba(20, 21, 24, 0.95);
+  border: 1px solid rgba(242, 239, 233, 0.25);
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  color: #f4f1ea;
+  color: var(--text-main);
   opacity: 0;
   visibility: hidden;
   transform: translate(14px, -50%);
@@ -899,12 +931,12 @@ body.is-loading { overflow: hidden; }
   visibility: visible;
 }
 
-/* Detached 3D Touchpad "Download CV" Button Overlay */
+/* Centered Touchpad "Download CV" Button Overlay at End of Scroll */
 .touchpad-cv-overlay {
   position: absolute;
   left: 50%;
-  top: 66%;
-  transform: translate(-50%, -50%) scale(0.88);
+  top: 64%;
+  transform: translate(-50%, -50%) scale(0.92);
   z-index: 30;
   opacity: 0;
   pointer-events: none;
@@ -921,36 +953,34 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.75rem 1.45rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 999px;
-  background: rgba(14, 15, 20, 0.94);
-  border: 1.5px solid #ec4899;
-  color: #f4f1ea;
+  background: #f4f1ea;
+  border: 1px solid #f4f1ea;
+  color: #141518;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.84rem;
+  font-weight: 600;
   text-decoration: none;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.75), 0 0 24px rgba(236, 72, 153, 0.45);
-  transition: transform 0.22s ease, background 0.22s ease;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+  transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
 }
 
 .touchpad-floating-btn:hover {
-  background: #ec4899;
-  color: #09090d;
+  background: #141518;
+  color: #f4f1ea;
   transform: scale(1.05);
 }
 
 .touchpad-btn-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #ec4899;
-  box-shadow: 0 0 10px #ec4899;
+  background: #141518;
 }
 
 .touchpad-floating-btn:hover .touchpad-btn-dot {
-  background: #09090d;
+  background: #f4f1ea;
 }
 
 .stage-progress-bar {
@@ -968,15 +998,16 @@ body.is-loading { overflow: hidden; }
 }
 
 .stage-dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.18);
   transition: transform 0.3s, background 0.3s;
 }
 
 .stage-dot.active {
   transform: scale(1.45);
+  background: var(--text-main) !important;
 }
 
 .laptop-stages-container {
@@ -986,15 +1017,13 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Lead-in stage covers initial -100vh overlap + 20vh opening runway */
 .laptop-stage.laptop-intro-stage {
-  min-height: 120vh;
+  min-height: 118vh;
   pointer-events: none;
 }
 
-/* Smooth, natural scrolling stages (no conflicting CSS sticky inside stages!) */
 .laptop-stage {
-  min-height: 98vh;
+  min-height: 102vh;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -1004,252 +1033,266 @@ body.is-loading { overflow: hidden; }
 }
 
 .laptop-stage.compact-stage {
-  min-height: 78vh;
+  min-height: 84vh;
   padding: 2.5rem 4.5vw;
 }
 
 .laptop-stage.final-disassembly-hold {
-  min-height: 105vh;
+  min-height: 108vh;
   pointer-events: none;
 }
 
-/* Smaller, more refined section cards so the 3D laptop & its labels have plenty of open space */
+/* Balanced, Intentional Minimalist Section Cards (Filled out to min(46vw, 575px)) */
 .stage-bento-panel {
   pointer-events: auto;
-  width: min(41vw, 510px);
-  padding: 1.65rem 1.85rem;
-  border-radius: 20px;
+  width: min(46vw, 575px);
+  padding: 2.05rem 2.25rem;
+  border-radius: 18px;
   background: var(--bg-panel);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--stage-accent, #38bdf8);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px color-mix(in srgb, var(--stage-accent, #38bdf8) 13%, transparent);
+  border: 1px solid rgba(242, 239, 233, 0.13);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.95rem;
+  gap: 1.15rem;
 }
 
 .stage-bento-panel.compact-panel {
-  padding: 1.4rem 1.65rem;
-  gap: 0.78rem;
+  padding: 1.75rem 2rem;
+  gap: 0.9rem;
 }
 
-/* Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes */
-.stage-outside-quote-wrap {
-  width: min(41vw, 510px);
+/* Centered Quote Between Languages/GitHub Tab and Courses Tab (Slightly Bigger Font Size) */
+.between-stages-quote {
+  width: 100%;
+  align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 0;
+  padding: 3.4rem 4vw;
   pointer-events: none;
+}
+
+.between-stages-quote .interlude-text {
+  font-size: clamp(1.32rem, 2.05vw, 1.68rem);
+  font-weight: 400;
+  color: #ece9e0;
 }
 
 .stage-part-chip {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0.22rem 0.65rem;
+  padding: 0.24rem 0.68rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--stage-accent, #38bdf8);
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--stage-accent, #38bdf8);
+  border: 1px solid rgba(242, 239, 233, 0.18);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .stage-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 2.7vw, 2.35rem);
+  font-family: var(--font-quote);
+  font-size: clamp(1.9rem, 3vw, 2.55rem);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--text-main);
 }
 
 .stage-paragraphs {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.78rem;
 }
 
 .stage-summary {
-  font-size: 0.88rem;
-  line-height: 1.58;
-  color: #d1d5db;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #c8c5bc;
+  font-weight: 400;
 }
 
 .stage-quote {
-  font-family: var(--font-philo);
+  font-family: var(--font-quote);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.06rem, 1.45vw, 1.25rem);
-  line-height: 1.5;
-  color: #e5e7eb;
-  border-left: 2px solid var(--stage-accent);
-  padding-left: 1rem;
+  font-size: clamp(1.14rem, 1.6vw, 1.36rem);
+  line-height: 1.55;
+  color: #e8e5dc;
+  border-left: 1.5px solid rgba(242, 239, 233, 0.35);
+  padding-left: 1.15rem;
 }
 
 .stage-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 0.68rem;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 0.78rem;
 }
 
 .stage-subcard {
-  padding: 0.8rem 0.9rem;
+  padding: 0.95rem 1.05rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(242, 239, 233, 0.08);
 }
 
 .stage-subcard h4 {
-  font-size: 0.86rem;
-  color: #fff;
-  margin-bottom: 0.2rem;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
 }
 
 .stage-subcard p {
-  font-size: 0.76rem;
-  color: #9ca3af;
-  line-height: 1.42;
+  font-size: 0.81rem;
+  color: var(--text-muted);
+  line-height: 1.45;
 }
 
 .stage-subcard .subcard-meta {
   display: inline-block;
-  margin-top: 0.35rem;
+  margin-top: 0.42rem;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--stage-accent);
+  font-size: 0.67rem;
+  color: var(--accent-warm);
 }
 
 .github-contrib-card {
-  padding: 0.85rem 0.95rem;
+  padding: 1rem 1.1rem;
   border-radius: 12px;
-  background: rgba(9, 9, 13, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(12, 13, 15, 0.6);
+  border: 1px solid rgba(242, 239, 233, 0.09);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .github-contrib-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.75rem;
-  color: #cbd5e1;
+  font-size: 0.8rem;
+  color: #d6d3cb;
 }
 
 .github-contrib-header a {
-  color: #f59e0b;
+  color: var(--text-main);
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
+  border-bottom: 1px solid rgba(242, 239, 233, 0.3);
 }
 
 .github-contrib-header a:hover {
-  text-decoration: underline;
+  opacity: 0.7;
 }
 
 .github-chart-wrap {
   width: 100%;
   overflow-x: auto;
-  padding: 0.15rem 0;
+  padding: 0.2rem 0;
 }
 
 .github-chart-img {
   width: 100%;
-  min-width: 360px;
+  min-width: 380px;
   height: auto;
   display: block;
-  filter: contrast(1.08);
+  filter: contrast(1.05);
 }
 
 .github-badges-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.45rem;
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
 }
 
 .badges-title {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  color: #cbd5e1;
+  color: #d6d3cb;
 }
 
 .badges-placeholder {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: #9ca3af;
-  padding: 0.18rem 0.55rem;
+  font-size: 0.69rem;
+  color: var(--text-muted);
+  padding: 0.18rem 0.6rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(242, 239, 233, 0.18);
 }
 
-/* Casual, understated one-line mention for English & Hindi */
 .casual-lang-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.4rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 0.76rem;
-  color: #9ca3af;
+  padding-top: 0.45rem;
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 .casual-lang-line strong {
   font-weight: 500;
-  color: #e5e7eb;
+  color: var(--text-main);
 }
 
 .skill-groups-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.78rem;
 }
 
 .skill-group-row {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.34rem;
 }
 
 .skill-group-label {
-  font-family: var(--font-sans);
-  font-size: 0.73rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .pills-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.38rem;
+  gap: 0.42rem;
 }
 
+/* Minimalist & Clean Monochrome Pills */
 .color-pill {
-  padding: 0.32rem 0.68rem;
-  border-radius: 7px;
+  padding: 0.34rem 0.75rem;
+  border-radius: 6px;
   font-family: var(--font-sans);
-  font-size: 0.74rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--pill-color, #38bdf8);
-  color: #fff;
-  box-shadow: inset 0 0 10px color-mix(in srgb, var(--pill-color, #38bdf8) 18%, transparent);
-  transition: transform 0.2s;
+  font-size: 0.78rem;
+  font-weight: 400;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(242, 239, 233, 0.14);
+  color: #e6e3dc;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .color-pill:hover {
-  transform: translateY(-2px);
-  background: var(--pill-color, #38bdf8);
-  color: #09090d;
-  font-weight: 600;
+  transform: translateY(-1px);
+  background: var(--text-main);
+  color: var(--bg-charcoal);
 }
 
 /* ==========================================================================
-   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES)
+   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES — Warm Stone-Graphite Chapter)
    ========================================================================== */
 .reel-scroll-section {
   position: relative;
@@ -1267,7 +1310,7 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   justify-content: space-between;
   padding: 4.5rem 0 3.5rem;
-  background: radial-gradient(circle at 50% 50%, #12121c 0%, #09090d 78%);
+  background: var(--bg-stone);
 }
 
 .reel-top-bar {
@@ -1278,9 +1321,10 @@ body.is-loading { overflow: hidden; }
 }
 
 .section-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 4.5vw, 4rem);
-  font-weight: 400;
+  font-family: var(--font-quote);
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
 }
 
 .reel-counter-box {
@@ -1291,9 +1335,9 @@ body.is-loading { overflow: hidden; }
 
 .reel-counter-val {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #f59e0b;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--accent-warm);
 }
 
 .film-strip-stage {
@@ -1305,14 +1349,14 @@ body.is-loading { overflow: hidden; }
 }
 
 .film-strip-wrapper {
-  background: #0e0e13;
-  border-top: 2px solid #2b2b36;
-  border-bottom: 2px solid #2b2b36;
+  background: #171614;
+  border-top: 1.5px solid rgba(242, 239, 233, 0.14);
+  border-bottom: 1.5px solid rgba(242, 239, 233, 0.14);
   padding: 0.65rem 0;
   width: max-content;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
   will-change: transform;
-  transform: rotate(-1deg);
+  transform: rotate(-0.8deg);
 }
 
 .film-edge-code {
@@ -1320,89 +1364,88 @@ body.is-loading { overflow: hidden; }
   justify-content: space-between;
   padding: 0.15rem 3rem;
   font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.15em;
-  color: rgba(245, 158, 11, 0.7);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: rgba(212, 163, 115, 0.65);
 }
 
 .sprocket-row {
-  height: 18px;
+  height: 16px;
   margin: 0.35rem 0;
   background-image: repeating-linear-gradient(
     90deg,
     transparent 0 14px,
-    #050507 14px 32px
+    #0e0d0c 14px 32px
   );
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .reel-track {
   display: flex;
-  gap: 2.1rem;
+  gap: 2rem;
   padding: 1.4rem 8vw;
   min-width: max-content;
 }
 
 .reel-card {
-  width: 330px;
-  min-height: 255px;
-  padding: 1.75rem;
-  border-radius: 14px;
-  background: #15151f;
-  border-top: 4px solid var(--frame-color);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  width: 320px;
+  min-height: 245px;
+  padding: 1.7rem;
+  border-radius: 12px;
+  background: #21201d;
+  border: 1px solid rgba(242, 239, 233, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
-  opacity: 0.16;
-  transform: scale(0.92) translateY(16px);
-  filter: grayscale(0.88) brightness(0.45);
-  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, box-shadow 0.45s ease;
+  opacity: 0.18;
+  transform: scale(0.94) translateY(12px);
+  filter: grayscale(0.9) brightness(0.5);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, border-color 0.45s ease;
 }
 
 .reel-card.revealed {
   opacity: 1;
   transform: scale(1) translateY(0);
   filter: grayscale(0) brightness(1);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 28px color-mix(in srgb, var(--frame-color) 18%, transparent);
+  border-color: rgba(242, 239, 233, 0.26);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
 }
 
 .reel-frame-meta {
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--frame-color);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-warm);
 }
 
 .reel-card-body {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.55rem;
 }
 
 .reel-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
+  font-family: var(--font-quote);
+  font-size: 1.75rem;
   font-weight: 400;
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .reel-card p {
-  font-size: 0.92rem;
-  line-height: 1.58;
-  color: #cbd5e1;
+  font-size: 0.89rem;
+  line-height: 1.6;
+  color: #b8b4aa;
 }
 
 .reel-progress-bar-wrap {
   margin: 0 4.5vw;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -1410,24 +1453,24 @@ body.is-loading { overflow: hidden; }
 .reel-progress-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, #f43f5e, #f59e0b, #10b981, #38bdf8, #a855f7);
+  background: var(--text-main);
   transition: width 0.12s linear;
 }
 
 /* ==========================================================================
-   4. TEMPLATE REPO 6-CARD PHOTO-FRAME STACK (All 6 Animate on Hover;
-      Card 01 Displays Logo Photo & Pops Up Project Card Details on Hover!)
+   4. REFINED 6-CARD PROJECT STACK + TEMPLATE REPOSITORY INDEX TICK LINES
+      (Smaller Tabs, More Angled, Less Sensitive Hover, Contrasting Light Theme After Opening!)
    ========================================================================== */
 .projects-focus-backdrop {
   position: fixed;
   inset: 0;
   z-index: 45;
-  background: rgba(6, 7, 11, 0.58);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(12, 12, 14, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.4s ease;
 }
 
 .projects-focus-backdrop.active {
@@ -1435,38 +1478,38 @@ body.is-loading { overflow: hidden; }
 }
 
 .projects-section {
-  padding: 0.8rem 4.5vw 7rem;
+  padding: 0.8rem 4.5vw 6.5rem;
   position: relative;
   z-index: 50;
   overflow: visible;
 }
 
 .section-header-wrap {
-  margin-bottom: 1.75rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   transition: filter 0.4s ease, opacity 0.4s ease;
 }
 
 .projects-section.has-focused-card .section-header-wrap {
-  filter: blur(5px);
+  filter: blur(4px);
   opacity: 0.35;
 }
 
 .template-horizontal-stack {
   position: relative;
   width: 100%;
-  min-height: 520px;
+  min-height: 440px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  perspective: 1600px;
-  padding: 2rem 0;
+  perspective: 1400px;
+  padding: 1.5rem 0;
 }
 
 .stack-card-slot {
   position: relative;
-  margin: 0 -88px;
+  margin: 0 -64px;
   flex-shrink: 0;
   transform-style: preserve-3d;
   cursor: pointer;
@@ -1475,54 +1518,53 @@ body.is-loading { overflow: hidden; }
 .stack-card-slot.slot-focused::before {
   content: '';
   position: absolute;
-  top: -30px;
-  bottom: -30px;
-  left: -380px;
-  right: -380px;
+  top: -35px;
+  bottom: -35px;
+  left: -340px;
+  right: -340px;
   z-index: 1;
 }
 
+/* Smaller, More Steeply Angled Resting Dark Tabs */
 .stack-card {
-  width: clamp(270px, 27vw, 340px);
-  height: 430px;
-  border-radius: 16px;
+  width: clamp(210px, 20.5vw, 258px);
+  height: 345px;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  background: linear-gradient(160deg, #1b1c24 0%, #121319 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 1.15rem;
+  background: #18181b;
+  border: 1px solid rgba(242, 239, 233, 0.14);
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transform: translate3d(0px, 0px, 0px) rotateY(-38deg) rotateX(4deg) scale(0.93);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, filter 0.4s ease, opacity 0.4s ease, border-color 0.35s ease;
-  box-shadow: -20px 16px 40px rgba(0, 0, 0, 0.82);
+  transform: translate3d(0px, 0px, 0px) rotateY(-48deg) rotateX(6deg) scale(0.9);
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, filter 0.38s ease, opacity 0.38s ease, background 0.35s ease, border-color 0.35s ease;
+  box-shadow: -18px 14px 34px rgba(0, 0, 0, 0.72);
 }
 
-.stack-card.active-project-card {
-  border-color: rgba(16, 185, 129, 0.55);
-}
-
-/* When ANY of the 6 cards is hovered, it glides forward to the exact center of the viewport! */
+/* When opened/hovered in center: Enlarges & Switches to Contrasting Warm Ivory Editorial Surface (#f4f1ea)! */
 .stack-card.is-centered {
-  transform: translate3d(var(--center-shift, 0px), -14px, 210px) rotateY(0deg) rotateX(0deg) scale(1.08);
-  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 42px rgba(16, 185, 129, 0.25);
-  border-color: #10b981;
+  transform: translate3d(var(--center-shift, 0px), -14px, 210px) rotateY(0deg) rotateX(0deg) scale(1.22);
+  background: #f4f1ea;
+  border-color: #d8d4c8;
+  color: #141413;
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.85);
   filter: none !important;
   opacity: 1 !important;
 }
 
 .stack-card.blurred-left {
-  transform: translate3d(-140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
-  filter: blur(6px) brightness(0.42);
-  opacity: 0.55;
+  transform: translate3d(-125px, 0px, -50px) rotateY(-50deg) rotateX(6deg) scale(0.84);
+  filter: blur(5px) brightness(0.45);
+  opacity: 0.5;
 }
 
 .stack-card.blurred-right {
-  transform: translate3d(140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
-  filter: blur(6px) brightness(0.42);
-  opacity: 0.55;
+  transform: translate3d(125px, 0px, -50px) rotateY(-50deg) rotateX(6deg) scale(0.84);
+  filter: blur(5px) brightness(0.45);
+  opacity: 0.5;
 }
 
 .stack-card-top {
@@ -1533,60 +1575,61 @@ body.is-loading { overflow: hidden; }
 
 .stack-frame-label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: #9ca3af;
-  letter-spacing: 0.08em;
+  font-size: 0.64rem;
+  color: #8c8980;
+  letter-spacing: 0.1em;
 }
 
 .stack-slot-num {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #10b981;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-main);
 }
 
-.grey-layer-card .stack-slot-num {
-  color: #71717a;
+.stack-card.is-centered .stack-frame-label,
+.stack-card.is-centered .stack-slot-num {
+  color: #141413;
 }
 
-/* Resting Photo Frame inside Card 01 (Displays SanitX Logo Photo just like the template repo's photo frames) */
+/* Resting Photo Frame inside Card 01 */
 .project-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.65rem;
-  border-radius: 12px;
-  background: radial-gradient(circle at 50% 42%, rgba(16, 185, 129, 0.18) 0%, #0d0f16 75%);
-  border: 1px solid rgba(16, 185, 129, 0.32);
+  margin-top: 0.55rem;
+  border-radius: 8px;
+  background: #121316;
+  border: 1px solid rgba(242, 239, 233, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.85rem;
+  gap: 0.7rem;
   position: relative;
   overflow: hidden;
 }
 
 .photo-frame-title {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: #f4f1ea;
-  letter-spacing: 0.02em;
+  font-family: var(--font-quote);
+  font-size: 1.55rem;
+  color: var(--text-main);
 }
 
-/* Hover Pop-Up Project Card Overlay inside Card 01 (Appears when hovered in the center!) */
+/* Contrasting Warm Ivory Opened Pop-Up inside Card 01 */
 .project-hover-popup {
   position: absolute;
   inset: 0;
-  padding: 1.35rem;
-  background: linear-gradient(160deg, rgba(13, 25, 22, 0.98) 0%, rgba(10, 11, 16, 0.99) 100%);
+  padding: 1.15rem;
+  background: #f4f1ea;
+  color: #141413;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.65rem;
+  gap: 0.5rem;
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(10px);
   pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .stack-card.is-centered .project-hover-popup {
@@ -1596,85 +1639,153 @@ body.is-loading { overflow: hidden; }
 }
 
 .popup-header h3 {
-  font-family: var(--font-display);
-  font-size: 1.9rem;
+  font-family: var(--font-quote);
+  font-size: 1.5rem;
   font-weight: 400;
-  color: #fff;
+  color: #141413;
 }
 
 .popup-header p {
   font-family: var(--font-mono);
-  font-size: 0.64rem;
-  color: #f59e0b;
-  margin-top: 0.2rem;
+  font-size: 0.56rem;
+  color: #6e6a61;
+  margin-top: 0.15rem;
+}
+
+.popup-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.popup-pill {
+  padding: 0.16rem 0.42rem;
+  border-radius: 4px;
+  background: #e6e2d6;
+  color: #141413;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
 }
 
 .project-bullets {
-  padding-left: 0.95rem;
+  padding-left: 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 0.32rem;
-  color: #d1d5db;
-  font-size: 0.74rem;
-  line-height: 1.4;
+  gap: 0.22rem;
+  color: #383632;
+  font-size: 0.62rem;
+  line-height: 1.35;
 }
 
 .popup-github-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1rem;
-  border-radius: 10px;
-  background: #10b981;
-  color: #09090d;
+  padding: 0.52rem 0.85rem;
+  border-radius: 6px;
+  background: #141413;
+  color: #f4f1ea;
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .popup-github-btn:hover {
-  background: #38bdf8;
-  transform: translateY(-2px);
+  opacity: 0.8;
 }
 
-/* Cards 02–06: Grey Photo Frame Cards with "yet to build😝" (Also animate on hover!) */
+/* Cards 02–06: Minimalist Grey Photo Frame Cards (Switch to contrasting Warm Ivory on Hover!) */
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.65rem;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #272832 0%, #1c1d25 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.55);
+  margin-top: 0.55rem;
+  border-radius: 8px;
+  background: #232429;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.85rem;
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.stack-card.is-centered .grey-photo-frame {
+  background: #e6e2d6;
+  border-color: #d0ccc0;
 }
 
 .yet-to-build-text {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: #9ca3af;
-  letter-spacing: 0.05em;
+  font-size: 0.72rem;
+  color: #8e9099;
+  letter-spacing: 0.04em;
   text-align: center;
+  transition: color 0.35s ease;
+}
+
+.stack-card.is-centered .yet-to-build-text {
+  color: #141413;
+}
+
+/* Template Repository Architectural Ruler / Tick Lines Beneath the Project Tabs */
+.projects-index-lines {
+  margin: 1.25rem auto 0;
+  max-width: 540px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 36px;
+}
+
+.index-tick-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.index-tick {
+  width: 1px;
+  height: 10px;
+  background: rgba(242, 239, 233, 0.18);
+  transition: height 0.3s ease, background 0.3s ease;
+}
+
+.index-tick.major-tick {
+  height: 18px;
+  background: rgba(242, 239, 233, 0.42);
+  position: relative;
+}
+
+.index-tick.major-tick::after {
+  content: attr(data-slot);
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.index-tick.major-tick.active {
+  height: 28px;
+  background: var(--text-main);
+}
+
+.index-tick.major-tick.active::after {
+  color: var(--text-main);
 }
 
 /* ==========================================================================
    5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION
    ========================================================================== */
-.dark-to-white-transition {
-  width: 100%;
-  height: 150px;
-  background: linear-gradient(180deg, #09090d 0%, #f7f6f2 100%);
-}
-
 .minimal-white-contact {
-  background: #f7f6f2;
+  background: var(--bg-alabaster);
   color: #141413;
   min-height: 86vh;
   display: flex;
@@ -1694,11 +1805,11 @@ body.is-loading { overflow: hidden; }
 }
 
 .contact-me-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.5rem, 4.4vw, 3.6rem);
+  font-family: var(--font-quote);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
   color: #141413;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .minimal-chat-stream {
@@ -1715,9 +1826,9 @@ body.is-loading { overflow: hidden; }
   padding: 1.05rem 1.45rem;
   border-radius: 24px;
   border-bottom-left-radius: 6px;
-  background: #e9e7e0;
+  background: #e6e3da;
   color: #141413;
-  font-size: 1.06rem;
+  font-size: 1.04rem;
   line-height: 1.56;
   letter-spacing: -0.01em;
   animation: minimalFadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -1747,7 +1858,7 @@ body.is-loading { overflow: hidden; }
   padding: 1.05rem 1.3rem;
   border-radius: 24px;
   border-bottom-left-radius: 6px;
-  background: #e9e7e0;
+  background: #e6e3da;
 }
 
 .minimal-typing span {
@@ -1787,10 +1898,10 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel, .stage-outside-quote-wrap { width: 90vw; }
+  .stage-bento-panel { width: 92vw; }
   .part-link-callout { display: none; }
-  .stack-card-slot { margin: 0 -75px; }
-  .stack-card { width: 250px; height: 400px; }
+  .stack-card-slot { margin: 0 -55px; }
+  .stack-card { width: 195px; height: 310px; }
 }
 ```
 
@@ -1799,32 +1910,46 @@ body.is-loading { overflow: hidden; }
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.65, 6.8);
-  camera.lookAt(0, 0.05, 0);
+  camera.position.set(0, 1.48, 6.2);
+  camera.lookAt(0, 0.02, 0);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance'
+  });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // Cap pixelRatio at 1.5 to prevent WebGL GPU memory exhaustion / context loss
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.25;
+  renderer.toneMappingExposure = 1.22;
 
-  // Multi-Point Studio Lighting for Exquisite Matte Stealth Finish
-  const ambient = new THREE.AmbientLight(0xffffff, 0.94);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+  // WebGL Context Loss & Restoration Recovery Guard (Prevents white-screen crash)
+  canvas.addEventListener('webglcontextlost', (e) => {
+    e.preventDefault();
+  }, false);
+
+  canvas.addEventListener('webglcontextrestored', () => {
+    renderer.render(scene, camera);
+  }, false);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 0.96);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.15);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.8);
+  const rimLight = new THREE.DirectionalLight(0xcbd5e1, 1.65);
   rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x475569, 1.1);
+  const bottomFill = new THREE.DirectionalLight(0x94a3b8, 1.15);
   bottomFill.position.set(0, -5, 4);
-  const accentLight = new THREE.PointLight(0x38bdf8, 2.0, 16);
+  const accentLight = new THREE.PointLight(0xe2dfd7, 1.6, 16);
   accentLight.position.set(-1.8, 2.0, 4.2);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  // Smaller scale (0.76x) and lower screen position (y = -0.44) so it aligns with cards and never clips
-  root.scale.setScalar(0.76);
-  root.position.set(0, -0.44, 0);
-  root.rotation.set(0.28, 0.64, 0);
+  // Balanced size (0.88x) and lower position (-0.32) so it fills the space intentionally
+  root.scale.setScalar(0.88);
+  root.position.set(0, -0.32, 0);
+  root.rotation.set(0.24, 0.62, 0);
   scene.add(root);
 
   function makeMatteMaterial(opts) {
@@ -1839,27 +1964,28 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     });
   }
 
-  const matOuterChassis = makeMatteMaterial({ color: 0x141720, metalness: 0.22, roughness: 0.82 });
-  const matBezel = makeMatteMaterial({ color: 0x0b0d13, metalness: 0.15, roughness: 0.86 });
-  const matScreenPanel = makeMatteMaterial({ color: 0x090e1a, emissive: 0x172554, emissiveIntensity: 0.48, roughness: 0.35 });
-  const matMotherboardPcb = makeMatteMaterial({ color: 0x0f131c, metalness: 0.25, roughness: 0.78 });
-  const matCpuPackage = makeMatteMaterial({ color: 0x242938, emissive: 0x1e293b, emissiveIntensity: 0.35, metalness: 0.48, roughness: 0.52 });
-  const matCopperPipe = makeMatteMaterial({ color: 0xb45309, emissive: 0x451a03, emissiveIntensity: 0.24, metalness: 0.58, roughness: 0.44 });
-  const matGoldContacts = makeMatteMaterial({ color: 0xf59e0b, emissive: 0x92400e, emissiveIntensity: 0.28, metalness: 0.68, roughness: 0.38 });
-  const matKeyDeck = makeMatteMaterial({ color: 0x12151e, metalness: 0.2, roughness: 0.84 });
-  const matKeyCap = makeMatteMaterial({ color: 0x0a0c12, metalness: 0.12, roughness: 0.88 });
-  const matBacklightMatrix = makeMatteMaterial({ color: 0x0d2822, emissive: 0x10b981, emissiveIntensity: 0.42, roughness: 0.4 });
-  const matRamSpreader = makeMatteMaterial({ color: 0x171b26, emissive: 0x0f172a, emissiveIntensity: 0.28, metalness: 0.36, roughness: 0.70 });
-  const matRamChip = makeMatteMaterial({ color: 0x090b10, metalness: 0.2, roughness: 0.82 });
-  const matStoragePcb = makeMatteMaterial({ color: 0x111520, metalness: 0.28, roughness: 0.76 });
-  const matStorageSink = makeMatteMaterial({ color: 0x1e2332, metalness: 0.40, roughness: 0.66 });
-  const matBatteryCell = makeMatteMaterial({ color: 0x131622, emissive: 0x1e1b4b, emissiveIntensity: 0.25, metalness: 0.3, roughness: 0.75 });
-  const matTouchpadSurface = makeMatteMaterial({ color: 0x151923, emissive: 0x1e293b, emissiveIntensity: 0.35, roughness: 0.64, metalness: 0.26 });
+  const matOuterChassis = makeMatteMaterial({ color: 0x1b1c20, metalness: 0.24, roughness: 0.80 });
+  const matBezel = makeMatteMaterial({ color: 0x101114, metalness: 0.15, roughness: 0.85 });
+  const matScreenPanel = makeMatteMaterial({ color: 0x13151a, emissive: 0x1f242d, emissiveIntensity: 0.45, roughness: 0.35 });
+  const matMotherboardPcb = makeMatteMaterial({ color: 0x14161a, metalness: 0.25, roughness: 0.78 });
+  const matCpuPackage = makeMatteMaterial({ color: 0x2c3038, emissive: 0x1e2229, emissiveIntensity: 0.3, metalness: 0.48, roughness: 0.52 });
+  const matCopperPipe = makeMatteMaterial({ color: 0xb45309, emissive: 0x451a03, emissiveIntensity: 0.22, metalness: 0.58, roughness: 0.44 });
+  const matGoldContacts = makeMatteMaterial({ color: 0xd4a373, emissive: 0x78350f, emissiveIntensity: 0.25, metalness: 0.68, roughness: 0.38 });
+  const matKeyDeck = makeMatteMaterial({ color: 0x16171b, metalness: 0.2, roughness: 0.84 });
+  const matKeyCap = makeMatteMaterial({ color: 0x24262c, metalness: 0.18, roughness: 0.76 });
+  const matBacklightMatrix = makeMatteMaterial({ color: 0x18221f, emissive: 0x84a98c, emissiveIntensity: 0.35, roughness: 0.4 });
+  const matRamSpreader = makeMatteMaterial({ color: 0x1e2026, emissive: 0x141619, emissiveIntensity: 0.25, metalness: 0.36, roughness: 0.70 });
+  const matRamChip = makeMatteMaterial({ color: 0x101114, metalness: 0.2, roughness: 0.82 });
+  const matStoragePcb = makeMatteMaterial({ color: 0x17191f, metalness: 0.28, roughness: 0.76 });
+  const matStorageSink = makeMatteMaterial({ color: 0x262932, metalness: 0.40, roughness: 0.66 });
+  const matBatteryCell = makeMatteMaterial({ color: 0x18191e, metalness: 0.3, roughness: 0.75 });
+  const matTouchpadSurface = makeMatteMaterial({ color: 0x202228, emissive: 0x2a2d35, emissiveIntensity: 0.32, roughness: 0.58, metalness: 0.28 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
 
-  function addCrispEdges(mesh, partKey, edgeColor = 0xcbd5e1, baseOpacity = 0.88) {
+  // Attach crisp EdgesGeometry ONLY to primary structural silhouettes (prevents GPU draw-call overload)
+  function addCrispEdges(mesh, partKey, edgeColor = 0xd6d3cd, baseOpacity = 0.88) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
     const lineMat = new THREE.LineBasicMaterial({
       color: edgeColor,
@@ -1876,171 +2002,165 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   // =========================================================================
-  // 1. DISPLAY (Rests seamlessly at y = +0.03 when closed on top of the single unibody base!)
+  // 1. DISPLAY (Rests seamlessly at y = +0.03 when closed; shifts upward during disassembly)
   // =========================================================================
   const display = new THREE.Group();
   display.position.set(0, 0.03, -1.00);
 
   const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.055), matOuterChassis);
   lidMesh.position.set(0, 1.00, -0.028);
-  addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.94);
+  addCrispEdges(lidMesh, 'display', 0xe5e5e0, 0.92);
 
   const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.88), matBezel);
   bezelMesh.position.set(0, 1.00, 0.002);
 
   const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.70), matScreenPanel);
   lcdMesh.position.set(0, 1.00, 0.004);
-  addCrispEdges(lcdMesh, 'display', 0x38bdf8, 0.82);
+  addCrispEdges(lcdMesh, 'display', 0x9ca3af, 0.75);
 
-  // Camera Notch & Glowing IDE Telemetry Bars on Display
-  const camNotch = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.05), matBezel);
-  camNotch.position.set(0, 1.82, 0.006);
-  display.add(camNotch);
-
-  const uiColors = [0x38bdf8, 0x10b981, 0xa855f7, 0xf59e0b, 0xec4899];
-  for (let i = 0; i < 6; i++) {
-    const barW = 0.65 + (i % 3) * 0.45;
-    const barMat = new THREE.MeshBasicMaterial({ color: uiColors[i % uiColors.length], transparent: true, opacity: 0.45 });
-    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.038), barMat);
-    bar.position.set(-1.15 + barW / 2, 1.48 - i * 0.15, 0.006);
+  const barGeo = new THREE.PlaneGeometry(1.0, 0.036);
+  const barMat = new THREE.MeshBasicMaterial({ color: 0xd4a373, transparent: true, opacity: 0.35 });
+  for (let i = 0; i < 5; i++) {
+    const bar = new THREE.Mesh(barGeo, barMat);
+    bar.scale.x = 0.65 + (i % 3) * 0.4;
+    bar.position.set(-1.1 + (bar.scale.x * 0.5), 1.45 - i * 0.16, 0.006);
     display.add(bar);
   }
 
-  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.42, 16), matOuterChassis);
+  const hingeGeo = new THREE.CylinderGeometry(0.032, 0.032, 0.42, 12);
+  const hingeL = new THREE.Mesh(hingeGeo, matOuterChassis);
   hingeL.rotation.z = Math.PI / 2;
   hingeL.position.set(-0.85, 0, -0.025);
-  addCrispEdges(hingeL, 'display', 0x94a3b8, 0.72);
   const hingeR = hingeL.clone();
   hingeR.position.set(0.85, 0, -0.025);
 
   const displayAnchor = new THREE.Object3D();
-  displayAnchor.position.set(-0.9, 1.15, 0.02);
+  displayAnchor.position.set(-0.75, 1.05, 0.02);
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. KEYBOARD & TOP-CASE PALMREST DECK
-  //    When assembled (spread = 0), sits at y = +0.015 directly touching baseMesh (y = 0.00)
-  //    so the entire laptop is ONE SEAMLESS UNIBODY (never 2 separate slabs!)
+  // 2. KEYBOARD & TOP-CASE PALMREST DECK (With Enlarged Touchpad on Front Deck)
   // =========================================================================
   const keyboard = new THREE.Group();
   const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.03, 2.00), matOuterChassis);
   topCasePalmrest.position.set(0, 0.015, 0);
-  addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.92);
+  addCrispEdges(topCasePalmrest, 'keyboard', 0xe5e5e0, 0.92);
   keyboard.add(topCasePalmrest);
 
-  // Glowing Backlit Switch Matrix Plate under the keys (revealed when keys cascade upward)
-  const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.016, 1.10), matBacklightMatrix);
-  backlightPlate.position.set(0, 0.026, -0.18);
-  addCrispEdges(backlightPlate, 'keyboard', 0x10b981, 0.85);
+  const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.014, 1.02), matBacklightMatrix);
+  backlightPlate.position.set(0, 0.024, -0.26);
+  addCrispEdges(backlightPlate, 'keyboard', 0x84a98c, 0.8);
   keyboard.add(backlightPlate);
 
-  // Precision Scissor-Switch Keycap Matrix (Animates in a clean Teardown Wave Cascade!)
+  // Shared Geometry for 44 Keycaps (Zero extra draw-call overhead)
+  const sharedKeyGeo = new THREE.BoxGeometry(0.185, 0.028, 0.175);
   const cascadeKeys = [];
   const rows = 4;
   const cols = 11;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.028, 0.185), matKeyCap);
+      const key = new THREE.Mesh(sharedKeyGeo, matKeyCap);
       const baseX = -1.0 + c * 0.2;
-      const baseY = 0.034;
-      const baseZ = -0.54 + r * 0.24;
+      const baseY = 0.032;
+      const baseZ = -0.60 + r * 0.22;
       key.position.set(baseX, baseY, baseZ);
-      addCrispEdges(key, 'keyboard', 0xcbd5e1, 0.84);
       keyboard.add(key);
 
-      // Wave delay across diagonal (0.0 -> 1.0) for smooth engineering teardown cascade
       const wavePhase = (c / (cols - 1)) * 0.65 + (r / (rows - 1)) * 0.35;
       cascadeKeys.push({ mesh: key, baseX, baseY, baseZ, wavePhase });
     }
   }
   const keyboardAnchor = new THREE.Object3D();
-  keyboardAnchor.position.set(-0.85, 0.12, -0.18);
+  keyboardAnchor.position.set(-0.75, 0.08, -0.25);
   keyboard.add(keyboardAnchor);
 
   // =========================================================================
-  // 3. MOTHERBOARD (Ultra-Detailed with Dual Spinning LED Fans, Copper Heatpipes,
-  //    CPU + GPU Dies, VRM Banks, Capacitors & Gold PCB Circuit Traces)
+  // 3. ENLARGED PRECISION TOUCHPAD (Attached to Front Palmrest of Keyboard Deck!)
+  // =========================================================================
+  const touchpad = new THREE.Group();
+  // Bigger touchpad (1.36 x 0.72) nestled right on the front palmrest (never detaches completely from the laptop!)
+  const padRim = new THREE.Mesh(
+    new THREE.BoxGeometry(1.38, 0.024, 0.74),
+    makeMatteMaterial({ color: 0x2c2f36, metalness: 0.35, roughness: 0.65 })
+  );
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.32, 0.030, 0.68), matTouchpadSurface);
+  padRim.position.set(0, 0.024, 0.56);
+  padMesh.position.set(0, 0.028, 0.56);
+  addCrispEdges(padMesh, 'touchpad', 0xf4f1ea, 0.96);
+  padMesh.userData.isTouchpad = true;
+  const touchpadAnchor = new THREE.Object3D();
+  touchpadAnchor.position.set(0, 0.045, 0.56);
+  touchpad.add(padRim, padMesh, touchpadAnchor);
+  // Parent touchpad directly to keyboard so it moves naturally with the palmrest and never detaches away!
+  keyboard.add(touchpad);
+
+  // =========================================================================
+  // 4. MOTHERBOARD (Aligned on Central Axis; Visible as Upper Parts Shift Upward!)
   // =========================================================================
   const motherboard = new THREE.Group();
-  // Tucked inside the unibody at y = -0.02 when closed
   motherboard.position.set(0, -0.02, 0);
 
   const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.66, 0.042, 1.60), matMotherboardPcb);
-  addCrispEdges(pcb, 'motherboard', 0xcbd5e1, 0.94);
+  addCrispEdges(pcb, 'motherboard', 0xe5e5e0, 0.94);
   motherboard.add(pcb);
 
-  // Central CPU Die + Secondary GPU Die
   const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.05, 0.68), matOuterChassis);
   cpuSocket.position.set(-0.22, 0.025, -0.06);
-  addCrispEdges(cpuSocket, 'motherboard', 0x94a3b8, 0.82);
   const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.068, 0.46), matCpuPackage);
   cpuDie.position.set(-0.22, 0.038, -0.06);
-  addCrispEdges(cpuDie, 'motherboard', 0xa855f7, 0.98);
+  addCrispEdges(cpuDie, 'motherboard', 0xf4f1ea, 0.96);
 
   const gpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.048, 0.56), matOuterChassis);
   gpuSocket.position.set(0.38, 0.024, -0.06);
-  addCrispEdges(gpuSocket, 'motherboard', 0x94a3b8, 0.8);
   const gpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.064, 0.38), matCpuPackage);
   gpuDie.position.set(0.38, 0.036, -0.06);
-  addCrispEdges(gpuDie, 'motherboard', 0x38bdf8, 0.95);
+  addCrispEdges(gpuDie, 'motherboard', 0xd4a373, 0.92);
   motherboard.add(cpuSocket, cpuDie, gpuSocket, gpuDie);
 
-  // Twin Copper Thermal Heatpipes
   const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.12, 0.026, 0.10), matCopperPipe);
   pipe1.position.set(0, 0.046, -0.42);
   const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.026, 0.08), matCopperPipe);
   pipe2.position.set(0, 0.046, -0.26);
-  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.88);
-  addCrispEdges(pipe2, 'motherboard', 0xf59e0b, 0.8);
+  addCrispEdges(pipe1, 'motherboard', 0xd4a373, 0.88);
   motherboard.add(pipe1, pipe2);
 
-  // Dual Multi-Blade Spinning Cooling Fans with Glowing LED Halo Rings
+  const sharedBladeGeo = new THREE.BoxGeometry(0.22, 0.028, 0.03);
   function createCoolingFan(xPos, ringColor) {
     const fanGroup = new THREE.Group();
     fanGroup.position.set(xPos, 0.034, -0.38);
-    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.37, 0.046, 24), matOuterChassis);
-    addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.92);
+    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.37, 0.046, 20), matOuterChassis);
+    addCrispEdges(shroud, 'motherboard', 0xe5e5e0, 0.92);
 
-    // Glowing LED Halo Ring inside fan shroud
-    const ringGeo = new THREE.RingGeometry(0.30, 0.34, 28);
-    const ringMat = new THREE.MeshBasicMaterial({ color: ringColor, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    const ringGeo = new THREE.RingGeometry(0.30, 0.34, 24);
+    const ringMat = new THREE.MeshBasicMaterial({ color: ringColor, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
     const ringMesh = new THREE.Mesh(ringGeo, ringMat);
     ringMesh.rotation.x = -Math.PI / 2;
     ringMesh.position.y = 0.024;
 
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.056, 16), matCpuPackage);
-    addCrispEdges(hub, 'motherboard', 0xcbd5e1, 0.88);
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.056, 12), matCpuPackage);
     fanGroup.add(shroud, ringMesh, hub);
 
     const rotorGroup = new THREE.Group();
-    for (let b = 0; b < 9; b++) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.028, 0.03), matKeyCap);
-      const angle = (b / 9) * Math.PI * 2;
+    for (let b = 0; b < 8; b++) {
+      const blade = new THREE.Mesh(sharedBladeGeo, matKeyCap);
+      const angle = (b / 8) * Math.PI * 2;
       blade.position.set(Math.cos(angle) * 0.18, 0.01, Math.sin(angle) * 0.18);
       blade.rotation.y = -angle + 0.42;
-      addCrispEdges(blade, 'motherboard', 0x94a3b8, 0.7);
       rotorGroup.add(blade);
     }
     fanGroup.add(rotorGroup);
     fanGroup.userData.rotor = rotorGroup;
     return fanGroup;
   }
-  const fanL = createCoolingFan(-0.84, 0x38bdf8);
-  const fanR = createCoolingFan(0.84, 0xa855f7);
+  const fanL = createCoolingFan(-0.84, 0xd4a373);
+  const fanR = createCoolingFan(0.84, 0x84a98c);
   motherboard.add(fanL, fanR);
 
-  // VRM Choke Coils & Solid-State Capacitors
+  const sharedVrmGeo = new THREE.BoxGeometry(0.10, 0.052, 0.10);
   for (let v = 0; v < 7; v++) {
-    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.052, 0.10), matStorageSink);
+    const vrm = new THREE.Mesh(sharedVrmGeo, matStorageSink);
     vrm.position.set(-0.45 + v * 0.15, 0.032, -0.62);
-    addCrispEdges(vrm, 'motherboard', 0xcbd5e1, 0.82);
     motherboard.add(vrm);
-  }
-  for (let c = 0; c < 6; c++) {
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.036, 0.052, 12), matGoldContacts);
-    cap.position.set(-1.14, 0.032, -0.25 + c * 0.15);
-    addCrispEdges(cap, 'motherboard', 0xf59e0b, 0.8);
-    motherboard.add(cap);
   }
 
   // Embedded Flat PCB Line Wiring Traces
@@ -2057,29 +2177,29 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     [-0.95, 0.024, 0.28, -0.35, 0.024, 0.28],
     [0.95, 0.024, 0.28, 0.35, 0.024, 0.28],
     [-0.32, 0.024, 0.68, 0.32, 0.024, 0.68],
-    [-0.62, 0.024, -0.06, -0.38, 0.024, -0.06],
-    [0.38, 0.024, -0.06, 0.68, 0.024, -0.06],
     [0, 0.024, 0.24, 0, 0.024, 0.72]
   ];
   traceCoords.forEach(([x1, y1, z1, x2, y2, z2]) => {
     tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
   });
   const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
-  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.9, depthTest: true });
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xd4a373, transparent: true, opacity: 0.88, depthTest: true });
   motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
 
+  // Accurate Motherboard Anchor placed on the front-left visible edge of the Motherboard PCB
   const motherboardAnchor = new THREE.Object3D();
-  motherboardAnchor.position.set(0.25, 0.06, -0.06);
+  motherboardAnchor.position.set(-0.35, 0.035, 0.48);
   motherboard.add(motherboardAnchor);
 
   // =========================================================================
-  // 4. RAM STICKS (Dual DDR5 Modules Ejecting Linearly Sideways)
+  // 5. RAM STICKS (Anchored to Left Ejecting RAM Stick so Label Is 100% Accurate!)
   // =========================================================================
   const ram = new THREE.Group();
+  const sharedChipGeo = new THREE.BoxGeometry(0.13, 0.05, 0.16);
   function createRamStick(side) {
     const stickGroup = new THREE.Group();
     const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.038, 0.32), matRamSpreader);
-    addCrispEdges(board, 'ram', 0xf59e0b, 0.94);
+    addCrispEdges(board, 'ram', 0xd4a373, 0.94);
     stickGroup.add(board);
 
     const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.04, 0.045), matGoldContacts);
@@ -2087,9 +2207,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     stickGroup.add(goldStrip);
 
     for (let m = 0; m < 4; m++) {
-      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.05, 0.16), matRamChip);
+      const chip = new THREE.Mesh(sharedChipGeo, matRamChip);
       chip.position.set(-0.255 + m * 0.17, 0.008, 0);
-      addCrispEdges(chip, 'ram', 0xcbd5e1, 0.86);
       stickGroup.add(chip);
     }
     return stickGroup;
@@ -2099,47 +2218,35 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   ramL.position.set(-0.62, -0.02, 0.24);
   ramR.position.set(0.62, -0.02, 0.24);
 
+  // Attach ramAnchor directly to ramL (the left RAM stick that slides out into open view on the left!)
   const ramAnchor = new THREE.Object3D();
-  ramAnchor.position.set(0, 0.04, 0);
-  ramR.add(ramAnchor);
+  ramAnchor.position.set(0, 0.03, 0);
+  ramL.add(ramAnchor);
   ram.add(ramL, ramR);
 
   // =========================================================================
-  // 5. STORAGE & UNIBODY CHASSIS
-  //    When assembled (spread = 0), baseMesh sits at y = -0.045 (top face at y = 0.00)
-  //    so it meets topCasePalmrest (bottom face at y = 0.00) seamlessly!
+  // 6. STORAGE & UNIBODY CHASSIS
   // =========================================================================
   const storage = new THREE.Group();
   const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.09, 2.00), matOuterChassis);
   baseMesh.position.set(0, -0.045, 0);
-  addCrispEdges(baseMesh, 'storage', 0xe2e8f0, 0.92);
+  addCrispEdges(baseMesh, 'storage', 0xe5e5e0, 0.92);
 
-  // Side USB-C / Thunderbolt I/O Port Cutouts on Unibody Base
-  for (let p = 0; p < 2; p++) {
-    const portL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.026, 0.12), matGoldContacts);
-    portL.position.set(-1.525, -0.035, -0.45 + p * 0.24);
-    const portR = portL.clone();
-    portR.position.x = 1.525;
-    baseMesh.add(portL, portR);
-  }
-
-  // Multi-Cell Lithium Power Array in Rear Bay of Unibody
+  const sharedBatGeo = new THREE.BoxGeometry(0.82, 0.045, 0.48);
   for (let cell = 0; cell < 3; cell++) {
-    const batCell = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.045, 0.48), matBatteryCell);
+    const batCell = new THREE.Mesh(sharedBatGeo, matBatteryCell);
     batCell.position.set(-0.88 + cell * 0.88, 0.035, -0.42);
-    addCrispEdges(batCell, 'storage', 0x6366f1, 0.78);
     baseMesh.add(batCell);
   }
 
-  // Dual NVMe M.2 Solid-State Storage Drives with Finned Thermal Heatsinks
   function createNvmeSsd(xOffset) {
     const ssdGroup = new THREE.Group();
     ssdGroup.position.set(xOffset, -0.01, 0.38);
     const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.04, 0.42), matStoragePcb);
-    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.94);
+    addCrispEdges(ssdPcb, 'storage', 0x84a98c, 0.92);
     const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.062, 0.36), matStorageSink);
     heatsink.position.set(-0.06, 0.016, 0);
-    addCrispEdges(heatsink, 'storage', 0xe2e8f0, 0.92);
+    addCrispEdges(heatsink, 'storage', 0xe5e5e0, 0.9);
     const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.042, 0.34), matGoldContacts);
     connector.position.set(0.48, 0, 0);
     ssdGroup.add(ssdPcb, heatsink, connector);
@@ -2148,27 +2255,11 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const ssd1 = createNvmeSsd(-0.64);
   const ssd2 = createNvmeSsd(0.64);
   const storageAnchor = new THREE.Object3D();
-  storageAnchor.position.set(0.55, 0.02, 0.38);
+  storageAnchor.position.set(-0.64, 0.02, 0.38);
   storage.add(baseMesh, ssd1, ssd2, storageAnchor);
 
-  // =========================================================================
-  // 6. TOUCHPAD (Flush on front palmrest at start; detaches forward at scroll end)
-  // =========================================================================
-  const touchpad = new THREE.Group();
-  const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.06, 0.024, 0.62),
-    makeMatteMaterial({ color: 0x262b38, metalness: 0.35, roughness: 0.68 })
-  );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.030, 0.56), matTouchpadSurface);
-  padRim.position.set(0, 0.022, 0.62);
-  padMesh.position.set(0, 0.025, 0.62);
-  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.96);
-  padMesh.userData.isTouchpad = true;
-  const touchpadAnchor = new THREE.Object3D();
-  touchpadAnchor.position.set(0, 0.04, 0.62);
-  touchpad.add(padRim, padMesh, touchpadAnchor);
-
-  const parts = { display, keyboard, motherboard, ram, touchpad, storage };
+  const topLevelGroups = { display, keyboard, motherboard, ram, storage };
+  const allParts = { display, keyboard, motherboard, ram, touchpad, storage };
   const anchors = {
     display: displayAnchor,
     keyboard: keyboardAnchor,
@@ -2187,18 +2278,25 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     touchpad: "Touchpad — Click to Download CV"
   };
 
-  Object.entries(parts).forEach(([key, group]) => {
+  Object.entries(allParts).forEach(([key, group]) => {
     group.traverse((child) => {
-      if (child.isMesh) {
+      if (child.isMesh && !child.userData.partKey) {
         child.userData.partKey = key;
         child.userData.partLabel = partLabels[key];
         pickableMeshes.push(child);
       }
     });
-    root.add(group);
+  });
+  // Ensure touchpad meshes carry the 'touchpad' partKey even though touchpad is parented to keyboard
+  touchpad.traverse((child) => {
+    if (child.isMesh) {
+      child.userData.partKey = 'touchpad';
+      child.userData.partLabel = partLabels.touchpad;
+    }
   });
 
-  // Start 100% seamless & closed with internal boards hidden inside the unibody until separation begins
+  Object.values(topLevelGroups).forEach((g) => root.add(g));
+
   display.rotation.x = Math.PI / 2;
   motherboard.visible = false;
   ram.visible = false;
@@ -2252,13 +2350,15 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     if (hits.length > 0 && onTouchpadClick) onTouchpadClick();
   });
 
+  // Pixel-accurate projection relative to canvas bounding box
   const tempWorldVec = new THREE.Vector3();
   function getAnchorScreenCoords(anchorObj) {
+    const rect = canvas.getBoundingClientRect();
     anchorObj.getWorldPosition(tempWorldVec);
     tempWorldVec.project(camera);
     return {
-      x: (tempWorldVec.x * 0.5 + 0.5) * window.innerWidth,
-      y: (-(tempWorldVec.y * 0.5) + 0.5) * window.innerHeight
+      x: rect.left + (tempWorldVec.x * 0.5 + 0.5) * rect.width,
+      y: rect.top + (-(tempWorldVec.y * 0.5) + 0.5) * rect.height
     };
   }
 
@@ -2272,7 +2372,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const closedAngle = Math.PI / 2;
     const openAngle = -0.18;
 
-    // 2. Linear Sideways + Vertical Exploded Echelon Spread (0.11 -> 0.80)
+    // 2. Vertical Disassembly Spread (0.11 -> 0.80): Upper parts shift UP so Motherboard & under-parts are clearly visible!
     const rawSpread = Math.max(0, Math.min(1, (progress - 0.11) / 0.69));
     const spread = 1 - Math.pow(1 - rawSpread, 1.85);
 
@@ -2282,92 +2382,79 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     ssd1.visible = showInternals;
     ssd2.visible = showInternals;
 
-    // 3. Smooth shift to left as About Me arrives (0.05 -> 0.15)
+    // 3. Smooth shift to left while cards scroll (0.05 -> 0.15)
     const leftShift = Math.max(0, Math.min(1, (progress - 0.05) / 0.10));
     const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    // 4. Final Touchpad Detach stage (progress >= 0.82)
-    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.82) / 0.15));
+    // 4. End-of-Animation Centering (progress >= 0.81):
+    //    Laptop glides back to the center of the screen so the enlarged Touchpad (still attached to the palmrest!) sits centered!
+    const endCenterRatio = Math.max(0, Math.min(1, (progress - 0.81) / 0.16));
+    const smoothEndCenter = 1 - Math.pow(1 - endCenterRatio, 2.2);
 
-    // Active-part spotlight nudge (+Z toward viewer when that part's stage is active)
-    const activeNudge = (key) => (leftShift >= 0.8 && touchpadDetach <= 0.45 && activeKey === key ? 0.18 : 0);
+    // Upper parts (Display & Keyboard) shift cleanly UPWARD so you can see the Motherboard & under-parts beneath them!
+    display.position.set(0, 0.03 + spread * 0.68, -1.00 - spread * 0.12);
+    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.06) * smoothOpen;
 
-    // Display opens and steps slightly up & back-left
-    display.position.set(
-      -0.30 * spread,
-      0.03 + spread * 0.56,
-      -1.00 - spread * 0.18 + activeNudge('display')
-    );
-    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08) * smoothOpen;
+    keyboard.position.set(0, spread * 0.44, 0);
 
-    // Keyboard Deck lifts up and shifts sideways to the LEFT (-0.65 * spread) so Motherboard beneath/beside it is 100% uncovered!
-    keyboard.position.set(
-      -0.65 * spread,
-      spread * 0.40,
-      spread * 0.14 + activeNudge('keyboard')
-    );
-
-    // Authentic Tech-Teardown Keycap Wave Cascade (Keys rise flat & crisp above glowing LED switch plate!)
+    // Keycap Wave Cascade
     const keyCascadeProgress = Math.max(0, Math.min(1, (progress - 0.13) / 0.35));
     cascadeKeys.forEach(({ mesh, baseX, baseY, baseZ, wavePhase }) => {
       const localWave = Math.max(0, Math.min(1, (keyCascadeProgress * 1.6) - wavePhase * 0.6));
       const smoothWave = Math.sin(localWave * Math.PI * 0.5);
-      mesh.position.set(
-        baseX,
-        baseY + smoothWave * 0.16,
-        baseZ
-      );
-      mesh.rotation.set(0, 0, 0);
+      mesh.position.set(baseX, baseY + smoothWave * 0.14, baseZ);
     });
 
-    // Motherboard steps sideways to the RIGHT (+0.38 * spread) into full unobstructed view!
-    motherboard.position.set(
-      0.38 * spread,
-      -0.02 + spread * 0.04,
-      activeNudge('motherboard')
-    );
+    // Touchpad remains attached to the front palmrest of the keyboard (only rising 0.045 units in subtle relief at the end!)
+    touchpad.position.set(0, smoothEndCenter * 0.045, smoothEndCenter * 0.06);
 
-    // RAM Sticks eject linearly sideways from the Motherboard
+    // Motherboard stays aligned on the central axis right in the open window below the lifted Keyboard
+    motherboard.position.set(0, -0.02 - spread * 0.04, 0);
+
+    // RAM Sticks slide out cleanly from the Motherboard slots
     const ramOut = Math.max(0, Math.min(1, (progress - 0.16) / 0.48));
-    ram.position.set(0.38 * spread, 0, activeNudge('ram'));
-    ramL.position.set(-0.62 - ramOut * 0.95, -0.02 + spread * 0.18, 0.24 + ramOut * 0.15);
-    ramR.position.set(0.62 + ramOut * 1.05, -0.02 + spread * 0.18, 0.24 + ramOut * 0.15);
+    ram.position.set(0, -0.02 - spread * 0.04, 0);
+    ramL.position.set(-0.62 - ramOut * 0.82, 0, 0.24);
+    ramR.position.set(0.62 + ramOut * 0.82, 0, 0.24);
 
-    // Storage & Unibody Base step downward & slightly right-forward
-    storage.position.set(
-      0.18 * spread,
-      -spread * 0.46,
-      spread * 0.08 + activeNudge('storage')
-    );
-    ssd1.position.set(-0.64 - spread * 0.22, -0.01 + spread * 0.22, 0.38 + spread * 0.16);
-    ssd2.position.set(0.64 + spread * 0.22, -0.01 + spread * 0.22, 0.38 + spread * 0.16);
+    // Storage & Lower Unibody separate cleanly below the Motherboard
+    storage.position.set(0, -spread * 0.44, 0);
+    ssd1.position.set(-0.64, -0.01 + spread * 0.14, 0.38);
+    ssd2.position.set(0.64, -0.01 + spread * 0.14, 0.38);
 
-    // Touchpad moves with keyboard then detaches forward into front spotlight at scroll end
-    touchpad.position.set(
-      -0.65 * spread * (1 - touchpadDetach) + touchpadDetach * 0.22,
-      spread * 0.40 - touchpadDetach * 0.22,
-      spread * 0.18 + touchpadDetach * 1.15
-    );
-    touchpad.rotation.x = touchpadDetach * 0.28;
+    // Horizontal Position: Starts at 0 -> moves left (-1.22) during stages -> returns to center (0.0) at end for Touchpad CV!
+    root.position.x = -1.22 * smoothLeft * (1 - smoothEndCenter);
+    root.position.y = -0.32 - spread * 0.06;
 
-    // Continuous, Unidirectional Rotation (Starts facing RIGHT +0.64 rad -> Ends facing LEFT -0.56 rad)
-    // Plus higher isometric tilt (rotation.x up to 0.44 rad) so all internal fans, chips & parts are richly visible!
-    root.position.x = -1.28 * smoothLeft + touchpadDetach * 0.72;
-    root.position.y = -0.44;
-    root.rotation.y = 0.64 - progress * 1.20;
-    root.rotation.x = 0.26 + spread * 0.18;
+    // Tilt Laptop UPWARD (rotation.x decreases from 0.24 to 0.12) so we can see under the lifted Keyboard into the Motherboard!
+    root.rotation.x = 0.24 - spread * 0.12 + smoothEndCenter * 0.14;
+
+    // Continuous rotation from facing RIGHT (+0.62 rad) to facing LEFT (-0.52 rad), easing toward front-center at final touchpad stage
+    const mainYaw = 0.62 - progress * 1.14;
+    root.rotation.y = mainYaw * (1 - smoothEndCenter * 0.65);
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
-    Object.entries(parts).forEach(([key, group]) => {
-      const isFocused = (touchpadDetach > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && touchpadDetach <= 0.45 && key === activeKey);
-      group.scale.setScalar(isFocused ? 1.06 : 0.99);
+    Object.entries(allParts).forEach(([key, group]) => {
+      const isFocused = (smoothEndCenter > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && smoothEndCenter <= 0.45 && key === activeKey);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
-        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
-        lMat.opacity = isFocused ? 1.0 : 0.76;
+        lMat.color.set(isFocused ? '#ffffff' : '#9ca3af');
+        lMat.opacity = isFocused ? 1.0 : 0.68;
       });
     });
+  }
+
+  // Pause WebGL rendering when #section-laptop is scrolled out of view to save GPU resources
+  let isLaptopInView = true;
+  const laptopSectionEl = document.getElementById('section-laptop');
+  if ('IntersectionObserver' in window && laptopSectionEl) {
+    const viewObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isLaptopInView = entry.isIntersecting;
+      });
+    }, { rootMargin: '200px 0px' });
+    viewObs.observe(laptopSectionEl);
   }
 
   window.addEventListener('resize', () => {
@@ -2378,8 +2465,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   function animate() {
     requestAnimationFrame(animate);
-    if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.04;
-    if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.04;
+    if (!isLaptopInView) return;
+
+    if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.035;
+    if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.035;
 
     renderer.render(scene, camera);
     scene.updateMatrixWorld(true);
@@ -2413,7 +2502,7 @@ function buildFallbackGithubChartSvg() {
   const gap = 3;
   const w = cols * (cell + gap);
   const h = rows * (cell + gap);
-  const palette = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+  const palette = ['#18191c', '#23382c', '#345943', '#568266', '#84a98c'];
   let rects = '';
   for (let c = 0; c < cols; c++) {
     for (let r = 0; r < rows; r++) {
@@ -2428,7 +2517,6 @@ function buildFallbackGithubChartSvg() {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 
-// Non-scrollable Typewriter Effect for Landing Page Name After Loading Completes
 function runHeroTypewriter(firstName, lastName) {
   const firstEl = document.getElementById('hero-first');
   const lastEl = document.getElementById('hero-last');
@@ -2496,7 +2584,6 @@ window.addEventListener('DOMContentLoaded', () => {
   laptopStages.forEach((st, idx) => {
     const dot = document.createElement('div');
     dot.className = `stage-dot ${idx === 0 ? 'active' : ''}`;
-    dot.style.background = idx === 0 ? st.accent : 'rgba(255,255,255,0.2)';
     dotsContainer.appendChild(dot);
 
     const paragraphsHtml = st.paragraphs
@@ -2510,7 +2597,6 @@ window.addEventListener('DOMContentLoaded', () => {
         <span class="subcard-meta">${c.meta}</span>
       </div>`).join('')}</div>` : '';
 
-    // Casual, low-key mention of English & Hindi alongside GitHub Contribution Graph + Badges (No big Languages heading!)
     const compactLangHtml = st.isCompactLanguages ? `
       <div class="github-contrib-card">
         <div class="github-contrib-header">
@@ -2519,7 +2605,7 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="github-chart-wrap">
           <img
-            src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
+            src="https://ghchart.rshah.org/84a98c/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
             referrerpolicy="no-referrer"
@@ -2536,42 +2622,23 @@ window.addEventListener('DOMContentLoaded', () => {
       </div>
     ` : '';
 
-    // Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes
-    const outsideQuoteHtml = st.outsideQuote ? `
-      <div class="stage-outside-quote-wrap">
-        <div class="quote-frame">
-          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-          </svg>
-          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
-          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-          </svg>
-        </div>
-      </div>
-    ` : '';
-
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
-        <span class="skill-group-label" style="color:${g.color}">${g.label}</span>
-        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill" style="--pill-color:${g.color}">${item}</span>`).join('')}</div>
+        <span class="skill-group-label">${g.label}</span>
+        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill">${item}</span>`).join('')}</div>
       </div>`).join('')}</div>` : '';
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.4rem;color:${st.accent}">${st.pillsTitle}</p>
-        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
+        <p class="mono-tag" style="margin-bottom:0.4rem">${st.pillsTitle}</p>
+        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
     section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
     section.dataset.stageIndex = String(idx);
     section.innerHTML = `
-      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
+      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}">
         <span class="stage-part-chip">${st.partLabel}</span>
         ${st.title ? `<h2 class="stage-title">${st.title}</h2>` : ''}
         ${paragraphsHtml}
@@ -2580,8 +2647,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>
-      ${outsideQuoteHtml}`;
+      </article>`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -2591,6 +2657,27 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
+
+    // Centered Between the Languages/GitHub Tab and the Courses & Achievements Tab (Slightly Bigger Font Size)
+    if (st.outsideQuote) {
+      const betweenQuote = document.createElement('div');
+      betweenQuote.className = 'between-stages-quote';
+      betweenQuote.innerHTML = `
+        <div class="quote-frame">
+          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          </svg>
+          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
+          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          </svg>
+        </div>`;
+      stagesContainer.appendChild(betweenQuote);
+    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -2628,17 +2715,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.13 && progress < 0.82) {
+      if (progress >= 0.13 && progress < 0.81) {
         calloutEl.classList.add('visible');
-        const clampedX = Math.max(55, Math.min(window.innerWidth * 0.48, activeCoords.x));
-        const clampedY = Math.max(85, Math.min(window.innerHeight - 85, activeCoords.y));
+        const clampedX = Math.max(40, Math.min(window.innerWidth * 0.50, activeCoords.x));
+        const clampedY = Math.max(70, Math.min(window.innerHeight - 70, activeCoords.y));
         calloutEl.style.left = `${clampedX}px`;
         calloutEl.style.top = `${clampedY}px`;
       } else {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.82) {
+      if (progress >= 0.81) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -2650,12 +2737,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies — Martial Arts at 08A)
+  // 3. Render 35mm Camera Reel (Hobbies)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
     card.className = 'reel-card';
-    card.style.setProperty('--frame-color', rf.color);
     card.innerHTML = `
       <div class="reel-frame-meta">
         <span>Frame ${rf.frame}</span>
@@ -2668,10 +2754,10 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards (Template Repo Style:
-  //    All 6 Cards Animate to Center on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link!)
+  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards + Template Repo Index Tick Lines
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
+  const indexLinesContainer = document.getElementById('projects-index-lines');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
   const totalLayers = projects.length;
 
@@ -2688,16 +2774,15 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="stack-frame-label">PROJECT</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <!-- Resting State: Project Photo Frame with SanitX Logo (Just like Template Repo Photo Frame) -->
         <div class="project-photo-frame">
-          <svg width="92" height="92" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.14)"/>
-            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
-            <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+          <svg width="78" height="78" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#f2efe9" stroke-width="3.2" fill="rgba(242,239,233,0.06)"/>
+            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#d4a373" stroke-width="2.5"/>
+            <path d="M41 40H55M41 48H55M41 56H49" stroke="#84a98c" stroke-width="2.5" stroke-linecap="round"/>
           </svg>
           <span class="photo-frame-title">${proj.title}</span>
         </div>
-        <!-- Hover Pop-Up State: Project Details Card + GitHub Repo Link -->
+        <!-- Contrasting Light Theme Pop-Up When Opened on Hover -->
         <div class="project-hover-popup">
           <div class="popup-header">
             <div class="stack-card-top">
@@ -2706,7 +2791,7 @@ window.addEventListener('DOMContentLoaded', () => {
             </div>
             <p>${proj.subtitle}</p>
           </div>
-          <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
+          <div class="popup-pills-wrap">${proj.tech.map(t => `<span class="popup-pill">${t}</span>`).join('')}</div>
           <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
           <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="popup-github-btn">
             <span>View on GitHub ↗</span>
@@ -2726,10 +2811,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
     slot.appendChild(card);
     projectsStack.appendChild(slot);
+
+    // Add Template Repository Index Tick Lines Beneath Each Tab
+    if (indexLinesContainer) {
+      const tickGroup = document.createElement('div');
+      tickGroup.className = 'index-tick-group';
+      tickGroup.innerHTML = `
+        <span class="index-tick"></span>
+        <span class="index-tick"></span>
+        <span class="index-tick major-tick" data-slot="${proj.slot}"></span>
+        <span class="index-tick"></span>
+        <span class="index-tick"></span>`;
+      indexLinesContainer.appendChild(tickGroup);
+    }
   });
 
   const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
+  const allMajorTicks = indexLinesContainer ? indexLinesContainer.querySelectorAll('.major-tick') : [];
 
   function focusCardToViewportCenter(targetIdx) {
     const targetSlot = allSlots[targetIdx];
@@ -2745,6 +2844,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
     allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
+    allMajorTicks.forEach((t, i) => t.classList.toggle('active', i === targetIdx));
 
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
@@ -2763,19 +2863,29 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.remove('active');
     if (projectsSection) projectsSection.classList.remove('has-focused-card');
     allSlots.forEach((s) => s.classList.remove('slot-focused'));
+    allMajorTicks.forEach((t) => t.classList.remove('active'));
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
       allSlots[i].style.zIndex = String(totalLayers - i);
     });
   }
 
-  // Bind hover animation to ALL 6 cards so every card in the stack animates to the center on hover!
+  // Hover-Intent Delay (165ms) so brushing past with the mouse never triggers an accidental pop-up!
+  let hoverIntentTimer = null;
   allSlots.forEach((slotEl, idx) => {
-    slotEl.addEventListener('pointerenter', () => focusCardToViewportCenter(idx));
-    slotEl.addEventListener('pointerleave', resetProjectStack);
+    slotEl.addEventListener('pointerenter', () => {
+      clearTimeout(hoverIntentTimer);
+      hoverIntentTimer = setTimeout(() => {
+        focusCardToViewportCenter(idx);
+      }, 165);
+    });
+    slotEl.addEventListener('pointerleave', () => {
+      clearTimeout(hoverIntentTimer);
+      resetProjectStack();
+    });
   });
 
-  // GSAP ScrollTrigger Animations with Exact Viewport-Center Card Tracking (Zero Part-Highlight Glitch!)
+  // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     const stageEls = Array.from(document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)'));
@@ -2808,12 +2918,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
-        calloutEl.style.setProperty('--callout-color', activeStage.accent);
         calloutPartName.textContent = activeStage.partLabel;
 
         dotEls.forEach((d, i) => {
           d.classList.toggle('active', i === idx);
-          d.style.background = i === idx ? laptopStages[i].accent : 'rgba(255,255,255,0.2)';
         });
       }
     });
@@ -2849,7 +2957,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
         const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
         const shiftX = -horizProgress * maxShift;
-        filmStripWrapper.style.transform = `rotate(-1deg) translate3d(${shiftX}px, 0, 0)`;
+        filmStripWrapper.style.transform = `rotate(-0.8deg) translate3d(${shiftX}px, 0, 0)`;
 
         const totalFrames = reelFrames.length;
         const activeFrameIdx = Math.min(totalFrames - 1, Math.floor(horizProgress * totalFrames));
@@ -2865,7 +2973,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (reelActiveIndicator) {
           reelActiveIndicator.textContent = `Frame ${reelFrames[activeFrameIdx].frame} / 0${totalFrames}A`;
-          reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color;
         }
         if (reelProgressFill) {
           reelProgressFill.style.width = `${Math.max(0, self.progress * 100)}%`;
@@ -3046,6 +3153,6 @@ http.createServer((req, res) => {
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
 git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js server.js vercel.json
-git commit -m "feat: implement v8 refinements (seamless unibody laptop, sideways echelon teardown, visibility stage order, casual languages, Hobbies reel, 6-card template stack)"
+git commit -m "feat: implement v9 refinements (WebGL stability fix, upward tilt & accurate anchors, 3 color chapters, Newsreader typography, minimalist contrasting project tabs with index lines)"
 git push origin main
 ```

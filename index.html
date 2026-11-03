@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles/main.css" />
   <!-- Three.js & GSAP + ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
@@ -29,185 +29,197 @@
     </div>
   </div>
 
-  <div class="grain-overlay" aria-hidden="true"></div>
-
   <!-- Full-Viewport Blur Backdrop when Focusing a Project Card in Center -->
   <div id="projects-focus-backdrop" class="projects-focus-backdrop" aria-hidden="true"></div>
 
-  <!-- 1. HERO SECTION (Typewriter Name Effect After Loading Completes) -->
-  <section id="section-hero" class="hero-section">
-    <div class="hero-center">
-      <h1 class="hero-title">
-        <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
-        <span class="hero-photo-frame">
-          <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
-        </span>
-        <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
-      </h1>
-    </div>
-
-    <!-- Bottom-Left Direct Jump Button -->
-    <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
-      <span class="btn-main-text">Explore Projects ↓</span>
-    </a>
-
-    <!-- Bottom-Center Scroll Prompt -->
-    <div class="hero-scroll-indicator">
-      <span class="mono-tag">Scroll</span>
-      <div class="scroll-line"><div class="scroll-pulse"></div></div>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 -->
-  <div class="quote-interlude first-quote-interlude">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “You don't have to be great to get started, but you have to get started to be great.”
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
-  <section id="section-laptop" class="laptop-section">
-    <div class="laptop-sticky-viewport">
-      <canvas id="laptop-canvas"></canvas>
-
-      <!-- Clean, Simple 3D Part Pointer -->
-      <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
-        <span class="callout-dot"></span>
-        <span class="callout-line"></span>
-        <div class="callout-badge">
-          <span id="callout-part-name" class="callout-part">Display</span>
-        </div>
+  <!-- ========================================================================
+       COLOR CHAPTER 1: MATTE CHARCOAL BLACK-GREY (#131417)
+       ======================================================================== -->
+  <div class="chapter-charcoal">
+    <!-- 1. HERO SECTION -->
+    <section id="section-hero" class="hero-section">
+      <div class="hero-center">
+        <h1 class="hero-title">
+          <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
+          <span class="hero-photo-frame">
+            <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
+          </span>
+          <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
+        </h1>
       </div>
 
-      <!-- Hover Tooltip (Strictly scoped to 3D laptop meshes inside #section-laptop) -->
-      <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
+      <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
+        <span class="btn-main-text">Explore Projects ↓</span>
+      </a>
 
-      <!-- Detached 3D Touchpad "Download CV" Button -->
-      <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
-        <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
-          <span class="touchpad-btn-dot"></span>
-          <span>Download CV</span>
-        </a>
+      <div class="hero-scroll-indicator">
+        <span class="mono-tag">Scroll</span>
+        <div class="scroll-line"><div class="scroll-pulse"></div></div>
       </div>
+    </section>
 
-      <div class="stage-progress-bar">
-        <div id="stage-dots" class="stage-dots"></div>
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 -->
+    <div class="quote-interlude first-quote-interlude">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “You don't have to be great to get started, but you have to get started to be great.”
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
       </div>
     </div>
 
-    <!-- Scroll Stages: Seamless Closed-to-Open Lead-In -> 5 Visibility-Ordered Stages -> Final Detached Touchpad Hold -->
-    <div id="laptop-stages-container" class="laptop-stages-container"></div>
-  </section>
+    <!-- 2. 3D LAPTOP DISASSEMBLY SCROLLABLE SECTION -->
+    <section id="section-laptop" class="laptop-section">
+      <div class="laptop-sticky-viewport">
+        <canvas id="laptop-canvas"></canvas>
 
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
-  <div class="quote-interlude">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES — Heading without "Aspirations") -->
-  <section id="section-reel" class="reel-scroll-section">
-    <div class="reel-sticky-viewport">
-      <div class="reel-top-bar">
-        <div>
-          <h2 class="section-heading">Hobbies</h2>
-        </div>
-        <div class="reel-counter-box">
-          <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
-        </div>
-      </div>
-
-      <div class="film-strip-stage">
-        <div class="film-strip-wrapper" id="film-strip-wrapper">
-          <div class="film-edge-code top-edge">
-            <span>35MM FILM</span>
-            <span>01A</span><span>02A</span><span>03A</span><span>04A</span><span>05A</span><span>06A</span><span>07A</span><span>08A</span>
-          </div>
-          <div class="sprocket-row"></div>
-          <div id="reel-track" class="reel-track"></div>
-          <div class="sprocket-row"></div>
-          <div class="film-edge-code bottom-edge">
-            <span>SUYASH SHARMA</span>
-            <span>SCROLL TO ADVANCE REEL →</span>
+        <!-- Clean, Minimalist 3D Part Pointer -->
+        <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
+          <span class="callout-dot"></span>
+          <span class="callout-line"></span>
+          <div class="callout-badge">
+            <span id="callout-part-name" class="callout-part">Display</span>
           </div>
         </div>
+
+        <!-- Hover Tooltip -->
+        <div id="part-hover-tooltip" class="part-hover-tooltip" aria-hidden="true"></div>
+
+        <!-- Centered Touchpad "Download CV" Button at Scroll Completion -->
+        <div id="touchpad-cv-overlay" class="touchpad-cv-overlay">
+          <a id="touchpad-cv-anchor" href="./Suyash-CV.pdf" download="Suyash-Sharma-CV.pdf" class="touchpad-floating-btn">
+            <span class="touchpad-btn-dot"></span>
+            <span>Download CV</span>
+          </a>
+        </div>
+
+        <div class="stage-progress-bar">
+          <div id="stage-dots" class="stage-dots"></div>
+        </div>
       </div>
 
-      <div class="reel-progress-bar-wrap">
-        <div id="reel-progress-fill" class="reel-progress-fill"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 (Tight bottom spacing beneath Helen Keller quote) -->
-  <div class="quote-interlude helen-keller-quote">
-    <div class="quote-frame">
-      <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-      <blockquote class="interlude-text">
-        “Life is either a daring adventure or nothing at all.”
-        <cite class="interlude-cite">— Helen Keller</cite>
-      </blockquote>
-      <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
-        <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-        <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(110,231,183,0.14)" stroke="#6ee7b7" stroke-width="1.2"/>
-      </svg>
-    </div>
+      <div id="laptop-stages-container" class="laptop-stages-container"></div>
+    </section>
   </div>
 
-  <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS (Template Repo Design: All 6 Animate on Hover!) -->
-  <section id="section-projects" class="projects-section">
-    <div class="section-header-wrap">
-      <h2 class="section-heading">Projects</h2>
-    </div>
-    <div id="projects-stack" class="template-horizontal-stack"></div>
-  </section>
+  <!-- Seamless Transition 1: Matte Charcoal (#131417) -> Warm Editorial Stone-Graphite (#1e1d1a) -->
+  <div class="transition-charcoal-to-stone" aria-hidden="true"></div>
 
-  <!-- Seamless Visual Transition into Minimalist White Section -->
+  <!-- ========================================================================
+       COLOR CHAPTER 2: WARM EDITORIAL STONE-GRAPHITE (#1e1d1a)
+       ======================================================================== -->
+  <div class="chapter-stone">
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
+    <div class="quote-interlude">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES) -->
+    <section id="section-reel" class="reel-scroll-section">
+      <div class="reel-sticky-viewport">
+        <div class="reel-top-bar">
+          <div>
+            <h2 class="section-heading">Hobbies</h2>
+          </div>
+          <div class="reel-counter-box">
+            <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
+          </div>
+        </div>
+
+        <div class="film-strip-stage">
+          <div class="film-strip-wrapper" id="film-strip-wrapper">
+            <div class="film-edge-code top-edge">
+              <span>35MM ARCHIVE</span>
+              <span>01A</span><span>02A</span><span>03A</span><span>04A</span><span>05A</span><span>06A</span><span>07A</span><span>08A</span>
+            </div>
+            <div class="sprocket-row"></div>
+            <div id="reel-track" class="reel-track"></div>
+            <div class="sprocket-row"></div>
+            <div class="film-edge-code bottom-edge">
+              <span>SUYASH SHARMA</span>
+              <span>SCROLL TO ADVANCE →</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reel-progress-bar-wrap">
+          <div id="reel-progress-fill" class="reel-progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 -->
+    <div class="quote-interlude helen-keller-quote">
+      <div class="quote-frame">
+        <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+        <blockquote class="interlude-text">
+          “Life is either a daring adventure or nothing at all.”
+          <cite class="interlude-cite">— Helen Keller</cite>
+        </blockquote>
+        <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS + TEMPLATE REPO RULER LINES -->
+    <section id="section-projects" class="projects-section">
+      <div class="section-header-wrap">
+        <h2 class="section-heading">Projects</h2>
+      </div>
+      <div id="projects-stack" class="template-horizontal-stack"></div>
+      <!-- Template Repository Index Tick Lines Beneath the Tabs -->
+      <div id="projects-index-lines" class="projects-index-lines" aria-hidden="true"></div>
+    </section>
+  </div>
+
+  <!-- Seamless Transition 2: Warm Stone-Graphite (#1e1d1a) -> Minimalist Alabaster White (#f5f3ed) -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION -->
+  <!-- ========================================================================
+       COLOR CHAPTER 3: MINIMALIST WARM ALABASTER WHITE (#f5f3ed)
+       ======================================================================== -->
   <section id="section-contact" class="minimal-white-contact">
     <div class="minimal-contact-inner">
       <h2 class="contact-me-title">Contact Me</h2>
