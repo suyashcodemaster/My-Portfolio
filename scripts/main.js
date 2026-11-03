@@ -57,14 +57,14 @@ function runHeroTypewriter(firstName, lastName) {
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Loading Screen (~2.35s total)
+  // 0. Fast, Smooth Initial Loading Screen (~0.68s total on every visit, never skipped)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
 
   let loadVal = 0;
   const loadTimer = setInterval(() => {
-    loadVal = Math.min(100, loadVal + 1);
+    loadVal = Math.min(100, loadVal + 2);
     if (loaderCount) loaderCount.textContent = String(loadVal).padStart(3, '0');
     if (loaderBarFill) loaderBarFill.style.width = `${loadVal}%`;
     if (loadVal >= 100) {
@@ -72,10 +72,10 @@ window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         if (loaderOverlay) loaderOverlay.classList.add('loaded');
         document.body.classList.remove('is-loading');
-        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 280);
-      }, 350);
+        setTimeout(() => runHeroTypewriter(profile.firstName, profile.lastName), 120);
+      }, 140);
     }
-  }, 20);
+  }, 9);
 
   // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
@@ -115,6 +115,8 @@ window.addEventListener('DOMContentLoaded', () => {
             src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
+            loading="lazy"
+            decoding="async"
             referrerpolicy="no-referrer"
           />
         </div>
@@ -343,6 +345,10 @@ window.addEventListener('DOMContentLoaded', () => {
   let openedScrollY = 0;
   let triggerOriginRect = null;
 
+  function isMobileProjectsMode() {
+    return window.innerWidth <= 900;
+  }
+
   function isPointInRect(x, y, rect, pad = 6) {
     if (!rect) return false;
     return (
@@ -367,16 +373,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const targetCard = allStackCards[targetIdx];
     if (!targetSlot || !targetCard) return;
 
-    // Record the trigger rectangle where the user held the mouse for 0.8s
     triggerOriginRect = (sourceEl || targetSlot).getBoundingClientRect();
 
-    const slotRect = targetSlot.getBoundingClientRect();
-    const slotCenterX = slotRect.left + slotRect.width / 2;
-    const viewportCenterX = window.innerWidth / 2;
-    const deltaX = viewportCenterX - slotCenterX;
-    targetCard.style.setProperty('--center-shift', `${deltaX}px`);
+    if (isMobileProjectsMode()) {
+      targetCard.style.setProperty('--center-shift', '0px');
+      targetSlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    } else {
+      const slotRect = targetSlot.getBoundingClientRect();
+      const slotCenterX = slotRect.left + slotRect.width / 2;
+      const viewportCenterX = window.innerWidth / 2;
+      const deltaX = viewportCenterX - slotCenterX;
+      targetCard.style.setProperty('--center-shift', `${deltaX}px`);
+      if (focusBackdrop) focusBackdrop.classList.add('active');
+    }
 
-    if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
     allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
     allTickGroups.forEach((g, i) => g.classList.toggle('active', i === targetIdx));
@@ -408,17 +418,19 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.remove('active');
     if (projectsSection) projectsSection.classList.remove('has-focused-card');
     allSlots.forEach((s) => s.classList.remove('slot-focused'));
-    allTickGroups.forEach((g) => g.classList.remove('active'));
-    allMajorTicks.forEach((t) => t.classList.remove('active'));
+    if (!isMobileProjectsMode()) {
+      allTickGroups.forEach((g) => g.classList.remove('active'));
+      allMajorTicks.forEach((t) => t.classList.remove('active'));
+    }
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
       allSlots[i].style.zIndex = String(totalLayers - i);
     });
   }
 
-  // Open Delay = 0.8s (800ms) continuous hover on a card or its single vertical line
+  // Desktop Open Delay = 0.8s (800ms) continuous hover on a card or its single vertical line
   function startOpenTimer(idx, sourceEl) {
-    if (currentFocusedIdx !== -1) return;
+    if (isMobileProjectsMode() || currentFocusedIdx !== -1) return;
     hoveredCandidateIdx = idx;
     clearTimeout(hoverOpenTimer);
     hoverOpenTimer = setTimeout(() => {
@@ -436,9 +448,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Close Delay = 0.9s (900ms) when mouse is NOT on the active card
+  // Desktop Close Delay = 0.9s (900ms) when mouse is NOT on the active card
   function ensureCloseTimerRunning() {
-    if (hoverCloseTimer) return;
+    if (isMobileProjectsMode() || hoverCloseTimer) return;
     hoverCloseTimer = setTimeout(() => {
       hoverCloseTimer = null;
       if (currentFocusedIdx !== -1) {
@@ -455,7 +467,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   allStackCards.forEach((cardEl, idx) => {
-    cardEl.addEventListener('pointerenter', () => {
+    cardEl.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'touch' || isMobileProjectsMode()) return;
       if (currentFocusedIdx === -1) {
         startOpenTimer(idx, cardEl);
       } else if (currentFocusedIdx === idx) {
@@ -463,31 +476,73 @@ window.addEventListener('DOMContentLoaded', () => {
         cancelCloseTimer();
       }
     });
-    cardEl.addEventListener('pointerleave', () => {
+
+    cardEl.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'touch' || isMobileProjectsMode()) return;
       if (currentFocusedIdx === -1) {
         cancelOpenTimer(idx);
       } else if (currentFocusedIdx === idx) {
         ensureCloseTimerRunning();
       }
     });
+
+    // On mobile/tablet swipeable carousel: tapping a card toggles its expanded detail view
+    cardEl.addEventListener('click', (e) => {
+      if (e.target.closest('.popup-github-btn')) return;
+      if (isMobileProjectsMode()) {
+        if (currentFocusedIdx === idx) {
+          resetProjectStack();
+        } else {
+          focusCardToViewportCenter(idx, cardEl);
+        }
+      }
+    });
   });
 
   allTickGroups.forEach((tickGroupEl, idx) => {
-    tickGroupEl.addEventListener('pointerenter', () => {
+    tickGroupEl.addEventListener('pointerenter', (e) => {
+      if (e.pointerType === 'touch' || isMobileProjectsMode()) return;
       if (currentFocusedIdx === -1) {
         startOpenTimer(idx, tickGroupEl);
       }
     });
-    tickGroupEl.addEventListener('pointerleave', () => {
+    tickGroupEl.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'touch' || isMobileProjectsMode()) return;
       if (currentFocusedIdx === -1) {
         cancelOpenTimer(idx);
       }
     });
+    tickGroupEl.addEventListener('click', () => {
+      if (isMobileProjectsMode()) {
+        allSlots[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        focusCardToViewportCenter(idx, allStackCards[idx]);
+      }
+    });
   });
 
-  // Track pointer position while a card is focused so removing the mouse from the card ALWAYS starts the 0.9s close timer!
+  // Sync active 01..06 index indicator when swiping the mobile horizontal carousel
+  if (projectsStack) {
+    projectsStack.addEventListener('scroll', () => {
+      if (!isMobileProjectsMode()) return;
+      const stackCenter = projectsStack.scrollLeft + projectsStack.clientWidth / 2;
+      let closestIdx = 0;
+      let minDist = Infinity;
+      allSlots.forEach((slotEl, i) => {
+        const slotCenter = slotEl.offsetLeft + slotEl.offsetWidth / 2;
+        const d = Math.abs(slotCenter - stackCenter);
+        if (d < minDist) {
+          minDist = d;
+          closestIdx = i;
+        }
+      });
+      allTickGroups.forEach((g, i) => g.classList.toggle('active', i === closestIdx));
+      allMajorTicks.forEach((t, i) => t.classList.toggle('active', i === closestIdx));
+    }, { passive: true });
+  }
+
+  // Track pointer position on desktop while a card is focused so removing the mouse ALWAYS starts the 0.9s close timer
   window.addEventListener('pointermove', (e) => {
-    if (currentFocusedIdx === -1) return;
+    if (e.pointerType === 'touch' || isMobileProjectsMode() || currentFocusedIdx === -1) return;
     const activeCard = allStackCards[currentFocusedIdx];
     if (!activeCard) return;
 
@@ -500,14 +555,20 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // If the user hasn't moved their cursor onto the centered card yet, allow holding on the exact spot that triggered it;
-    // the moment they move off that spot (or off the centered card), run the 0.9s close timer!
     if (!hasEnteredCenteredCard && isPointInRect(e.clientX, e.clientY, triggerOriginRect, 10)) {
       cancelCloseTimer();
       return;
     }
 
     ensureCloseTimerRunning();
+  }, { passive: true });
+
+  // Close expanded mobile card when tapping outside the card
+  document.addEventListener('pointerdown', (e) => {
+    if (!isMobileProjectsMode() || currentFocusedIdx === -1) return;
+    if (!e.target.closest('.stack-card') && !e.target.closest('.index-tick-group')) {
+      resetProjectStack();
+    }
   }, { passive: true });
 
   if (focusBackdrop) {
@@ -523,7 +584,6 @@ window.addEventListener('DOMContentLoaded', () => {
       resetProjectStack();
     }
   }, { passive: true });
-
   // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
@@ -596,7 +656,8 @@ window.addEventListener('DOMContentLoaded', () => {
       onUpdate: (self) => {
         const holdEnd = 0.15;
         const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
-        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
+        const padRight = window.innerWidth <= 768 ? 24 : 100;
+        const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + padRight);
         const shiftX = -horizProgress * maxShift;
         filmStripWrapper.style.transform = `rotate(-0.8deg) translate3d(${shiftX}px, 0, 0)`;
 

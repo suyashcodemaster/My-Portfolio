@@ -12,7 +12,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     powerPreference: 'high-performance'
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  const isMobileInit = window.innerWidth <= 900;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobileInit ? 1.25 : 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
 
@@ -483,7 +484,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   canvas.addEventListener('pointermove', (e) => {
-    if (e.target !== canvas || currentProgress <= 0.01 || currentProgress >= 0.995) {
+    if (e.pointerType === 'touch' || e.target !== canvas || currentProgress <= 0.01 || currentProgress >= 0.995) {
       clearHover();
       return;
     }
@@ -530,9 +531,39 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     };
   }
 
+  function getResponsiveFraming() {
+    const w = window.innerWidth;
+    const h = Math.max(1, window.innerHeight);
+    const aspect = w / h;
+    const isMobile = w <= 900;
+    const isSmallPhone = w <= 520;
+    return { w, h, aspect, isMobile, isSmallPhone };
+  }
+
+  function applyResponsiveCamera() {
+    const { w, h, aspect, isMobile } = getResponsiveFraming();
+    camera.aspect = aspect;
+    if (isMobile) {
+      // On narrow portrait screens, step the camera back smoothly so the full laptop + ejected RAM sticks fit 100% horizontally
+      const portraitZoomZ = Math.min(10.8, Math.max(7.2, 4.9 / Math.max(0.42, aspect)));
+      camera.position.set(0, 1.68, portraitZoomZ);
+      camera.lookAt(0, -0.22, 0);
+    } else {
+      camera.position.set(0, 1.62, 6.65);
+      camera.lookAt(0, -0.02, 0);
+    }
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5));
+  }
+
+  applyResponsiveCamera();
+
   function setDisassemblyState(progress, activeKey, hexAccent) {
     currentProgress = progress;
     currentActiveKey = activeKey;
+
+    const { isMobile, isSmallPhone } = getResponsiveFraming();
 
     // 1. Seamless Unibody Lid Hinge Opening (0.00 -> 0.13)
     const openRatio = Math.min(1, progress / 0.13);
@@ -579,8 +610,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       spread * 0.68 + activeLowerReveal * 0.36,
       -activeLowerReveal * 0.10
     );
-    // During Keyboard stage (before lowerReveal), slight forward tilt (+0.08 * spread) shows off the key outlines & letters;
-    // then tilts upward (-0.16 * activeLowerReveal) to open up the view of the intermediate surface & Motherboard below!
     keyboard.rotation.x = spread * 0.08 * (1 - activeLowerReveal) - activeLowerReveal * 0.15 + smoothEndCenter * 0.10;
 
     // Intermediate Surface between Keyboard and Motherboard separates into the middle gap and tilts cleanly
@@ -603,16 +632,16 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     touchpad.position.set(0, smoothEndCenter * 0.045, smoothEndCenter * 0.06);
 
     // Motherboard sits with wide vertical separation below midSurface and tilts slightly toward the camera (+0.12 rad)
-    // so the CPU/GPU dies, copper heatpipes, dual spinning fans, VRM bank, and gold traces get full visual recognition!
     motherboard.position.set(0, -0.02 + spread * 0.08 - activeLowerReveal * 0.04, 0);
     motherboard.rotation.x = activeLowerReveal * 0.12;
 
     // RAM Sticks eject outward from the Motherboard slots and match the Motherboard showcase tilt
     const ramOut = Math.max(0, Math.min(1, (progress - 0.16) / 0.48));
+    const ramLateralDist = isSmallPhone ? 0.72 : (isMobile ? 0.82 : 0.96);
     ram.position.set(0, -0.02 + spread * 0.08 - activeLowerReveal * 0.04, 0);
     ram.rotation.x = activeLowerReveal * 0.12;
-    ramL.position.set(-0.62 - ramOut * 0.96, 0, 0.24);
-    ramR.position.set(0.62 + ramOut * 0.96, 0, 0.24);
+    ramL.position.set(-0.62 - ramOut * ramLateralDist, 0, 0.24);
+    ramR.position.set(0.62 + ramOut * ramLateralDist, 0, 0.24);
 
     // Storage & Lower Unibody separate further down (-0.34 * spread - 0.16 * activeLowerReveal = -0.50) and tilt toward camera
     storage.position.set(0, -spread * 0.34 - activeLowerReveal * 0.16, 0);
@@ -620,12 +649,21 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     ssd1.position.set(-0.64 - spread * 0.14, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
     ssd2.position.set(0.64 + spread * 0.14, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
 
-    // Keep laptop well inside the left viewport (-1.02) and balanced vertically
-    root.position.x = -1.02 * smoothLeft * (1 - smoothEndCenter);
-    root.position.y = -0.34 + spread * 0.24 - smoothEndCenter * 0.16;
+    if (isMobile) {
+      // Full-screen layered layout on mobile/tablet:
+      // Keep the laptop centered horizontally (x = 0) and positioned in the upper-middle viewport
+      // so the scrolling glass About Me cards in the lower viewport never obscure the active 3D parts!
+      root.scale.setScalar(isSmallPhone ? 0.74 : 0.80);
+      root.position.x = 0;
+      root.position.y = 0.28 * smoothLeft * (1 - smoothEndCenter) - 0.12 * (1 - smoothLeft) + spread * 0.14 - smoothEndCenter * 0.24;
+    } else {
+      // Exact v13 Desktop positioning
+      root.scale.setScalar(0.86);
+      root.position.x = -1.02 * smoothLeft * (1 - smoothEndCenter);
+      root.position.y = -0.34 + spread * 0.24 - smoothEndCenter * 0.16;
+    }
 
-    // Tilt 2x more downward than v12's step from v10:
-    // (v10 reached -0.06 rad; v12 added +0.08 rad -> +0.02 rad; now 2x more (+0.16 rad more) -> +0.18 rad!)
+    // Showcase Tilt (v13: 2x more downward step from v12 -> +0.18 rad)
     root.rotation.x = 0.24 - spread * 0.06 + smoothEndCenter * 0.14;
 
     // Continuous Yaw Rotation from Right (+0.96 rad) to Left (-0.86 rad), easing to center at final touchpad stage
@@ -650,6 +688,12 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   let isLaptopInView = true;
+  let isTabVisible = !document.hidden;
+
+  document.addEventListener('visibilitychange', () => {
+    isTabVisible = !document.hidden;
+  });
+
   const laptopSectionEl = document.getElementById('section-laptop');
   if ('IntersectionObserver' in window && laptopSectionEl) {
     const viewObs = new IntersectionObserver((entries) => {
@@ -660,15 +704,18 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     viewObs.observe(laptopSectionEl);
   }
 
+  let resizeRaf = null;
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      applyResponsiveCamera();
+      setDisassemblyState(currentProgress, currentActiveKey);
+    });
+  }, { passive: true });
 
   function animate() {
     requestAnimationFrame(animate);
-    if (!isLaptopInView) return;
+    if (!isLaptopInView || !isTabVisible) return;
 
     if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.038;
     if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.038;

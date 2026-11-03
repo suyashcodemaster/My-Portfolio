@@ -1,13 +1,16 @@
-# Handoff Guide (v13): Final 3D Laptop Showcase Tilt (2x More Downward Step), Tilting & Separating Keyboard + Intermediate Surface, and Outlined Letter-Imprinted Keycaps
+# Handoff Guide (v14): Dynamic Multi-Device Responsiveness, Mobile Swipeable Projects Carousel, Scaled 35mm Reel & Web Performance Optimization
 
-This archive (`My-Portfolio-v13.zip`) contains the complete, production-ready codebase for `E:\Website Portfolio\My-Portfolio` (deployed to `https://suyashcodemaster.vercel.app`).
+This archive (`My-Portfolio-v14.zip`) contains the complete, production-ready codebase for `E:\Website Portfolio\My-Portfolio` (deployed to `https://suyashcodemaster.vercel.app`).
 
-## Summary of Fixes in v13
-1. **2x More Downward Isometric Showcase Tilt (`scripts/laptop3d.js`)**:
-   - Increased the downward tilt step by 2x more from v12 (`root.rotation.x = 0.24 - spread * 0.06`, reaching **`+0.18 rad`** vs v10's `-0.06 rad` and v12's `+0.02 rad`) with the camera elevated slightly (`y = 1.62, z = 6.65`), so the top surfaces and intricate 3D detailing of every internal layer face the viewer directly.
-2. **Keyboard & Intermediate Surface Tilt and Extra Separation During Motherboard/RAM/Storage Stages (`scripts/laptop3d.js`)**:
-   - Separated the surface between the Keyboard and the Motherboard (`midSurface` — the emerald-edged backlight/EMI matrix plate with structural ribs) into its own independent layer between `keyboard` and `motherboard`.
-   - When scrolling into the Motherboard, RAM Sticks, and Storage stages (`lowerReveal`, `progress >= 0.25`), the `keyboard` (`y` up to `+1.04`, `rotation.x = -0.15 rad`) and `midSurface` (`y` up to `+0.62`, `rotation.x = -0.08 rad`) lift higher and tilt upward to open a wide, unobstructed window, while `motherboard`, `ram`, and `storage` separate further (`storage` down to `-0.50`) and tilt toward the camera (`+0.12` to `+0.14 rad`) so the CPU/GPU dies, copper heatpipes, dual spinning fans, VRM bank, RAM sticks, and dual NVMe SSDs get full recognition.
-3. **Outlined Keycaps with Subtle Imprinted QWERTY Letters (`scripts/laptop3d.js`)**:
-   - Added crisp geometric outlines (`EdgesGeometry` with shared `LineSegments`) to all 44 individual keys on the keyboard.
-   - Added a single `512×256` `CanvasTexture` UV-mapped across the top faces (+Y) of all 44 keycaps with subtle laser-etched QWERTY key imprints (`ESC`, `1`–`0`, `Q`–`P`, `A`–`L`, `Z`–`M`, etc.) and recessed key bevels.
+## Summary of Upgrades in v14
+1. **Full-Screen Layered 3D Laptop + High-Visibility About Me Cards on Mobile/Tablet (`scripts/laptop3d.js`, `styles/main.css`)**:
+   - **Desktop (`> 900px`)**: Kept 100% identical to v13.
+   - **Mobile & Tablet (`<= 900px`)**: The 3D laptop stays centered horizontally (`root.position.x = 0`) in the upper-middle portion of the full-screen sticky viewport (`100dvh`) with adaptive portrait camera distance (`camera.position.z` scaled to aspect ratio so the laptop and ejected RAM sticks never clip off-screen). Meanwhile, the About Me `.stage-bento-panel` cards scroll through the lower half of the viewport (`padding-top: 50vh`) as high-contrast frosted glass cards (`rgba(13, 15, 23, 0.84)`, `backdrop-filter: blur(16px)`), keeping both the 3D laptop and the card text clearly visible.
+2. **Swipeable Horizontal Carousel for Projects on Mobile/Tablet (`styles/main.css`, `scripts/main.js`)**:
+   - On `<= 900px`, `#projects-stack` converts into a smooth hardware-accelerated touch-swipeable horizontal carousel (`scroll-snap-type: x mandatory`, `min(82vw, 315px)` per landscape card).
+   - Swiping automatically updates the active `01`–`06` single-line indicator below, and tapping any card expands its project details and **View on GitHub ↗** button without hover glitches.
+3. **Scaled Scroll-Driven Horizontal 35mm Camera Reel (`styles/main.css`, `scripts/main.js`)**:
+   - Scaled `.reel-card` on mobile (`width: min(76vw, 265px)`) so only what naturally fits in the viewport is shown at once, and vertical scrolling smoothly advances horizontally through all 8 frames (`01A`–`08A`).
+4. **Faster Loading Screen & Industry Web Performance Optimizations (`index.html`, `scripts/main.js`, `scripts/laptop3d.js`, `vercel.json`, `suyash-photo.jpeg`)**:
+   - **Faster Preloader**: Reduced initial loading screen duration to `~0.68s` on every visit (never skipped on repeat visits).
+   - **Core Web Vitals (LCP / CLS / INP)**: Compressed `suyash-photo.jpeg` to `~60 KB` progressive JPEG (`560×670` `@2x`), added `<link rel="preload" as="image" href="./suyash-photo.jpeg" fetchpriority="high" />`, explicit `width="280" height="360"` (`0` CLS), `loading="lazy"` on below-the-fold images, `Cache-Control` headers in `vercel.json`, touch-pointer raycast skipping, `document.hidden` WebGL pause, and `prefers-reduced-motion` support.

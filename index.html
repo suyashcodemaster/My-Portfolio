@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c0d12" />
+  <meta name="description" content="Suyash Sharma — B.Tech CSE Student at VIT Vellore. Interactive 3D WebGL & Editorial Portfolio." />
   <title>Suyash Sharma — Portfolio</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preload" as="image" href="./suyash-photo.jpeg" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -42,7 +46,7 @@
         <h1 class="hero-title">
           <span class="hero-word-slot"><span id="hero-first" class="typewriter-word"></span></span>
           <span class="hero-photo-frame">
-            <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" />
+            <img id="hero-photo" src="./suyash-photo.jpeg" alt="Suyash Sharma" width="280" height="360" fetchpriority="high" decoding="async" />
           </span>
           <span class="hero-word-slot"><span id="hero-last" class="typewriter-word"></span></span>
         </h1>
