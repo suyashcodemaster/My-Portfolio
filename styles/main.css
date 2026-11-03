@@ -1069,7 +1069,8 @@ body.is-loading { overflow: hidden; }
   flex-direction: column;
   justify-content: space-between;
   transform: translate3d(0px, 0px, 0px) rotateY(-54deg) rotateX(5deg) scale(0.92);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, filter 0.38s ease, opacity 0.38s ease, background 0.35s ease, border-color 0.35s ease;
+  will-change: transform, filter, opacity;
+  transition: transform 0.58s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.48s ease, filter 0.42s ease, opacity 0.42s ease, background 0.38s ease, border-color 0.38s ease;
   box-shadow: -16px 14px 32px rgba(0, 0, 0, 0.78);
   cursor: pointer;
   pointer-events: auto;
@@ -1172,7 +1173,7 @@ body.is-loading { overflow: hidden; }
   opacity: 0;
   transform: translateY(6px);
   pointer-events: none;
-  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.36s ease 0.06s, transform 0.38s cubic-bezier(0.19, 1, 0.22, 1) 0.06s;
 }
 
 .stack-card.is-centered .project-hover-popup {
@@ -1467,11 +1468,29 @@ body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
    6. DYNAMIC MULTI-DEVICE RESPONSIVE DESIGN & MOBILE/TABLET OPTIMIZATIONS
-      (Desktop > 900px remains 100% untouched!)
+      (Preserves full 3D card opening animations across all devices & OS settings!)
    ========================================================================== */
 @supports (height: 100dvh) {
   .hero-section { min-height: 100dvh; }
   .laptop-sticky-viewport, .reel-sticky-viewport { height: 100dvh; }
+}
+
+/* Tablet & Split-Screen / Canvas Preview (681px - 960px): Keep full 3D angled project stack scaled cleanly */
+@media (max-width: 960px) and (min-width: 681px) {
+  .stack-card-slot {
+    margin: 0 -48px;
+  }
+  .stack-card {
+    width: clamp(195px, 24vw, 250px);
+    height: 168px;
+  }
+  .stack-card.is-centered {
+    transform: translate3d(var(--center-shift, 0px), 12px, 220px) rotateY(0deg) rotateX(0deg) scale(1.42);
+  }
+  .index-tick-group {
+    width: clamp(195px, 24vw, 250px);
+    margin: 0 -48px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1566,7 +1585,6 @@ body.is-loading { overflow: hidden; }
     gap: 0.65rem;
   }
 
-  /* Keep active 3D part badge visible at top-center of mobile screen above the 3D laptop */
   .part-link-callout {
     top: 1.15rem !important;
     left: 50% !important;
@@ -1618,7 +1636,25 @@ body.is-loading { overflow: hidden; }
     line-height: 1.5;
   }
 
-  /* 5. Swipeable Horizontal Carousel for Projects on Mobile & Tablet */
+  /* 6. Contact Section on Mobile */
+  .minimal-white-contact {
+    padding: 4rem 5vw 3.5rem;
+    min-height: auto;
+  }
+
+  .minimal-chat-stream {
+    min-height: 280px;
+  }
+
+  .minimal-bubble {
+    max-width: 94%;
+    font-size: 0.95rem;
+    padding: 0.9rem 1.2rem;
+  }
+}
+
+/* 5. Swipeable Horizontal Carousel for Projects on Mobile Phones (<= 680px) WITH Smooth 3D Opening Animation! */
+@media (max-width: 680px) {
   .projects-section {
     min-height: auto;
     padding: 3rem 0 4.5rem;
@@ -1636,10 +1672,10 @@ body.is-loading { overflow: hidden; }
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     justify-content: flex-start;
-    align-items: stretch;
+    align-items: center;
     gap: 1.15rem;
-    padding: 1rem 9vw 1.6rem;
-    perspective: none;
+    padding: 2rem 10vw 2.4rem;
+    perspective: 1200px;
     scrollbar-width: none;
   }
 
@@ -1649,52 +1685,57 @@ body.is-loading { overflow: hidden; }
 
   .stack-card-slot {
     margin: 0;
-    flex: 0 0 min(82vw, 315px);
+    flex: 0 0 min(78vw, 295px);
     scroll-snap-align: center;
-    transform-style: flat;
+    transform-style: preserve-3d;
   }
 
   .stack-card {
     width: 100%;
-    height: 210px;
-    transform: none !important;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+    height: 195px;
+    transform: translate3d(0px, 0px, 0px) rotateY(-18deg) rotateX(4deg) scale(0.94);
+    transition: transform 0.56s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.45s ease, filter 0.38s ease, opacity 0.38s ease, background 0.35s ease, border-color 0.35s ease;
+    box-shadow: -10px 12px 28px rgba(0, 0, 0, 0.72);
   }
 
-  .stack-card.blurred-left,
+  .stack-card.blurred-left {
+    transform: translate3d(-32px, 0px, -40px) rotateY(-24deg) scale(0.86);
+    filter: blur(4px) brightness(0.45);
+    opacity: 0.45;
+  }
+
   .stack-card.blurred-right {
-    transform: scale(0.95) !important;
-    filter: blur(3px) brightness(0.5);
-    opacity: 0.55;
-    pointer-events: auto;
+    transform: translate3d(32px, 0px, -40px) rotateY(-24deg) scale(0.86);
+    filter: blur(4px) brightness(0.45);
+    opacity: 0.45;
   }
 
   .stack-card.is-centered {
-    transform: scale(1.03) !important;
+    transform: translate3d(0px, -8px, 120px) rotateY(0deg) rotateX(0deg) scale(1.12);
     z-index: 100;
   }
 
   .popup-header h3 {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
   }
 
   .popup-header p {
-    font-size: 0.54rem;
+    font-size: 0.52rem;
   }
 
   .popup-pill {
-    font-size: 0.5rem;
-    padding: 0.12rem 0.38rem;
+    font-size: 0.48rem;
+    padding: 0.1rem 0.35rem;
   }
 
   .project-bullets {
-    font-size: 0.54rem;
-    line-height: 1.34;
+    font-size: 0.52rem;
+    line-height: 1.32;
   }
 
   .popup-github-btn {
-    font-size: 0.6rem;
-    padding: 0.38rem 0.78rem;
+    font-size: 0.58rem;
+    padding: 0.35rem 0.72rem;
   }
 
   /* Compact single-line indicators underneath the mobile swipe carousel */
@@ -1705,13 +1746,6 @@ body.is-loading { overflow: hidden; }
     gap: 0.85rem;
   }
 
-  .projects-section.has-focused-card .projects-index-lines {
-    opacity: 1;
-    filter: none;
-    pointer-events: auto;
-    transform: none;
-  }
-
   .index-tick-group {
     width: auto;
     margin: 0;
@@ -1719,33 +1753,17 @@ body.is-loading { overflow: hidden; }
   }
 
   .index-tick.major-tick {
-    height: 44px;
+    height: 48px;
   }
 
   .index-tick-group:hover .index-tick.major-tick,
   .index-tick.major-tick.active {
-    height: 56px;
+    height: 62px;
   }
 
   .index-tick-num {
     margin-top: 14px;
     font-size: 0.68rem;
-  }
-
-  /* 6. Contact Section on Mobile */
-  .minimal-white-contact {
-    padding: 4rem 5vw 3.5rem;
-    min-height: auto;
-  }
-
-  .minimal-chat-stream {
-    min-height: 280px;
-  }
-
-  .minimal-bubble {
-    max-width: 94%;
-    font-size: 0.95rem;
-    padding: 0.9rem 1.2rem;
   }
 }
 
@@ -1764,14 +1782,5 @@ body.is-loading { overflow: hidden; }
 
   .reel-card {
     width: 80vw;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

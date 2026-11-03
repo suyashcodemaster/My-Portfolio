@@ -346,7 +346,7 @@ window.addEventListener('DOMContentLoaded', () => {
   let triggerOriginRect = null;
 
   function isMobileProjectsMode() {
-    return window.innerWidth <= 900;
+    return window.innerWidth <= 680;
   }
 
   function isPointInRect(x, y, rect, pad = 6) {
@@ -379,13 +379,14 @@ window.addEventListener('DOMContentLoaded', () => {
       targetCard.style.setProperty('--center-shift', '0px');
       targetSlot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     } else {
+      // Measure the natural resting slot center (unshifted) so the 3D glide animation to viewport center is always exact
       const slotRect = targetSlot.getBoundingClientRect();
       const slotCenterX = slotRect.left + slotRect.width / 2;
       const viewportCenterX = window.innerWidth / 2;
       const deltaX = viewportCenterX - slotCenterX;
       targetCard.style.setProperty('--center-shift', `${deltaX}px`);
-      if (focusBackdrop) focusBackdrop.classList.add('active');
     }
+    if (focusBackdrop) focusBackdrop.classList.add('active');
 
     if (projectsSection) projectsSection.classList.add('has-focused-card');
     allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
@@ -486,15 +487,13 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // On mobile/tablet swipeable carousel: tapping a card toggles its expanded detail view
+    // Clicking/tapping a card smoothly animates it open (or closes if already open on mobile)
     cardEl.addEventListener('click', (e) => {
       if (e.target.closest('.popup-github-btn')) return;
-      if (isMobileProjectsMode()) {
-        if (currentFocusedIdx === idx) {
-          resetProjectStack();
-        } else {
-          focusCardToViewportCenter(idx, cardEl);
-        }
+      if (currentFocusedIdx === idx && isMobileProjectsMode()) {
+        resetProjectStack();
+      } else if (currentFocusedIdx !== idx) {
+        focusCardToViewportCenter(idx, cardEl);
       }
     });
   });
@@ -515,8 +514,8 @@ window.addEventListener('DOMContentLoaded', () => {
     tickGroupEl.addEventListener('click', () => {
       if (isMobileProjectsMode()) {
         allSlots[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        focusCardToViewportCenter(idx, allStackCards[idx]);
       }
+      focusCardToViewportCenter(idx, tickGroupEl);
     });
   });
 
