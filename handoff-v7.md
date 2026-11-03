@@ -1,44 +1,33 @@
-# Project Handoff Document v9.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v10.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v9.md`  
-**Version:** 9.0 (All 11 Final Refinements, WebGL Stability Guard & Joel Califa–Inspired Editorial Polish)  
+**Document Name:** `handoff-v10.md`  
+**Version:** 10.0 (Restored Vibrant Color Accents, Deeper Matte Black Laptop with Upward Tilt & Extensive Disassembly, Smaller Project Tabs with Interactive Extended Ruler Lines & 380ms Dwell Guard, Top 50 Finalist, Right-Aligned Quote & Jump Target Fix)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 11 Fixes & Refinements in v9.0
+## 1. Summary of All 7 Fixes & Refinements in v10.0
 
-1. **Permanent WebGL Context Loss & White-Screen Glitch Fix (`scripts/laptop3d.js`, `styles/main.css`)**:
-   - Reduced GPU draw calls by ~80% by sharing geometry buffers (`sharedKeyGeo`, `sharedBladeGeo`, `sharedVrmGeo`, `sharedChipGeo`, `sharedBatGeo`) and attaching `EdgesGeometry` only to the 14 primary structural silhouettes instead of 100+ tiny sub-meshes.
-   - Capped `devicePixelRatio` at `1.5`, paused `renderer.render()` automatically via `IntersectionObserver` whenever `#section-laptop` is off-screen, and added `webglcontextlost` / `webglcontextrestored` handlers plus a solid dark `#141518` fallback background on `.laptop-sticky-viewport`.
-2. **Upward Laptop Tilt, Upper Parts Shifted Up & Accurate *Motherboard* + *RAM Sticks* Labelling (`scripts/laptop3d.js`)**:
-   - Kept all layers aligned on the central `x = 0` axis for visual consistency.
-   - Tilted the laptop upward (`root.rotation.x = 0.24 - spread * 0.12`) while shifting the upper parts (`Display` and `Keyboard`) cleanly upward (`display.position.y = 0.03 + spread * 0.68`, `keyboard.position.y = spread * 0.44`) to open a clear window into the **Motherboard**, **RAM Sticks**, and **Storage** underneath.
-   - Anchored `motherboardAnchor` to the front-left visible edge of the Motherboard (`(-0.35, 0.035, 0.48)`) and `ramAnchor` directly to the left ejecting RAM stick (`ramL`), projecting via `canvas.getBoundingClientRect()` for pixel-accurate pointers.
-3. **Centered, Slightly Larger *"If it doesn't challenge you..."* Quote Between *Languages* and *Courses* (`scripts/main.js`, `styles/main.css`)**:
-   - Placed the quote in a full-width centered container (`.between-stages-quote`, `width: 100%`, `align-self: center`) directly between the *GitHub / Spoken Languages* stage and the *Courses & Achievements* stage, and increased its font size to `clamp(1.32rem, 2.05vw, 1.68rem)`.
-4. **Slightly Bigger Laptop Model & Section Cards (`scripts/laptop3d.js`, `styles/main.css`)**:
-   - Increased the 3D laptop scale from `0.76` to `0.88` (`root.position.y = -0.32`) and expanded `.stage-bento-panel` cards from `min(41vw, 510px)` to `min(46vw, 575px)` (`padding: 2.05rem 2.25rem`) to fill the space with balanced presence.
-5. **Black-Grey Scale Background (`styles/main.css`)**:
-   - Shifted the base background to a neutral architectural matte black-grey scale (`#141518` / `#1b1c20`).
-6. **Bigger Touchpad Attached to the Laptop & Centered at Scroll Completion (`scripts/laptop3d.js`, `styles/main.css`)**:
-   - Enlarged the Touchpad to `1.38 × 0.74` and parented it directly to the front palmrest of the `keyboard` group so it stays attached to the laptop rather than detaching far away.
-   - At scroll completion (`progress >= 0.81`), the laptop smoothly glides back to the horizontal center of the screen (`root.position.x -> 0.0`) so the enlarged Touchpad + **Download CV** button sit centered to signify the end of the animation.
-7. **Smaller, More Angled Project Tabs + Template Repo Index Tick Lines + Less Sensitive Hover (`styles/main.css`, `scripts/main.js`)**:
-   - Sized the 6 resting tabs at `clamp(210px, 20.5vw, 258px) × 345px`, angled them more steeply (`rotateY(-48deg) rotateX(6deg)`), added the template repository's architectural ruler / tick lines beneath the tabs (`#projects-index-lines`), and added a `165ms` hover-intent delay so brushing past never triggers an accidental pop-up.
-8. **Minimalist & Clean Cards + Contrasting Theme Color After Opening Project Tabs (`styles/main.css`)**:
-   - Styled all section cards and resting project tabs in a clean, minimalist monochrome dark-slate palette (`#18181b` with subtle `1px solid rgba(242, 239, 233, 0.13)` hairlines).
-   - When a project tab is hovered and enlarges in the center (`.stack-card.is-centered`), it transitions from dark slate (`#18181b`) to a contrasting **Warm Editorial Alabaster Ivory (`#f4f1ea`)** card with crisp `#141413` dark typography.
-9. **Upgraded Quote & Body Typography (`index.html`, `styles/main.css`)**:
-   - Loaded `'Newsreader'` (optical-size variable editorial serif for quotes and headings) paired with `'Plus Jakarta Sans'` (humanist geometric sans for body text) and `'JetBrains Mono'`.
-10. **3 Intentional Section Color Chapters (`index.html`, `styles/main.css`)**:
-    - Chapter 1 (*Hero & 3D Laptop*): Matte Charcoal Black-Grey (`#141518`)
-    - Chapter 2 (*Hobbies 35mm Reel & Projects*): Warm Editorial Stone-Graphite (`#201f1c`)
-    - Chapter 3 (*Contact Me*): Minimalist Warm Alabaster White (`#f5f3ed`)
-11. **Refined, Intentional Design Polish Inspired by `joelcalifa.com` (`styles/main.css`)**:
-    - Replaced competing neon borders and multi-colored pills with restrained editorial hierarchy, warm ivory/stone contrast, subtle hairline borders, and deliberate pacing.
+1. **Restored Vibrant Color Theme with 60-30-10 Design Theory Principles (`data/portfolioData.js`, `styles/main.css`, `scripts/main.js`)**:
+   - Restored the vibrant color accents across every section (`#38bdf8` Sky Cyan, `#10b981` Emerald Green, `#a855f7` Electric Purple, `#f59e0b` Amber Gold, `#6366f1` Indigo Blue, `#f43f5e` Rose Coral, `#2dd4bf` Teal) across the 3D laptop stage borders, skill pills, progress dots, callout pointers, 3D dynamic lighting, and 35mm camera reel frames while keeping the refined `'Newsreader'` + `'Plus Jakarta Sans'` typography and 3 background chapters.
+2. **Deeper Matte Black 3D Laptop, Fixed Studio Lighting, More Upward Tilt, Upward-Shifted Extensive Disassembly & Wider Rotation (`scripts/laptop3d.js`)**:
+   - **Deeper Matte Black & Fixed Lighting**: Deepened all laptop materials to stealth matte obsidian-black (`color: 0x050608` to `0x161922`, `roughness: 0.88–0.94`, low metalness) and lowered the front ambient/key glare (`ambient = 0.52`, `keyLight = 1.25`, `toneMappingExposure = 1.08`) while pairing with a dynamic colored `PointLight` (`accentLight`) so the matte black surfaces look rich and sculpted.
+   - **Tilted More Upwards & Shifted Disassembling Parts More Upwards**: Tilted the laptop further upward during disassembly (`root.rotation.x = 0.24 - spread * 0.30`, reaching `-0.06 rad`) while lifting the entire assembly (`root.position.y = -0.36 + spread * 0.44`) and expanding the parts more extensively (`Display +1.05 Y`, `Keyboard +0.66 Y`, `Motherboard +0.18 Y`, `RAM Sticks ±1.18 X`, `Storage -0.30 Y`) so the lower parts remain in full view.
+   - **Wider Rotation**: Started the laptop further rotated (`root.rotation.y = +0.96 rad`) and swept it across a `1.82`-radian continuous arc (`0.96 - progress * 1.82`).
+3. **High-Contrast Visibility Across All Elements & Text (`styles/main.css`)**:
+   - Enforced `#ffffff` headings and `#e2e8f0` / `#cbd5e1` body text on `rgba(16, 18, 26, 0.90)` dark cards, with `#09090d` bold dark ink when hovering bright colored skill pills.
+4. **Smaller, Upward-Shifted, More Steeply Angled Project Tabs + Extended Interactive Ruler Lines + 380ms Hover Dwell Guard (`styles/main.css`, `scripts/main.js`)**:
+   - Reduced resting tab dimensions to `clamp(160px, 15vw, 194px) × 262px`, shifted `#section-projects` upward, and angled each card more steeply (`rotateY(-58deg) rotateX(7deg)`).
+   - Extended the template-repo vertical ruler lines underneath the tabs (`.projects-index-lines`, `height: 86px`, major ticks up to `76px` with `#10b981` glow) and bound hover events to each `.index-tick-group` so hovering over a line underneath brings up its corresponding card too.
+   - Added a strict **`380ms` continuous dwell timer** (`scheduleHoverOpen`) on both the cards and ruler lines so a 1ms accidental mouse brush never triggers a pop-up.
+5. **Updated SanitX Badge to *"Top 50 Finalist"* (`data/portfolioData.js`)**:
+   - Changed `SanitX` subtitle to `"DevJams '26 Hackathon • Top 50 Finalist"`.
+6. **Shifted *"If it doesn't challenge you..."* Quote to the Right, Vertically Centered Between the 2 Cards (`styles/main.css`, `scripts/main.js`)**:
+   - Set `.between-stages-quote` to `width: min(46vw, 575px); align-self: flex-end; margin-right: 4.5vw; min-height: 34vh;` with crisp `#ffffff` text and a dark drop-shadow so it sits aligned with the right-hand card column, vertically centered between the *GitHub / Spoken Languages* card and the *Courses & Achievements* card.
+7. **Adjusted *"Explore Projects ↓"* Button Landing Target (`index.html`, `styles/main.css`)**:
+   - Pointed `#btn-jump-projects` to `#quote-before-projects` (`scroll-margin-top: 0.8rem`) and tightened `#section-projects` vertical height so clicking *Explore Projects ↓* lands where **both the Helen Keller quote and the entire Projects section + ruler lines are simultaneously visible**.
 
 ---
 
@@ -79,15 +68,15 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections — Ordered Top-to-Bottom by Visibility:
-  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Languages) -> 5. Storage (Courses & Achievements)
+  // 5 Core Laptop Disassembly Sections — Ordered Top-to-Bottom by Visibility with Vibrant Color Theory Accents:
+  // 1. Display (About Me — Sky Cyan) -> 2. Keyboard (Technical Skills — Emerald) -> 3. Motherboard (The Mission — Electric Purple) -> 4. RAM Sticks (GitHub & Languages — Amber Gold) -> 5. Storage (Courses & Achievements — Indigo)
   laptopStages: [
     {
       id: "about",
       partKey: "display",
       partLabel: "Display",
       title: "About Me",
-      accent: "#e2dfd7",
+      accent: "#38bdf8",
       paragraphs: [
         "Hey! I'm Suyash — a first-year CSE student at VIT Vellore who's genuinely fascinated by how things are built from the ground up. I fell into programming because I loved the idea of turning a blank screen into something real, something that actually works.",
         "Logic has always clicked with me — I'm the kind of person who needs to understand why something works before I'm satisfied with it. Whether it's a tricky algorithm or a confusing concept, I'll keep at it until it makes sense.",
@@ -121,13 +110,13 @@ export const PORTFOLIO_DATA = {
       partKey: "keyboard",
       partLabel: "Keyboard",
       title: "Technical Skills",
-      accent: "#d4a373",
+      accent: "#10b981",
       skillGroups: [
-        { label: "Programming Languages", items: ["Python", "HTML/CSS"] },
-        { label: "Currently Learning", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
-        { label: "Frameworks", items: ["Want to learn React"] },
-        { label: "Libraries", items: ["pandas", "NumPy", "Matplotlib"] },
-        { label: "Developer Tools", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
+        { label: "Programming Languages", color: "#10b981", items: ["Python", "HTML/CSS"] },
+        { label: "Currently Learning", color: "#f59e0b", items: ["Python", "C++", "Data Structures & Algorithms (DSA)", "Learning AI"] },
+        { label: "Frameworks", color: "#38bdf8", items: ["Want to learn React"] },
+        { label: "Libraries", color: "#a855f7", items: ["pandas", "NumPy", "Matplotlib"] },
+        { label: "Developer Tools", color: "#f43f5e", items: ["Git", "GitHub", "Docker", "VS Code", "Visual Studio", "PyCharm"] }
       ]
     },
     {
@@ -135,7 +124,7 @@ export const PORTFOLIO_DATA = {
       partKey: "motherboard",
       partLabel: "Motherboard",
       title: "The Mission",
-      accent: "#94a3b8",
+      accent: "#a855f7",
       quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
       pillsTitle: "How I Work",
       pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
@@ -145,7 +134,7 @@ export const PORTFOLIO_DATA = {
       partKey: "ram",
       partLabel: "RAM Sticks",
       title: "",
-      accent: "#84a98c",
+      accent: "#f59e0b",
       isCompactLanguages: true,
       casualLanguagesText: "English & Hindi",
       githubUsername: "suyashcodemaster",
@@ -158,7 +147,7 @@ export const PORTFOLIO_DATA = {
       partKey: "storage",
       partLabel: "Storage",
       title: "Courses & Achievements",
-      accent: "#cbd5e1",
+      accent: "#6366f1",
       cards: [
         {
           heading: "CS50x: Introduction to Computer Science",
@@ -184,25 +173,26 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts at 08A)
+  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (With Vibrant Color Accents & Martial Arts at 08A)
   reelFrames: [
-    { frame: "01A", title: "Building Human Connections", tag: "Community", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
-    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
-    { frame: "03A", title: "Basketball & Sports", tag: "Sports", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
-    { frame: "04A", title: "Finance & Markets", tag: "Finance", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
-    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
-    { frame: "06A", title: "Video Games", tag: "Gaming", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
-    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
-    { frame: "08A", title: "Martial Arts", tag: "Discipline", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
+    { frame: "01A", title: "Building Human Connections", tag: "Community", color: "#f43f5e", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
+    { frame: "02A", title: "Space & Aviation", tag: "Aerospace", color: "#38bdf8", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
+    { frame: "03A", title: "Basketball & Sports", tag: "Sports", color: "#f59e0b", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
+    { frame: "04A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
+    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
+    { frame: "06A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
+    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
+    { frame: "08A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
   ],
 
-  // Section 4: 6 Horizontally Stacked Project Cards (Minimalist Dark Resting Tabs -> Contrasting Warm Ivory Opened Card on Hover)
+  // Section 4: 6 Horizontally Stacked Project Cards (Top 50 Finalist in SanitX)
   projects: [
     {
       slot: "01",
       isPlaceholder: false,
       title: "SanitX",
-      subtitle: "DevJams '26 Hackathon • Top 11 Finalist",
+      subtitle: "DevJams '26 Hackathon • Top 50 Finalist",
+      accent: "#10b981",
       githubUrl: "https://github.com/suyashcodemaster/SanitX",
       tech: ["Python", "FastAPI", "PyMuPDF", "Gemini API", "Next.js", "TypeScript", "Tailwind CSS"],
       bullets: [
@@ -265,7 +255,7 @@ export const PORTFOLIO_DATA = {
   <div id="projects-focus-backdrop" class="projects-focus-backdrop" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       COLOR CHAPTER 1: MATTE CHARCOAL BLACK-GREY (#131417)
+       COLOR CHAPTER 1: DEEP MATTE OBSIDIAN CHARCOAL (#0c0d12)
        ======================================================================== -->
   <div class="chapter-charcoal">
     <!-- 1. HERO SECTION -->
@@ -280,7 +270,8 @@ export const PORTFOLIO_DATA = {
         </h1>
       </div>
 
-      <a href="#section-projects" id="btn-jump-projects" class="hero-projects-btn">
+      <!-- Lands at #quote-before-projects so BOTH the Helen Keller quote AND the full Projects section are visible! -->
+      <a href="#quote-before-projects" id="btn-jump-projects" class="hero-projects-btn">
         <span class="btn-main-text">Explore Projects ↓</span>
       </a>
 
@@ -294,21 +285,21 @@ export const PORTFOLIO_DATA = {
     <div class="quote-interlude first-quote-interlude">
       <div class="quote-frame">
         <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M58 34C42 32 24 24 8 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
         <blockquote class="interlude-text">
           “You don't have to be great to get started, but you have to get started to be great.”
         </blockquote>
         <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M6 34C22 32 40 24 56 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
       </div>
     </div>
@@ -318,7 +309,7 @@ export const PORTFOLIO_DATA = {
       <div class="laptop-sticky-viewport">
         <canvas id="laptop-canvas"></canvas>
 
-        <!-- Clean, Minimalist 3D Part Pointer -->
+        <!-- Vibrant, High-Contrast 3D Part Pointer -->
         <div id="part-link-callout" class="part-link-callout" aria-hidden="true">
           <span class="callout-dot"></span>
           <span class="callout-line"></span>
@@ -347,32 +338,32 @@ export const PORTFOLIO_DATA = {
     </section>
   </div>
 
-  <!-- Seamless Transition 1: Matte Charcoal (#131417) -> Warm Editorial Stone-Graphite (#1e1d1a) -->
+  <!-- Seamless Transition 1: Deep Matte Charcoal (#0c0d12) -> Rich Midnight Graphite-Slate (#151621) -->
   <div class="transition-charcoal-to-stone" aria-hidden="true"></div>
 
   <!-- ========================================================================
-       COLOR CHAPTER 2: WARM EDITORIAL STONE-GRAPHITE (#1e1d1a)
+       COLOR CHAPTER 2: RICH MIDNIGHT GRAPHITE-SLATE (#151621)
        ======================================================================== -->
   <div class="chapter-stone">
     <!-- PHILOSOPHICAL QUOTE INTERLUDE 2 -->
     <div class="quote-interlude">
       <div class="quote-frame">
         <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M58 34C42 32 24 24 8 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
         <blockquote class="interlude-text">
           “Trust the wait. Embrace the uncertainty. Enjoy the beauty of becoming.”
         </blockquote>
         <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M6 34C22 32 40 24 56 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
       </div>
     </div>
@@ -411,42 +402,42 @@ export const PORTFOLIO_DATA = {
       </div>
     </section>
 
-    <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 -->
-    <div class="quote-interlude helen-keller-quote">
+    <!-- PHILOSOPHICAL QUOTE INTERLUDE 3 (Anchor for Explore Projects Button so both Quote & Projects fit on screen!) -->
+    <div id="quote-before-projects" class="quote-interlude helen-keller-quote">
       <div class="quote-frame">
         <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M58 34C42 32 24 24 8 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M36 28C43 24 49 26 52 31C45 33 39 31 36 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M21 19C28 15 34 17 37 22C30 24 24 22 21 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
         <blockquote class="interlude-text">
           “Life is either a daring adventure or nothing at all.”
           <cite class="interlude-cite">— Helen Keller</cite>
         </blockquote>
         <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
-          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(132,169,140,0.14)" stroke="#84a98c" stroke-width="1.2"/>
+          <path d="M6 34C22 32 40 24 56 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M28 28C21 24 15 26 12 31C19 33 25 31 28 28Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
+          <path d="M43 19C36 15 30 17 27 22C34 24 40 22 43 19Z" fill="rgba(52,211,153,0.15)" stroke="#34d399" stroke-width="1.2"/>
         </svg>
       </div>
     </div>
 
-    <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS + TEMPLATE REPO RULER LINES -->
+    <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS + EXTENDED TEMPLATE REPO RULER LINES -->
     <section id="section-projects" class="projects-section">
       <div class="section-header-wrap">
         <h2 class="section-heading">Projects</h2>
       </div>
       <div id="projects-stack" class="template-horizontal-stack"></div>
-      <!-- Template Repository Index Tick Lines Beneath the Tabs -->
-      <div id="projects-index-lines" class="projects-index-lines" aria-hidden="true"></div>
+      <!-- Extended Template Repository Index Lines (Hovering a line also brings up its card!) -->
+      <div id="projects-index-lines" class="projects-index-lines" aria-label="Project index lines"></div>
     </section>
   </div>
 
-  <!-- Seamless Transition 2: Warm Stone-Graphite (#1e1d1a) -> Minimalist Alabaster White (#f5f3ed) -->
+  <!-- Seamless Transition 2: Midnight Graphite-Slate (#151621) -> Minimalist Alabaster White (#f5f3ed) -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
   <!-- ========================================================================
@@ -471,15 +462,13 @@ export const PORTFOLIO_DATA = {
 ### File 3: `styles/main.css`
 ```css
 :root {
-  --bg-charcoal: #141518;
-  --bg-stone: #201f1c;
+  --bg-charcoal: #0c0d12;
+  --bg-stone: #141520;
   --bg-alabaster: #f5f3ed;
-  --bg-panel: rgba(24, 25, 29, 0.9);
-  --text-main: #f2efe9;
-  --text-muted: #9e9b93;
-  --border-subtle: rgba(242, 239, 233, 0.11);
-  --accent-warm: #d4a373;
-  --accent-sage: #84a98c;
+  --bg-panel: rgba(16, 18, 26, 0.90);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-subtle: rgba(248, 250, 252, 0.14);
   --font-display: 'Instrument Serif', Georgia, serif;
   --font-quote: 'Newsreader', Georgia, serif;
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -493,9 +482,6 @@ body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
    3 INTENTIONAL COLOR CHAPTERS & SEAMLESS TRANSITIONS
-   1. Matte Charcoal Black-Grey (#141518)
-   2. Warm Editorial Stone-Graphite (#201f1c)
-   3. Minimalist Warm Alabaster White (#f5f3ed)
    ========================================================================== */
 .chapter-charcoal {
   background: var(--bg-charcoal);
@@ -560,27 +546,27 @@ body.is-loading { overflow: hidden; }
 .loader-percent {
   font-family: var(--font-mono);
   font-size: 0.95rem;
-  color: var(--accent-warm);
+  color: #f59e0b;
 }
 
 .loader-bar-track {
   width: 100%;
-  height: 1.5px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 
 .loader-bar-fill {
   width: 0%;
   height: 100%;
-  background: var(--text-main);
+  background: linear-gradient(90deg, #38bdf8, #10b981, #f59e0b);
   transition: width 0.04s linear;
 }
 
 .mono-tag {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -596,7 +582,7 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   padding: 4rem 2vw;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 24%, #1d1f24 0%, var(--bg-charcoal) 70%);
+  background: radial-gradient(circle at 50% 22%, #171a26 0%, var(--bg-charcoal) 72%);
 }
 
 .hero-center {
@@ -644,7 +630,7 @@ body.is-loading { overflow: hidden; }
   content: '|';
   display: inline-block;
   margin-left: 2px;
-  color: var(--accent-warm);
+  color: #f59e0b;
   font-weight: 300;
   animation: cursorBlink 0.65s steps(2, start) infinite;
 }
@@ -659,16 +645,16 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   width: clamp(140px, 18vw, 280px);
   height: clamp(180px, 23vw, 360px);
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  border: 1.5px solid rgba(242, 239, 233, 0.24);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(245, 158, 11, 0.72);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 34px rgba(245, 158, 11, 0.28);
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
 }
 
 .hero-photo-frame:hover {
-  transform: scale(1.04) rotate(-1deg);
-  border-color: rgba(242, 239, 233, 0.55);
+  transform: scale(1.05) rotate(-1.5deg);
+  border-color: #38bdf8;
 }
 
 .hero-photo-frame img {
@@ -685,26 +671,27 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
   display: inline-flex;
   align-items: center;
-  padding: 0.75rem 1.25rem;
+  padding: 0.8rem 1.3rem;
   border-radius: 999px;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-subtle);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.45);
   color: var(--text-main);
   transition: all 0.25s ease;
 }
 
 .hero-projects-btn:hover {
-  background: var(--text-main);
-  color: var(--bg-charcoal);
+  background: #38bdf8;
+  color: #09090d;
   transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3);
 }
 
 .hero-projects-btn .btn-main-text {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.84rem;
-  letter-spacing: 0.01em;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
 }
 
 .hero-scroll-indicator {
@@ -719,9 +706,9 @@ body.is-loading { overflow: hidden; }
 }
 
 .scroll-line {
-  width: 1.5px;
-  height: 42px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 2px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.12);
   position: relative;
   overflow: hidden;
 }
@@ -729,7 +716,7 @@ body.is-loading { overflow: hidden; }
 .scroll-pulse {
   width: 100%;
   height: 50%;
-  background: linear-gradient(180deg, transparent, var(--text-main));
+  background: linear-gradient(180deg, transparent, #f59e0b, #38bdf8);
   animation: pulseDown 1.6s infinite ease-in-out;
 }
 
@@ -742,7 +729,7 @@ body.is-loading { overflow: hidden; }
    LITERARY QUOTES IN 'NEWSREADER' ITALIC WITH PEACEFUL BOTANICAL LEAVES
    ========================================================================== */
 .quote-interlude {
-  padding: 3.4rem 5vw;
+  padding: 3.2rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -755,8 +742,10 @@ body.is-loading { overflow: hidden; }
   padding: 1.8rem 5vw 0.4rem;
 }
 
+/* Anchor for Explore Projects button so both the Helen Keller quote AND the whole Projects section fit on screen! */
 .quote-interlude.helen-keller-quote {
-  padding: 2.6rem 5vw 0.2rem;
+  scroll-margin-top: 0.8rem;
+  padding: 1.4rem 5vw 0.15rem;
 }
 
 .quote-frame {
@@ -765,14 +754,15 @@ body.is-loading { overflow: hidden; }
   justify-content: center;
   gap: clamp(0.9rem, 2.2vw, 1.75rem);
   max-width: 840px;
-  padding: 0.5rem 1.5rem;
+  padding: 0.4rem 1.5rem;
 }
 
 .quote-leaf {
   width: clamp(36px, 4vw, 48px);
   height: auto;
   flex-shrink: 0;
-  opacity: 0.85;
+  opacity: 0.88;
+  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.22));
   animation: leafBreeze 5s ease-in-out infinite alternate;
 }
 
@@ -789,26 +779,26 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-quote);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.16rem, 1.78vw, 1.48rem);
-  line-height: 1.52;
+  font-size: clamp(1.18rem, 1.8vw, 1.5rem);
+  line-height: 1.5;
   letter-spacing: -0.005em;
-  color: #dedad0;
+  color: #f1f5f9;
 }
 
 .interlude-cite {
   display: block;
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
   font-family: var(--font-sans);
   font-style: normal;
   font-weight: 400;
   font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: #94a3b8;
 }
 
 /* ==========================================================================
-   2. 3D LAPTOP DISASSEMBLY SECTION (Black-Grey Scale, Balanced Proportions)
+   2. 3D LAPTOP DISASSEMBLY SECTION (Restored Vibrant Color Theory Accents)
    ========================================================================== */
 .laptop-section {
   position: relative;
@@ -823,7 +813,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 28% 54%, #202227 0%, var(--bg-charcoal) 68%);
+  background: radial-gradient(circle at 28% 52%, rgba(56, 189, 248, 0.09) 0%, rgba(15, 23, 42, 0.05) 45%, var(--bg-charcoal) 72%);
 }
 
 #laptop-canvas {
@@ -833,7 +823,7 @@ body.is-loading { overflow: hidden; }
   background: transparent;
 }
 
-/* Minimalist 3D Part Pointer */
+/* Vibrant 3D Part Pointer */
 .part-link-callout {
   position: absolute;
   left: 0;
@@ -852,12 +842,12 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   left: 0;
   top: 0;
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  background: var(--text-main);
-  box-shadow: 0 0 12px rgba(242, 239, 233, 0.6);
+  background: var(--callout-color, #38bdf8);
+  box-shadow: 0 0 14px var(--callout-color, #38bdf8);
 }
 
 .callout-dot::after {
@@ -865,43 +855,43 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 1px solid rgba(242, 239, 233, 0.65);
-  animation: pingRing 2s infinite ease-out;
+  border: 1.5px solid var(--callout-color, #38bdf8);
+  animation: pingRing 1.8s infinite ease-out;
 }
 
 @keyframes pingRing {
-  0% { transform: scale(0.85); opacity: 0.85; }
+  0% { transform: scale(0.85); opacity: 0.9; }
   100% { transform: scale(1.9); opacity: 0; }
 }
 
 .callout-line {
   position: absolute;
-  left: 5px;
-  top: -0.5px;
-  width: 32px;
-  height: 1px;
-  background: rgba(242, 239, 233, 0.55);
+  left: 6px;
+  top: -1px;
+  width: 34px;
+  height: 1.5px;
+  background: var(--callout-color, #38bdf8);
 }
 
 .callout-badge {
   position: absolute;
-  left: 38px;
+  left: 42px;
   top: 0;
   transform: translateY(-50%);
   white-space: nowrap;
-  padding: 0.28rem 0.68rem;
+  padding: 0.3rem 0.72rem;
   border-radius: 999px;
-  background: rgba(20, 21, 24, 0.92);
-  border: 1px solid rgba(242, 239, 233, 0.24);
+  background: rgba(12, 13, 18, 0.92);
+  border: 1px solid var(--callout-color, #38bdf8);
   backdrop-filter: blur(8px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .callout-part {
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-main);
+  color: #ffffff;
   letter-spacing: 0.02em;
 }
 
@@ -912,14 +902,14 @@ body.is-loading { overflow: hidden; }
   top: 0;
   pointer-events: none;
   z-index: 40;
-  padding: 0.34rem 0.72rem;
+  padding: 0.36rem 0.75rem;
   border-radius: 999px;
-  background: rgba(20, 21, 24, 0.95);
-  border: 1px solid rgba(242, 239, 233, 0.25);
+  background: rgba(12, 13, 18, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.5);
   font-family: var(--font-sans);
-  font-size: 0.74rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-main);
+  color: #ffffff;
   opacity: 0;
   visibility: hidden;
   transform: translate(14px, -50%);
@@ -953,34 +943,36 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.78rem 1.55rem;
   border-radius: 999px;
-  background: #f4f1ea;
-  border: 1px solid #f4f1ea;
-  color: #141518;
+  background: rgba(14, 15, 22, 0.94);
+  border: 1.5px solid #ec4899;
+  color: #ffffff;
   font-family: var(--font-sans);
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.8), 0 0 26px rgba(236, 72, 153, 0.45);
   transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease;
 }
 
 .touchpad-floating-btn:hover {
-  background: #141518;
-  color: #f4f1ea;
-  transform: scale(1.05);
+  background: #ec4899;
+  color: #09090d;
+  transform: scale(1.06);
 }
 
 .touchpad-btn-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #141518;
+  background: #ec4899;
+  box-shadow: 0 0 10px #ec4899;
 }
 
 .touchpad-floating-btn:hover .touchpad-btn-dot {
-  background: #f4f1ea;
+  background: #09090d;
 }
 
 .stage-progress-bar {
@@ -998,16 +990,15 @@ body.is-loading { overflow: hidden; }
 }
 
 .stage-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.2);
   transition: transform 0.3s, background 0.3s;
 }
 
 .stage-dot.active {
   transform: scale(1.45);
-  background: var(--text-main) !important;
 }
 
 .laptop-stages-container {
@@ -1015,6 +1006,8 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
   margin-top: -100vh;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .laptop-stage.laptop-intro-stage {
@@ -1033,8 +1026,8 @@ body.is-loading { overflow: hidden; }
 }
 
 .laptop-stage.compact-stage {
-  min-height: 84vh;
-  padding: 2.5rem 4.5vw;
+  min-height: 82vh;
+  padding: 2rem 4.5vw;
 }
 
 .laptop-stage.final-disassembly-hold {
@@ -1042,15 +1035,16 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Balanced, Intentional Minimalist Section Cards (Filled out to min(46vw, 575px)) */
+/* Vibrant, High-Contrast Section Cards (Design Theory 60-30-10 Balance) */
 .stage-bento-panel {
   pointer-events: auto;
   width: min(46vw, 575px);
   padding: 2.05rem 2.25rem;
-  border-radius: 18px;
+  border-radius: 20px;
   background: var(--bg-panel);
-  border: 1px solid rgba(242, 239, 233, 0.13);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--stage-accent, #38bdf8);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 36px color-mix(in srgb, var(--stage-accent, #38bdf8) 15%, transparent);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1062,46 +1056,48 @@ body.is-loading { overflow: hidden; }
   gap: 0.9rem;
 }
 
-/* Centered Quote Between Languages/GitHub Tab and Courses Tab (Slightly Bigger Font Size) */
+/* Shifted to the RIGHT & Vertically Centered Between the 2 Cards with High Text Visibility */
 .between-stages-quote {
-  width: 100%;
-  align-self: center;
+  width: min(46vw, 575px);
+  align-self: flex-end;
+  margin-right: 4.5vw;
+  min-height: 34vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3.4rem 4vw;
+  padding: 2.2rem 1rem;
   pointer-events: none;
 }
 
 .between-stages-quote .interlude-text {
   font-size: clamp(1.32rem, 2.05vw, 1.68rem);
   font-weight: 400;
-  color: #ece9e0;
+  color: #ffffff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.92);
 }
 
 .stage-part-chip {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0.24rem 0.68rem;
+  padding: 0.25rem 0.72rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(242, 239, 233, 0.18);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  background: color-mix(in srgb, var(--stage-accent, #38bdf8) 12%, transparent);
+  border: 1px solid var(--stage-accent, #38bdf8);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--stage-accent, #38bdf8);
 }
 
 .stage-title {
   font-family: var(--font-quote);
-  font-size: clamp(1.9rem, 3vw, 2.55rem);
+  font-size: clamp(1.95rem, 3vw, 2.6rem);
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.015em;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .stage-paragraphs {
@@ -1113,7 +1109,7 @@ body.is-loading { overflow: hidden; }
 .stage-summary {
   font-size: 0.95rem;
   line-height: 1.65;
-  color: #c8c5bc;
+  color: #e2e8f0;
   font-weight: 400;
 }
 
@@ -1121,10 +1117,10 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-quote);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.14rem, 1.6vw, 1.36rem);
+  font-size: clamp(1.15rem, 1.62vw, 1.38rem);
   line-height: 1.55;
-  color: #e8e5dc;
-  border-left: 1.5px solid rgba(242, 239, 233, 0.35);
+  color: #f8fafc;
+  border-left: 3px solid var(--stage-accent, #a855f7);
   padding-left: 1.15rem;
 }
 
@@ -1137,20 +1133,20 @@ body.is-loading { overflow: hidden; }
 .stage-subcard {
   padding: 0.95rem 1.05rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(242, 239, 233, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stage-subcard h4 {
   font-size: 0.92rem;
-  font-weight: 500;
-  color: var(--text-main);
+  font-weight: 600;
+  color: #ffffff;
   margin-bottom: 0.25rem;
 }
 
 .stage-subcard p {
-  font-size: 0.81rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  color: #cbd5e1;
   line-height: 1.45;
 }
 
@@ -1158,15 +1154,16 @@ body.is-loading { overflow: hidden; }
   display: inline-block;
   margin-top: 0.42rem;
   font-family: var(--font-mono);
-  font-size: 0.67rem;
-  color: var(--accent-warm);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--stage-accent, #38bdf8);
 }
 
 .github-contrib-card {
   padding: 1rem 1.1rem;
   border-radius: 12px;
-  background: rgba(12, 13, 15, 0.6);
-  border: 1px solid rgba(242, 239, 233, 0.09);
+  background: rgba(9, 10, 15, 0.72);
+  border: 1px solid rgba(245, 158, 11, 0.25);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -1177,19 +1174,19 @@ body.is-loading { overflow: hidden; }
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
-  color: #d6d3cb;
+  font-weight: 500;
+  color: #f8fafc;
 }
 
 .github-contrib-header a {
-  color: var(--text-main);
+  color: #f59e0b;
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  border-bottom: 1px solid rgba(242, 239, 233, 0.3);
+  font-size: 0.73rem;
 }
 
 .github-contrib-header a:hover {
-  opacity: 0.7;
+  text-decoration: underline;
 }
 
 .github-chart-wrap {
@@ -1203,7 +1200,7 @@ body.is-loading { overflow: hidden; }
   min-width: 380px;
   height: auto;
   display: block;
-  filter: contrast(1.05);
+  filter: contrast(1.08);
 }
 
 .github-badges-row {
@@ -1211,24 +1208,24 @@ body.is-loading { overflow: hidden; }
   align-items: center;
   justify-content: space-between;
   padding-top: 0.45rem;
-  border-top: 1px solid rgba(242, 239, 233, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .badges-title {
   font-family: var(--font-sans);
   font-size: 0.78rem;
   font-weight: 500;
-  color: #d6d3cb;
+  color: #e2e8f0;
 }
 
 .badges-placeholder {
   font-family: var(--font-mono);
   font-size: 0.69rem;
-  color: var(--text-muted);
+  color: #f59e0b;
   padding: 0.18rem 0.6rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(242, 239, 233, 0.18);
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px dashed rgba(245, 158, 11, 0.35);
 }
 
 .casual-lang-line {
@@ -1236,14 +1233,14 @@ body.is-loading { overflow: hidden; }
   align-items: center;
   justify-content: space-between;
   padding-top: 0.45rem;
-  border-top: 1px solid rgba(242, 239, 233, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: #cbd5e1;
 }
 
 .casual-lang-line strong {
-  font-weight: 500;
-  color: var(--text-main);
+  font-weight: 600;
+  color: #ffffff;
 }
 
 .skill-groups-wrap {
@@ -1259,11 +1256,9 @@ body.is-loading { overflow: hidden; }
 }
 
 .skill-group-label {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
 }
 
 .pills-wrap {
@@ -1272,27 +1267,29 @@ body.is-loading { overflow: hidden; }
   gap: 0.42rem;
 }
 
-/* Minimalist & Clean Monochrome Pills */
+/* Vibrant Color-Coded Pills with High-Contrast White Text & Dark Hover Ink */
 .color-pill {
-  padding: 0.34rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.35rem 0.78rem;
+  border-radius: 7px;
   font-family: var(--font-sans);
   font-size: 0.78rem;
-  font-weight: 400;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(242, 239, 233, 0.14);
-  color: #e6e3dc;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--pill-color, #38bdf8);
+  color: #ffffff;
+  box-shadow: inset 0 0 10px color-mix(in srgb, var(--pill-color, #38bdf8) 18%, transparent);
   transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .color-pill:hover {
-  transform: translateY(-1px);
-  background: var(--text-main);
-  color: var(--bg-charcoal);
+  transform: translateY(-2px);
+  background: var(--pill-color, #38bdf8);
+  color: #09090d;
+  font-weight: 600;
 }
 
 /* ==========================================================================
-   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES — Warm Stone-Graphite Chapter)
+   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES — Restored Vibrant Frame Colors)
    ========================================================================== */
 .reel-scroll-section {
   position: relative;
@@ -1323,8 +1320,9 @@ body.is-loading { overflow: hidden; }
 .section-heading {
   font-family: var(--font-quote);
   font-size: clamp(2.4rem, 4.2vw, 3.6rem);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
 .reel-counter-box {
@@ -1335,9 +1333,9 @@ body.is-loading { overflow: hidden; }
 
 .reel-counter-val {
   font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 400;
-  color: var(--accent-warm);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #f59e0b;
 }
 
 .film-strip-stage {
@@ -1349,12 +1347,12 @@ body.is-loading { overflow: hidden; }
 }
 
 .film-strip-wrapper {
-  background: #171614;
-  border-top: 1.5px solid rgba(242, 239, 233, 0.14);
-  border-bottom: 1.5px solid rgba(242, 239, 233, 0.14);
+  background: #0d0e14;
+  border-top: 2px solid #282a38;
+  border-bottom: 2px solid #282a38;
   padding: 0.65rem 0;
   width: max-content;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.8);
   will-change: transform;
   transform: rotate(-0.8deg);
 }
@@ -1364,9 +1362,9 @@ body.is-loading { overflow: hidden; }
   justify-content: space-between;
   padding: 0.15rem 3rem;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   letter-spacing: 0.16em;
-  color: rgba(212, 163, 115, 0.65);
+  color: rgba(245, 158, 11, 0.75);
 }
 
 .sprocket-row {
@@ -1375,10 +1373,10 @@ body.is-loading { overflow: hidden; }
   background-image: repeating-linear-gradient(
     90deg,
     transparent 0 14px,
-    #0e0d0c 14px 32px
+    #06070a 14px 32px
   );
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .reel-track {
@@ -1389,38 +1387,41 @@ body.is-loading { overflow: hidden; }
 }
 
 .reel-card {
-  width: 320px;
-  min-height: 245px;
+  width: 325px;
+  min-height: 250px;
   padding: 1.7rem;
-  border-radius: 12px;
-  background: #21201d;
-  border: 1px solid rgba(242, 239, 233, 0.1);
+  border-radius: 14px;
+  background: #171924;
+  border-top: 4px solid var(--frame-color, #38bdf8);
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+  border-right: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
   opacity: 0.18;
   transform: scale(0.94) translateY(12px);
-  filter: grayscale(0.9) brightness(0.5);
-  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, border-color 0.45s ease;
+  filter: grayscale(0.88) brightness(0.48);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease, box-shadow 0.45s ease;
 }
 
 .reel-card.revealed {
   opacity: 1;
   transform: scale(1) translateY(0);
   filter: grayscale(0) brightness(1);
-  border-color: rgba(242, 239, 233, 0.26);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 28px color-mix(in srgb, var(--frame-color, #38bdf8) 20%, transparent);
 }
 
 .reel-frame-meta {
   display: flex;
   justify-content: space-between;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent-warm);
+  color: var(--frame-color, #38bdf8);
 }
 
 .reel-card-body {
@@ -1431,21 +1432,21 @@ body.is-loading { overflow: hidden; }
 
 .reel-card h3 {
   font-family: var(--font-quote);
-  font-size: 1.75rem;
+  font-size: 1.8rem;
   font-weight: 400;
-  color: var(--text-main);
+  color: #ffffff;
 }
 
 .reel-card p {
-  font-size: 0.89rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: #b8b4aa;
+  color: #cbd5e1;
 }
 
 .reel-progress-bar-wrap {
   margin: 0 4.5vw;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -1453,19 +1454,19 @@ body.is-loading { overflow: hidden; }
 .reel-progress-fill {
   width: 0%;
   height: 100%;
-  background: var(--text-main);
+  background: linear-gradient(90deg, #f43f5e, #f59e0b, #10b981, #38bdf8, #a855f7);
   transition: width 0.12s linear;
 }
 
 /* ==========================================================================
-   4. REFINED 6-CARD PROJECT STACK + TEMPLATE REPOSITORY INDEX TICK LINES
-      (Smaller Tabs, More Angled, Less Sensitive Hover, Contrasting Light Theme After Opening!)
+   4. SMALLER, UPWARD-SHIFTED, MORE STEEPLY ANGLED 6-CARD PROJECT STACK
+      + EXTENDED TEMPLATE REPO RULER LINES THAT ALSO TRIGGER CARDS ON HOVER!
    ========================================================================== */
 .projects-focus-backdrop {
   position: fixed;
   inset: 0;
   z-index: 45;
-  background: rgba(12, 12, 14, 0.62);
+  background: rgba(8, 9, 14, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   opacity: 0;
@@ -1477,15 +1478,17 @@ body.is-loading { overflow: hidden; }
   opacity: 1;
 }
 
+/* Shifted Upwards so both Quote 3 and the entire Projects section + lines fit in one screen! */
 .projects-section {
-  padding: 0.8rem 4.5vw 6.5rem;
+  padding: 0.15rem 4.5vw 4.5rem;
+  margin-top: -0.35rem;
   position: relative;
   z-index: 50;
   overflow: visible;
 }
 
 .section-header-wrap {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   text-align: center;
   transition: filter 0.4s ease, opacity 0.4s ease;
 }
@@ -1498,73 +1501,83 @@ body.is-loading { overflow: hidden; }
 .template-horizontal-stack {
   position: relative;
   width: 100%;
-  min-height: 440px;
+  min-height: 315px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   perspective: 1400px;
-  padding: 1.5rem 0;
+  padding: 0.5rem 0;
 }
 
 .stack-card-slot {
   position: relative;
-  margin: 0 -64px;
+  margin: 0 -46px;
   flex-shrink: 0;
   transform-style: preserve-3d;
-  cursor: pointer;
+  pointer-events: none;
+}
+
+.stack-card-slot.slot-focused {
+  pointer-events: auto;
 }
 
 .stack-card-slot.slot-focused::before {
   content: '';
   position: absolute;
-  top: -35px;
-  bottom: -35px;
-  left: -340px;
-  right: -340px;
+  top: -30px;
+  bottom: -95px;
+  left: -300px;
+  right: -300px;
   z-index: 1;
 }
 
-/* Smaller, More Steeply Angled Resting Dark Tabs */
+/* Smaller Resting Tabs, Angled Even More Steeply (-58deg) */
 .stack-card {
-  width: clamp(210px, 20.5vw, 258px);
-  height: 345px;
+  pointer-events: auto;
+  cursor: pointer;
+  width: clamp(160px, 15vw, 194px);
+  height: 262px;
   border-radius: 12px;
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  background: #18181b;
-  border: 1px solid rgba(242, 239, 233, 0.14);
-  padding: 1rem;
+  background: #181a24;
+  border: 1px solid rgba(248, 250, 252, 0.16);
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transform: translate3d(0px, 0px, 0px) rotateY(-48deg) rotateX(6deg) scale(0.9);
+  transform: translate3d(0px, 0px, 0px) rotateY(-58deg) rotateX(7deg) scale(0.88);
   transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, filter 0.38s ease, opacity 0.38s ease, background 0.35s ease, border-color 0.35s ease;
-  box-shadow: -18px 14px 34px rgba(0, 0, 0, 0.72);
+  box-shadow: -16px 14px 32px rgba(0, 0, 0, 0.78);
+}
+
+.stack-card.active-project-card {
+  border-color: rgba(16, 185, 129, 0.65);
 }
 
 /* When opened/hovered in center: Enlarges & Switches to Contrasting Warm Ivory Editorial Surface (#f4f1ea)! */
 .stack-card.is-centered {
-  transform: translate3d(var(--center-shift, 0px), -14px, 210px) rotateY(0deg) rotateX(0deg) scale(1.22);
+  transform: translate3d(var(--center-shift, 0px), -10px, 230px) rotateY(0deg) rotateX(0deg) scale(1.48);
   background: #f4f1ea;
-  border-color: #d8d4c8;
+  border-color: #10b981;
   color: #141413;
-  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.88), 0 0 36px rgba(16, 185, 129, 0.28);
   filter: none !important;
   opacity: 1 !important;
 }
 
 .stack-card.blurred-left {
-  transform: translate3d(-125px, 0px, -50px) rotateY(-50deg) rotateX(6deg) scale(0.84);
-  filter: blur(5px) brightness(0.45);
-  opacity: 0.5;
+  transform: translate3d(-115px, 0px, -50px) rotateY(-60deg) rotateX(7deg) scale(0.82);
+  filter: blur(5px) brightness(0.42);
+  opacity: 0.48;
 }
 
 .stack-card.blurred-right {
-  transform: translate3d(125px, 0px, -50px) rotateY(-50deg) rotateX(6deg) scale(0.84);
-  filter: blur(5px) brightness(0.45);
-  opacity: 0.5;
+  transform: translate3d(115px, 0px, -50px) rotateY(-60deg) rotateX(7deg) scale(0.82);
+  filter: blur(5px) brightness(0.42);
+  opacity: 0.48;
 }
 
 .stack-card-top {
@@ -1575,16 +1588,20 @@ body.is-loading { overflow: hidden; }
 
 .stack-frame-label {
   font-family: var(--font-mono);
-  font-size: 0.64rem;
-  color: #8c8980;
+  font-size: 0.56rem;
+  color: #94a3b8;
   letter-spacing: 0.1em;
 }
 
 .stack-slot-num {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--text-main);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.grey-layer-card .stack-slot-num {
+  color: #94a3b8;
 }
 
 .stack-card.is-centered .stack-frame-label,
@@ -1596,40 +1613,40 @@ body.is-loading { overflow: hidden; }
 .project-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.55rem;
+  margin-top: 0.45rem;
   border-radius: 8px;
-  background: #121316;
-  border: 1px solid rgba(242, 239, 233, 0.1);
+  background: radial-gradient(circle at 50% 42%, rgba(16, 185, 129, 0.2) 0%, #10121a 78%);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.7rem;
+  gap: 0.5rem;
   position: relative;
   overflow: hidden;
 }
 
 .photo-frame-title {
   font-family: var(--font-quote);
-  font-size: 1.55rem;
-  color: var(--text-main);
+  font-size: 1.25rem;
+  color: #ffffff;
 }
 
 /* Contrasting Warm Ivory Opened Pop-Up inside Card 01 */
 .project-hover-popup {
   position: absolute;
   inset: 0;
-  padding: 1.15rem;
+  padding: 0.85rem;
   background: #f4f1ea;
   color: #141413;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.35rem;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px);
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .stack-card.is-centered .project-hover-popup {
@@ -1640,87 +1657,89 @@ body.is-loading { overflow: hidden; }
 
 .popup-header h3 {
   font-family: var(--font-quote);
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1.15rem;
+  font-weight: 500;
   color: #141413;
 }
 
 .popup-header p {
   font-family: var(--font-mono);
-  font-size: 0.56rem;
-  color: #6e6a61;
-  margin-top: 0.15rem;
+  font-size: 0.46rem;
+  font-weight: 600;
+  color: #059669;
+  margin-top: 0.1rem;
 }
 
 .popup-pills-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: 0.18rem;
 }
 
 .popup-pill {
-  padding: 0.16rem 0.42rem;
-  border-radius: 4px;
-  background: #e6e2d6;
+  padding: 0.12rem 0.32rem;
+  border-radius: 3px;
+  background: #e2dfd5;
   color: #141413;
   font-family: var(--font-mono);
-  font-size: 0.56rem;
+  font-size: 0.45rem;
+  font-weight: 500;
 }
 
 .project-bullets {
-  padding-left: 0.85rem;
+  padding-left: 0.7rem;
   display: flex;
   flex-direction: column;
-  gap: 0.22rem;
-  color: #383632;
-  font-size: 0.62rem;
-  line-height: 1.35;
+  gap: 0.16rem;
+  color: #27272a;
+  font-size: 0.48rem;
+  line-height: 1.32;
 }
 
 .popup-github-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.52rem 0.85rem;
-  border-radius: 6px;
-  background: #141413;
-  color: #f4f1ea;
+  padding: 0.38rem 0.65rem;
+  border-radius: 5px;
+  background: #10b981;
+  color: #09090d;
   font-family: var(--font-sans);
-  font-size: 0.68rem;
-  font-weight: 500;
+  font-size: 0.54rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .popup-github-btn:hover {
-  opacity: 0.8;
+  background: #38bdf8;
 }
 
-/* Cards 02–06: Minimalist Grey Photo Frame Cards (Switch to contrasting Warm Ivory on Hover!) */
+/* Cards 02–06: Grey Photo Frame Cards (Switch to contrasting Warm Ivory on Hover!) */
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.55rem;
+  margin-top: 0.45rem;
   border-radius: 8px;
-  background: #232429;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #232530;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.85rem;
+  padding: 0.65rem;
   transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .stack-card.is-centered .grey-photo-frame {
-  background: #e6e2d6;
+  background: #e5e2d8;
   border-color: #d0ccc0;
 }
 
 .yet-to-build-text {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: #8e9099;
+  font-size: 0.62rem;
+  color: #94a3b8;
   letter-spacing: 0.04em;
   text-align: center;
   transition: color 0.35s ease;
@@ -1728,57 +1747,78 @@ body.is-loading { overflow: hidden; }
 
 .stack-card.is-centered .yet-to-build-text {
   color: #141413;
+  font-weight: 500;
 }
 
-/* Template Repository Architectural Ruler / Tick Lines Beneath the Project Tabs */
+/* Extended Template Repository Ruler / Tick Lines Underneath the Project Tabs (Interactive on Hover!) */
 .projects-index-lines {
-  margin: 1.25rem auto 0;
-  max-width: 540px;
+  margin: 0.4rem auto 0;
+  max-width: 580px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: 0 1rem;
-  height: 36px;
+  padding: 0 0.75rem;
+  height: 86px;
+  position: relative;
+  z-index: 95;
 }
 
 .index-tick-group {
   display: flex;
   align-items: flex-end;
   gap: 6px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
 }
 
 .index-tick {
-  width: 1px;
-  height: 10px;
-  background: rgba(242, 239, 233, 0.18);
-  transition: height 0.3s ease, background 0.3s ease;
+  width: 1.5px;
+  height: 28px;
+  background: rgba(248, 250, 252, 0.22);
+  transition: height 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.index-tick.mid-tick {
+  height: 40px;
+  background: rgba(248, 250, 252, 0.32);
 }
 
 .index-tick.major-tick {
-  height: 18px;
-  background: rgba(242, 239, 233, 0.42);
+  width: 2px;
+  height: 58px;
+  background: rgba(248, 250, 252, 0.6);
   position: relative;
 }
 
 .index-tick.major-tick::after {
   content: attr(data-slot);
   position: absolute;
-  top: -18px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--text-muted);
-  transition: color 0.3s ease;
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
+.index-tick-group:hover .index-tick.major-tick,
 .index-tick.major-tick.active {
-  height: 28px;
-  background: var(--text-main);
+  height: 76px;
+  background: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
 }
 
+.index-tick-group:hover .index-tick.mid-tick {
+  height: 50px;
+  background: rgba(16, 185, 129, 0.65);
+}
+
+.index-tick-group:hover .index-tick.major-tick::after,
 .index-tick.major-tick.active::after {
-  color: var(--text-main);
+  color: #10b981;
+  transform: translateX(-50%) translateY(-2px);
 }
 
 /* ==========================================================================
@@ -1898,10 +1938,10 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel { width: 92vw; }
+  .stage-bento-panel, .between-stages-quote { width: 92vw; margin-right: 0; }
   .part-link-callout { display: none; }
-  .stack-card-slot { margin: 0 -55px; }
-  .stack-card { width: 195px; height: 310px; }
+  .stack-card-slot { margin: 0 -42px; }
+  .stack-card { width: 150px; height: 235px; }
 }
 ```
 
@@ -1910,8 +1950,8 @@ body.is-loading { overflow: hidden; }
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.48, 6.2);
-  camera.lookAt(0, 0.02, 0);
+  camera.position.set(0, 1.42, 6.35);
+  camera.lookAt(0, 0.05, 0);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -1920,12 +1960,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     powerPreference: 'high-performance'
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  // Cap pixelRatio at 1.5 to prevent WebGL GPU memory exhaustion / context loss
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.22;
+  renderer.toneMappingExposure = 1.08;
 
-  // WebGL Context Loss & Restoration Recovery Guard (Prevents white-screen crash)
   canvas.addEventListener('webglcontextlost', (e) => {
     e.preventDefault();
   }, false);
@@ -1934,22 +1972,23 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     renderer.render(scene, camera);
   }, false);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.96);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.15);
-  keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0xcbd5e1, 1.65);
-  rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x94a3b8, 1.15);
-  bottomFill.position.set(0, -5, 4);
-  const accentLight = new THREE.PointLight(0xe2dfd7, 1.6, 16);
-  accentLight.position.set(-1.8, 2.0, 4.2);
+  // Sculpted Studio Lighting for Deep Matte Black Finish (No washed-out front white glare!)
+  const ambient = new THREE.AmbientLight(0xffffff, 0.52);
+  const keyLight = new THREE.DirectionalLight(0xe2e8f0, 1.25);
+  keyLight.position.set(3.5, 6.5, 4.5);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.45);
+  rimLight.position.set(-5, 4, -5);
+  const bottomFill = new THREE.DirectionalLight(0x64748b, 0.95);
+  bottomFill.position.set(0, -5, 3.5);
+  const accentLight = new THREE.PointLight(0x38bdf8, 2.2, 16);
+  accentLight.position.set(-1.8, 1.8, 4.0);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  // Balanced size (0.88x) and lower position (-0.32) so it fills the space intentionally
   root.scale.setScalar(0.88);
-  root.position.set(0, -0.32, 0);
-  root.rotation.set(0.24, 0.62, 0);
+  root.position.set(0, -0.36, 0);
+  // Starts rotated further to the right (+0.96 rad) so it rotates across a wider, more dramatic arc!
+  root.rotation.set(0.24, 0.96, 0);
   scene.add(root);
 
   function makeMatteMaterial(opts) {
@@ -1964,28 +2003,28 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     });
   }
 
-  const matOuterChassis = makeMatteMaterial({ color: 0x1b1c20, metalness: 0.24, roughness: 0.80 });
-  const matBezel = makeMatteMaterial({ color: 0x101114, metalness: 0.15, roughness: 0.85 });
-  const matScreenPanel = makeMatteMaterial({ color: 0x13151a, emissive: 0x1f242d, emissiveIntensity: 0.45, roughness: 0.35 });
-  const matMotherboardPcb = makeMatteMaterial({ color: 0x14161a, metalness: 0.25, roughness: 0.78 });
-  const matCpuPackage = makeMatteMaterial({ color: 0x2c3038, emissive: 0x1e2229, emissiveIntensity: 0.3, metalness: 0.48, roughness: 0.52 });
-  const matCopperPipe = makeMatteMaterial({ color: 0xb45309, emissive: 0x451a03, emissiveIntensity: 0.22, metalness: 0.58, roughness: 0.44 });
-  const matGoldContacts = makeMatteMaterial({ color: 0xd4a373, emissive: 0x78350f, emissiveIntensity: 0.25, metalness: 0.68, roughness: 0.38 });
-  const matKeyDeck = makeMatteMaterial({ color: 0x16171b, metalness: 0.2, roughness: 0.84 });
-  const matKeyCap = makeMatteMaterial({ color: 0x24262c, metalness: 0.18, roughness: 0.76 });
-  const matBacklightMatrix = makeMatteMaterial({ color: 0x18221f, emissive: 0x84a98c, emissiveIntensity: 0.35, roughness: 0.4 });
-  const matRamSpreader = makeMatteMaterial({ color: 0x1e2026, emissive: 0x141619, emissiveIntensity: 0.25, metalness: 0.36, roughness: 0.70 });
-  const matRamChip = makeMatteMaterial({ color: 0x101114, metalness: 0.2, roughness: 0.82 });
-  const matStoragePcb = makeMatteMaterial({ color: 0x17191f, metalness: 0.28, roughness: 0.76 });
-  const matStorageSink = makeMatteMaterial({ color: 0x262932, metalness: 0.40, roughness: 0.66 });
-  const matBatteryCell = makeMatteMaterial({ color: 0x18191e, metalness: 0.3, roughness: 0.75 });
-  const matTouchpadSurface = makeMatteMaterial({ color: 0x202228, emissive: 0x2a2d35, emissiveIntensity: 0.32, roughness: 0.58, metalness: 0.28 });
+  // Deep Stealth Matte Black Materials (High Roughness 0.88–0.94, Low Metalness)
+  const matOuterChassis = makeMatteMaterial({ color: 0x090a0f, metalness: 0.16, roughness: 0.90 });
+  const matBezel = makeMatteMaterial({ color: 0x050608, metalness: 0.10, roughness: 0.94 });
+  const matScreenPanel = makeMatteMaterial({ color: 0x070b14, emissive: 0x0f172a, emissiveIntensity: 0.42, roughness: 0.45 });
+  const matMotherboardPcb = makeMatteMaterial({ color: 0x080b11, metalness: 0.18, roughness: 0.88 });
+  const matCpuPackage = makeMatteMaterial({ color: 0x161922, emissive: 0x1e1b4b, emissiveIntensity: 0.35, metalness: 0.35, roughness: 0.65 });
+  const matCopperPipe = makeMatteMaterial({ color: 0x92400e, emissive: 0x451a03, emissiveIntensity: 0.24, metalness: 0.48, roughness: 0.52 });
+  const matGoldContacts = makeMatteMaterial({ color: 0xf59e0b, emissive: 0x78350f, emissiveIntensity: 0.28, metalness: 0.60, roughness: 0.42 });
+  const matKeyDeck = makeMatteMaterial({ color: 0x08090d, metalness: 0.15, roughness: 0.92 });
+  const matKeyCap = makeMatteMaterial({ color: 0x0e1017, metalness: 0.12, roughness: 0.90 });
+  const matBacklightMatrix = makeMatteMaterial({ color: 0x062019, emissive: 0x10b981, emissiveIntensity: 0.45, roughness: 0.5 });
+  const matRamSpreader = makeMatteMaterial({ color: 0x0c0e14, emissive: 0x0f172a, emissiveIntensity: 0.25, metalness: 0.28, roughness: 0.82 });
+  const matRamChip = makeMatteMaterial({ color: 0x050608, metalness: 0.15, roughness: 0.90 });
+  const matStoragePcb = makeMatteMaterial({ color: 0x090c14, metalness: 0.22, roughness: 0.86 });
+  const matStorageSink = makeMatteMaterial({ color: 0x12151f, metalness: 0.30, roughness: 0.78 });
+  const matBatteryCell = makeMatteMaterial({ color: 0x0a0c12, metalness: 0.20, roughness: 0.88 });
+  const matTouchpadSurface = makeMatteMaterial({ color: 0x0d0f16, emissive: 0x1e1b4b, emissiveIntensity: 0.28, roughness: 0.78, metalness: 0.20 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
 
-  // Attach crisp EdgesGeometry ONLY to primary structural silhouettes (prevents GPU draw-call overload)
-  function addCrispEdges(mesh, partKey, edgeColor = 0xd6d3cd, baseOpacity = 0.88) {
+  function addCrispEdges(mesh, partKey, edgeColor = 0xcbd5e1, baseOpacity = 0.88) {
     const edges = new THREE.EdgesGeometry(mesh.geometry);
     const lineMat = new THREE.LineBasicMaterial({
       color: edgeColor,
@@ -2002,25 +2041,26 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   // =========================================================================
-  // 1. DISPLAY (Rests seamlessly at y = +0.03 when closed; shifts upward during disassembly)
+  // 1. DISPLAY
   // =========================================================================
   const display = new THREE.Group();
   display.position.set(0, 0.03, -1.00);
 
   const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.055), matOuterChassis);
   lidMesh.position.set(0, 1.00, -0.028);
-  addCrispEdges(lidMesh, 'display', 0xe5e5e0, 0.92);
+  addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.94);
 
   const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.88), matBezel);
   bezelMesh.position.set(0, 1.00, 0.002);
 
   const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.70), matScreenPanel);
   lcdMesh.position.set(0, 1.00, 0.004);
-  addCrispEdges(lcdMesh, 'display', 0x9ca3af, 0.75);
+  addCrispEdges(lcdMesh, 'display', 0x38bdf8, 0.84);
 
   const barGeo = new THREE.PlaneGeometry(1.0, 0.036);
-  const barMat = new THREE.MeshBasicMaterial({ color: 0xd4a373, transparent: true, opacity: 0.35 });
+  const uiColors = [0x38bdf8, 0x10b981, 0xa855f7, 0xf59e0b, 0xec4899];
   for (let i = 0; i < 5; i++) {
+    const barMat = new THREE.MeshBasicMaterial({ color: uiColors[i % uiColors.length], transparent: true, opacity: 0.45 });
     const bar = new THREE.Mesh(barGeo, barMat);
     bar.scale.x = 0.65 + (i % 3) * 0.4;
     bar.position.set(-1.1 + (bar.scale.x * 0.5), 1.45 - i * 0.16, 0.006);
@@ -2039,20 +2079,19 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. KEYBOARD & TOP-CASE PALMREST DECK (With Enlarged Touchpad on Front Deck)
+  // 2. KEYBOARD & TOP-CASE PALMREST DECK
   // =========================================================================
   const keyboard = new THREE.Group();
   const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.03, 2.00), matOuterChassis);
   topCasePalmrest.position.set(0, 0.015, 0);
-  addCrispEdges(topCasePalmrest, 'keyboard', 0xe5e5e0, 0.92);
+  addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.92);
   keyboard.add(topCasePalmrest);
 
   const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.014, 1.02), matBacklightMatrix);
   backlightPlate.position.set(0, 0.024, -0.26);
-  addCrispEdges(backlightPlate, 'keyboard', 0x84a98c, 0.8);
+  addCrispEdges(backlightPlate, 'keyboard', 0x10b981, 0.85);
   keyboard.add(backlightPlate);
 
-  // Shared Geometry for 44 Keycaps (Zero extra draw-call overhead)
   const sharedKeyGeo = new THREE.BoxGeometry(0.185, 0.028, 0.175);
   const cascadeKeys = [];
   const rows = 4;
@@ -2075,53 +2114,51 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   keyboard.add(keyboardAnchor);
 
   // =========================================================================
-  // 3. ENLARGED PRECISION TOUCHPAD (Attached to Front Palmrest of Keyboard Deck!)
+  // 3. ENLARGED PRECISION TOUCHPAD (Attached to Front Palmrest of Keyboard Deck)
   // =========================================================================
   const touchpad = new THREE.Group();
-  // Bigger touchpad (1.36 x 0.72) nestled right on the front palmrest (never detaches completely from the laptop!)
   const padRim = new THREE.Mesh(
     new THREE.BoxGeometry(1.38, 0.024, 0.74),
-    makeMatteMaterial({ color: 0x2c2f36, metalness: 0.35, roughness: 0.65 })
+    makeMatteMaterial({ color: 0x161922, metalness: 0.25, roughness: 0.82 })
   );
   const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.32, 0.030, 0.68), matTouchpadSurface);
   padRim.position.set(0, 0.024, 0.56);
   padMesh.position.set(0, 0.028, 0.56);
-  addCrispEdges(padMesh, 'touchpad', 0xf4f1ea, 0.96);
+  addCrispEdges(padMesh, 'touchpad', 0xec4899, 0.96);
   padMesh.userData.isTouchpad = true;
   const touchpadAnchor = new THREE.Object3D();
   touchpadAnchor.position.set(0, 0.045, 0.56);
   touchpad.add(padRim, padMesh, touchpadAnchor);
-  // Parent touchpad directly to keyboard so it moves naturally with the palmrest and never detaches away!
   keyboard.add(touchpad);
 
   // =========================================================================
-  // 4. MOTHERBOARD (Aligned on Central Axis; Visible as Upper Parts Shift Upward!)
+  // 4. MOTHERBOARD
   // =========================================================================
   const motherboard = new THREE.Group();
   motherboard.position.set(0, -0.02, 0);
 
   const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.66, 0.042, 1.60), matMotherboardPcb);
-  addCrispEdges(pcb, 'motherboard', 0xe5e5e0, 0.94);
+  addCrispEdges(pcb, 'motherboard', 0xe2e8f0, 0.94);
   motherboard.add(pcb);
 
   const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.05, 0.68), matOuterChassis);
   cpuSocket.position.set(-0.22, 0.025, -0.06);
   const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.068, 0.46), matCpuPackage);
   cpuDie.position.set(-0.22, 0.038, -0.06);
-  addCrispEdges(cpuDie, 'motherboard', 0xf4f1ea, 0.96);
+  addCrispEdges(cpuDie, 'motherboard', 0xa855f7, 0.98);
 
   const gpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.048, 0.56), matOuterChassis);
   gpuSocket.position.set(0.38, 0.024, -0.06);
   const gpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.064, 0.38), matCpuPackage);
   gpuDie.position.set(0.38, 0.036, -0.06);
-  addCrispEdges(gpuDie, 'motherboard', 0xd4a373, 0.92);
+  addCrispEdges(gpuDie, 'motherboard', 0x38bdf8, 0.95);
   motherboard.add(cpuSocket, cpuDie, gpuSocket, gpuDie);
 
   const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.12, 0.026, 0.10), matCopperPipe);
   pipe1.position.set(0, 0.046, -0.42);
   const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.026, 0.08), matCopperPipe);
   pipe2.position.set(0, 0.046, -0.26);
-  addCrispEdges(pipe1, 'motherboard', 0xd4a373, 0.88);
+  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.88);
   motherboard.add(pipe1, pipe2);
 
   const sharedBladeGeo = new THREE.BoxGeometry(0.22, 0.028, 0.03);
@@ -2129,10 +2166,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const fanGroup = new THREE.Group();
     fanGroup.position.set(xPos, 0.034, -0.38);
     const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.37, 0.046, 20), matOuterChassis);
-    addCrispEdges(shroud, 'motherboard', 0xe5e5e0, 0.92);
+    addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.92);
 
     const ringGeo = new THREE.RingGeometry(0.30, 0.34, 24);
-    const ringMat = new THREE.MeshBasicMaterial({ color: ringColor, side: THREE.DoubleSide, transparent: true, opacity: 0.8 });
+    const ringMat = new THREE.MeshBasicMaterial({ color: ringColor, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
     const ringMesh = new THREE.Mesh(ringGeo, ringMat);
     ringMesh.rotation.x = -Math.PI / 2;
     ringMesh.position.y = 0.024;
@@ -2152,8 +2189,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     fanGroup.userData.rotor = rotorGroup;
     return fanGroup;
   }
-  const fanL = createCoolingFan(-0.84, 0xd4a373);
-  const fanR = createCoolingFan(0.84, 0x84a98c);
+  const fanL = createCoolingFan(-0.84, 0x38bdf8);
+  const fanR = createCoolingFan(0.84, 0xa855f7);
   motherboard.add(fanL, fanR);
 
   const sharedVrmGeo = new THREE.BoxGeometry(0.10, 0.052, 0.10);
@@ -2163,7 +2200,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     motherboard.add(vrm);
   }
 
-  // Embedded Flat PCB Line Wiring Traces
   const tracePoints = [];
   const traceCoords = [
     [-1.15, 0.024, 0.56, -0.38, 0.024, 0.56],
@@ -2183,23 +2219,22 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
   });
   const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
-  const traceMat = new THREE.LineBasicMaterial({ color: 0xd4a373, transparent: true, opacity: 0.88, depthTest: true });
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.9, depthTest: true });
   motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
 
-  // Accurate Motherboard Anchor placed on the front-left visible edge of the Motherboard PCB
   const motherboardAnchor = new THREE.Object3D();
   motherboardAnchor.position.set(-0.35, 0.035, 0.48);
   motherboard.add(motherboardAnchor);
 
   // =========================================================================
-  // 5. RAM STICKS (Anchored to Left Ejecting RAM Stick so Label Is 100% Accurate!)
+  // 5. RAM STICKS
   // =========================================================================
   const ram = new THREE.Group();
   const sharedChipGeo = new THREE.BoxGeometry(0.13, 0.05, 0.16);
   function createRamStick(side) {
     const stickGroup = new THREE.Group();
     const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.038, 0.32), matRamSpreader);
-    addCrispEdges(board, 'ram', 0xd4a373, 0.94);
+    addCrispEdges(board, 'ram', 0xf59e0b, 0.94);
     stickGroup.add(board);
 
     const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.04, 0.045), matGoldContacts);
@@ -2218,7 +2253,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   ramL.position.set(-0.62, -0.02, 0.24);
   ramR.position.set(0.62, -0.02, 0.24);
 
-  // Attach ramAnchor directly to ramL (the left RAM stick that slides out into open view on the left!)
   const ramAnchor = new THREE.Object3D();
   ramAnchor.position.set(0, 0.03, 0);
   ramL.add(ramAnchor);
@@ -2230,7 +2264,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const storage = new THREE.Group();
   const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.09, 2.00), matOuterChassis);
   baseMesh.position.set(0, -0.045, 0);
-  addCrispEdges(baseMesh, 'storage', 0xe5e5e0, 0.92);
+  addCrispEdges(baseMesh, 'storage', 0xe2e8f0, 0.92);
 
   const sharedBatGeo = new THREE.BoxGeometry(0.82, 0.045, 0.48);
   for (let cell = 0; cell < 3; cell++) {
@@ -2243,10 +2277,10 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const ssdGroup = new THREE.Group();
     ssdGroup.position.set(xOffset, -0.01, 0.38);
     const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.04, 0.42), matStoragePcb);
-    addCrispEdges(ssdPcb, 'storage', 0x84a98c, 0.92);
+    addCrispEdges(ssdPcb, 'storage', 0x6366f1, 0.94);
     const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.062, 0.36), matStorageSink);
     heatsink.position.set(-0.06, 0.016, 0);
-    addCrispEdges(heatsink, 'storage', 0xe5e5e0, 0.9);
+    addCrispEdges(heatsink, 'storage', 0xe2e8f0, 0.9);
     const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.042, 0.34), matGoldContacts);
     connector.position.set(0.48, 0, 0);
     ssdGroup.add(ssdPcb, heatsink, connector);
@@ -2287,7 +2321,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       }
     });
   });
-  // Ensure touchpad meshes carry the 'touchpad' partKey even though touchpad is parented to keyboard
   touchpad.traverse((child) => {
     if (child.isMesh) {
       child.userData.partKey = 'touchpad';
@@ -2350,7 +2383,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     if (hits.length > 0 && onTouchpadClick) onTouchpadClick();
   });
 
-  // Pixel-accurate projection relative to canvas bounding box
   const tempWorldVec = new THREE.Vector3();
   function getAnchorScreenCoords(anchorObj) {
     const rect = canvas.getBoundingClientRect();
@@ -2372,7 +2404,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const closedAngle = Math.PI / 2;
     const openAngle = -0.18;
 
-    // 2. Vertical Disassembly Spread (0.11 -> 0.80): Upper parts shift UP so Motherboard & under-parts are clearly visible!
+    // 2. Extensive, Dramatic Disassembly Spread (0.11 -> 0.80):
+    //    Parts shift MORE UPWARDS so the lower parts (Motherboard, RAM, Storage) get full visibility at the end!
     const rawSpread = Math.max(0, Math.min(1, (progress - 0.11) / 0.69));
     const spread = 1 - Math.pow(1 - rawSpread, 1.85);
 
@@ -2386,52 +2419,51 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const leftShift = Math.max(0, Math.min(1, (progress - 0.05) / 0.10));
     const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    // 4. End-of-Animation Centering (progress >= 0.81):
-    //    Laptop glides back to the center of the screen so the enlarged Touchpad (still attached to the palmrest!) sits centered!
+    // 4. End-of-Animation Centering (progress >= 0.81)
     const endCenterRatio = Math.max(0, Math.min(1, (progress - 0.81) / 0.16));
     const smoothEndCenter = 1 - Math.pow(1 - endCenterRatio, 2.2);
 
-    // Upper parts (Display & Keyboard) shift cleanly UPWARD so you can see the Motherboard & under-parts beneath them!
-    display.position.set(0, 0.03 + spread * 0.68, -1.00 - spread * 0.12);
-    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.06) * smoothOpen;
+    // Extensive, Dramatic Upward Disassembly so Lower Parts Have Maximum Visibility!
+    display.position.set(0, 0.03 + spread * 1.05, -1.00 - spread * 0.16);
+    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08) * smoothOpen;
 
-    keyboard.position.set(0, spread * 0.44, 0);
+    keyboard.position.set(0, spread * 0.66, 0);
 
-    // Keycap Wave Cascade
+    // Dramatic Keycap Wave Cascade
     const keyCascadeProgress = Math.max(0, Math.min(1, (progress - 0.13) / 0.35));
     cascadeKeys.forEach(({ mesh, baseX, baseY, baseZ, wavePhase }) => {
       const localWave = Math.max(0, Math.min(1, (keyCascadeProgress * 1.6) - wavePhase * 0.6));
       const smoothWave = Math.sin(localWave * Math.PI * 0.5);
-      mesh.position.set(baseX, baseY + smoothWave * 0.14, baseZ);
+      mesh.position.set(baseX, baseY + smoothWave * 0.20, baseZ);
     });
 
-    // Touchpad remains attached to the front palmrest of the keyboard (only rising 0.045 units in subtle relief at the end!)
+    // Touchpad stays attached to the front palmrest of the keyboard
     touchpad.position.set(0, smoothEndCenter * 0.045, smoothEndCenter * 0.06);
 
-    // Motherboard stays aligned on the central axis right in the open window below the lifted Keyboard
-    motherboard.position.set(0, -0.02 - spread * 0.04, 0);
+    // Motherboard shifts upward (+0.18 * spread) so it sits high and clear above Storage!
+    motherboard.position.set(0, -0.02 + spread * 0.18, 0);
 
-    // RAM Sticks slide out cleanly from the Motherboard slots
+    // RAM Sticks eject extensively outward (±1.18 units) from the Motherboard slots
     const ramOut = Math.max(0, Math.min(1, (progress - 0.16) / 0.48));
-    ram.position.set(0, -0.02 - spread * 0.04, 0);
-    ramL.position.set(-0.62 - ramOut * 0.82, 0, 0.24);
-    ramR.position.set(0.62 + ramOut * 0.82, 0, 0.24);
+    ram.position.set(0, -0.02 + spread * 0.18, 0);
+    ramL.position.set(-0.62 - ramOut * 1.18, 0, 0.24);
+    ramR.position.set(0.62 + ramOut * 1.18, 0, 0.24);
 
-    // Storage & Lower Unibody separate cleanly below the Motherboard
-    storage.position.set(0, -spread * 0.44, 0);
-    ssd1.position.set(-0.64, -0.01 + spread * 0.14, 0.38);
-    ssd2.position.set(0.64, -0.01 + spread * 0.14, 0.38);
+    // Storage & Lower Unibody separate below Motherboard while the whole root lifts upward so Storage is in full view!
+    storage.position.set(0, -spread * 0.30, 0);
+    ssd1.position.set(-0.64 - spread * 0.16, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
+    ssd2.position.set(0.64 + spread * 0.16, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
 
-    // Horizontal Position: Starts at 0 -> moves left (-1.22) during stages -> returns to center (0.0) at end for Touchpad CV!
+    // Root shifts upward as spread increases (-0.36 -> +0.08) so all lower parts get prime visibility!
     root.position.x = -1.22 * smoothLeft * (1 - smoothEndCenter);
-    root.position.y = -0.32 - spread * 0.06;
+    root.position.y = -0.36 + spread * 0.44 - smoothEndCenter * 0.22;
 
-    // Tilt Laptop UPWARD (rotation.x decreases from 0.24 to 0.12) so we can see under the lifted Keyboard into the Motherboard!
-    root.rotation.x = 0.24 - spread * 0.12 + smoothEndCenter * 0.14;
+    // Tilt Laptop MORE UPWARDS (rotation.x tilts up from +0.24 to -0.06 rad!)
+    root.rotation.x = 0.24 - spread * 0.30 + smoothEndCenter * 0.22;
 
-    // Continuous rotation from facing RIGHT (+0.62 rad) to facing LEFT (-0.52 rad), easing toward front-center at final touchpad stage
-    const mainYaw = 0.62 - progress * 1.14;
-    root.rotation.y = mainYaw * (1 - smoothEndCenter * 0.65);
+    // Wider Continuous Rotation: Starts further rotated (+0.96 rad) and sweeps 1.82 rad to -0.86 rad, easing to center at final touchpad stage
+    const mainYaw = 0.96 - progress * 1.82;
+    root.rotation.y = mainYaw * (1 - smoothEndCenter * 0.72);
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
@@ -2439,13 +2471,12 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       const isFocused = (smoothEndCenter > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && smoothEndCenter <= 0.45 && key === activeKey);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
-        lMat.color.set(isFocused ? '#ffffff' : '#9ca3af');
-        lMat.opacity = isFocused ? 1.0 : 0.68;
+        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
+        lMat.opacity = isFocused ? 1.0 : 0.72;
       });
     });
   }
 
-  // Pause WebGL rendering when #section-laptop is scrolled out of view to save GPU resources
   let isLaptopInView = true;
   const laptopSectionEl = document.getElementById('section-laptop');
   if ('IntersectionObserver' in window && laptopSectionEl) {
@@ -2467,8 +2498,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     requestAnimationFrame(animate);
     if (!isLaptopInView) return;
 
-    if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.035;
-    if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.035;
+    if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.038;
+    if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.038;
 
     renderer.render(scene, camera);
     scene.updateMatrixWorld(true);
@@ -2502,7 +2533,7 @@ function buildFallbackGithubChartSvg() {
   const gap = 3;
   const w = cols * (cell + gap);
   const h = rows * (cell + gap);
-  const palette = ['#18191c', '#23382c', '#345943', '#568266', '#84a98c'];
+  const palette = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
   let rects = '';
   for (let c = 0; c < cols; c++) {
     for (let r = 0; r < rows; r++) {
@@ -2571,7 +2602,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }, 20);
 
-  // 2. Render Laptop Disassembly Stages
+  // 2. Render Laptop Disassembly Stages (With Restored Vibrant Color Accents)
   const stagesContainer = document.getElementById('laptop-stages-container');
   const dotsContainer = document.getElementById('stage-dots');
 
@@ -2584,6 +2615,7 @@ window.addEventListener('DOMContentLoaded', () => {
   laptopStages.forEach((st, idx) => {
     const dot = document.createElement('div');
     dot.className = `stage-dot ${idx === 0 ? 'active' : ''}`;
+    dot.style.background = idx === 0 ? st.accent : 'rgba(255,255,255,0.2)';
     dotsContainer.appendChild(dot);
 
     const paragraphsHtml = st.paragraphs
@@ -2605,7 +2637,7 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="github-chart-wrap">
           <img
-            src="https://ghchart.rshah.org/84a98c/${st.githubUsername}"
+            src="https://ghchart.rshah.org/10b981/${st.githubUsername}"
             alt="Suyash Sharma GitHub Contribution Graph"
             class="github-chart-img"
             referrerpolicy="no-referrer"
@@ -2624,21 +2656,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const skillsHtml = st.skillGroups ? `<div class="skill-groups-wrap">${st.skillGroups.map(g => `
       <div class="skill-group-row">
-        <span class="skill-group-label">${g.label}</span>
-        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill">${item}</span>`).join('')}</div>
+        <span class="skill-group-label" style="color:${g.color || st.accent}">${g.label}</span>
+        <div class="pills-wrap">${g.items.map(item => `<span class="color-pill" style="--pill-color:${g.color || st.accent}">${item}</span>`).join('')}</div>
       </div>`).join('')}</div>` : '';
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.4rem">${st.pillsTitle}</p>
-        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill">${p}</span>`).join('')}</div>
+        <p class="mono-tag" style="margin-bottom:0.4rem;color:${st.accent}">${st.pillsTitle}</p>
+        <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
     section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
     section.dataset.stageIndex = String(idx);
     section.innerHTML = `
-      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}">
+      <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
         <span class="stage-part-chip">${st.partLabel}</span>
         ${st.title ? `<h2 class="stage-title">${st.title}</h2>` : ''}
         ${paragraphsHtml}
@@ -2658,22 +2690,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
     stagesContainer.appendChild(section);
 
-    // Centered Between the Languages/GitHub Tab and the Courses & Achievements Tab (Slightly Bigger Font Size)
+    // Shifted to the RIGHT & Vertically Centered Between the 2 Cards with High Text Visibility
     if (st.outsideQuote) {
       const betweenQuote = document.createElement('div');
       betweenQuote.className = 'between-stages-quote';
       betweenQuote.innerHTML = `
         <div class="quote-frame">
           <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M58 34C42 32 24 24 8 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M58 34C42 32 24 24 8 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
           </svg>
           <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
           <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 34C22 32 40 24 56 8" stroke="#84a98c" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
-            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(132,169,140,0.18)" stroke="#84a98c" stroke-width="1.2"/>
+            <path d="M6 34C22 32 40 24 56 8" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(52,211,153,0.2)" stroke="#34d399" stroke-width="1.2"/>
           </svg>
         </div>`;
       stagesContainer.appendChild(betweenQuote);
@@ -2737,11 +2769,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies)
+  // 3. Render 35mm Camera Reel (Hobbies — With Vibrant Frame Colors)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
     card.className = 'reel-card';
+    card.style.setProperty('--frame-color', rf.color || '#38bdf8');
     card.innerHTML = `
       <div class="reel-frame-meta">
         <span>Frame ${rf.frame}</span>
@@ -2754,7 +2787,7 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards + Template Repo Index Tick Lines
+  // 4. Render 6 Smaller, Steeply Angled Project Cards + Extended Template Repo Ruler Lines Underneath
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const indexLinesContainer = document.getElementById('projects-index-lines');
@@ -2775,14 +2808,13 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <div class="project-photo-frame">
-          <svg width="78" height="78" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#f2efe9" stroke-width="3.2" fill="rgba(242,239,233,0.06)"/>
-            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#d4a373" stroke-width="2.5"/>
-            <path d="M41 40H55M41 48H55M41 56H49" stroke="#84a98c" stroke-width="2.5" stroke-linecap="round"/>
+          <svg width="62" height="62" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="3.5" fill="rgba(16,185,129,0.14)"/>
+            <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="2.8"/>
+            <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="2.8" stroke-linecap="round"/>
           </svg>
           <span class="photo-frame-title">${proj.title}</span>
         </div>
-        <!-- Contrasting Light Theme Pop-Up When Opened on Hover -->
         <div class="project-hover-popup">
           <div class="popup-header">
             <div class="stack-card-top">
@@ -2812,15 +2844,16 @@ window.addEventListener('DOMContentLoaded', () => {
     slot.appendChild(card);
     projectsStack.appendChild(slot);
 
-    // Add Template Repository Index Tick Lines Beneath Each Tab
+    // Extended Template Repository Ruler / Tick Lines Beneath Each Tab (Also Interactive on Hover!)
     if (indexLinesContainer) {
       const tickGroup = document.createElement('div');
       tickGroup.className = 'index-tick-group';
+      tickGroup.dataset.tickIndex = String(idx);
       tickGroup.innerHTML = `
         <span class="index-tick"></span>
-        <span class="index-tick"></span>
+        <span class="index-tick mid-tick"></span>
         <span class="index-tick major-tick" data-slot="${proj.slot}"></span>
-        <span class="index-tick"></span>
+        <span class="index-tick mid-tick"></span>
         <span class="index-tick"></span>`;
       indexLinesContainer.appendChild(tickGroup);
     }
@@ -2828,9 +2861,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
+  const allTickGroups = indexLinesContainer ? indexLinesContainer.querySelectorAll('.index-tick-group') : [];
   const allMajorTicks = indexLinesContainer ? indexLinesContainer.querySelectorAll('.major-tick') : [];
 
+  let currentFocusedIdx = -1;
+  let hoverDwellTimer = null;
+  let closeGraceTimer = null;
+
   function focusCardToViewportCenter(targetIdx) {
+    clearTimeout(closeGraceTimer);
+    currentFocusedIdx = targetIdx;
     const targetSlot = allSlots[targetIdx];
     const targetCard = allStackCards[targetIdx];
     if (!targetSlot || !targetCard) return;
@@ -2860,6 +2900,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetProjectStack() {
+    clearTimeout(hoverDwellTimer);
+    currentFocusedIdx = -1;
     if (focusBackdrop) focusBackdrop.classList.remove('active');
     if (projectsSection) projectsSection.classList.remove('has-focused-card');
     allSlots.forEach((s) => s.classList.remove('slot-focused'));
@@ -2870,19 +2912,34 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Hover-Intent Delay (165ms) so brushing past with the mouse never triggers an accidental pop-up!
-  let hoverIntentTimer = null;
-  allSlots.forEach((slotEl, idx) => {
-    slotEl.addEventListener('pointerenter', () => {
-      clearTimeout(hoverIntentTimer);
-      hoverIntentTimer = setTimeout(() => {
-        focusCardToViewportCenter(idx);
-      }, 165);
-    });
-    slotEl.addEventListener('pointerleave', () => {
-      clearTimeout(hoverIntentTimer);
+  // Deliberate 380ms Dwell Requirement so a 1ms accidental hover NEVER pops up a card!
+  // Works on BOTH the card tabs AND the extended ruler lines underneath!
+  function scheduleHoverOpen(idx) {
+    clearTimeout(closeGraceTimer);
+    clearTimeout(hoverDwellTimer);
+    if (currentFocusedIdx === idx) return;
+    const delay = currentFocusedIdx !== -1 ? 180 : 380;
+    hoverDwellTimer = setTimeout(() => {
+      focusCardToViewportCenter(idx);
+    }, delay);
+  }
+
+  function scheduleHoverClose() {
+    clearTimeout(hoverDwellTimer);
+    clearTimeout(closeGraceTimer);
+    closeGraceTimer = setTimeout(() => {
       resetProjectStack();
-    });
+    }, 110);
+  }
+
+  allStackCards.forEach((cardEl, idx) => {
+    cardEl.addEventListener('pointerenter', () => scheduleHoverOpen(idx));
+    cardEl.addEventListener('pointerleave', scheduleHoverClose);
+  });
+
+  allTickGroups.forEach((tickGroupEl, idx) => {
+    tickGroupEl.addEventListener('pointerenter', () => scheduleHoverOpen(idx));
+    tickGroupEl.addEventListener('pointerleave', scheduleHoverClose);
   });
 
   // GSAP ScrollTrigger Animations
@@ -2918,10 +2975,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
+        calloutEl.style.setProperty('--callout-color', activeStage.accent);
         calloutPartName.textContent = activeStage.partLabel;
 
         dotEls.forEach((d, i) => {
           d.classList.toggle('active', i === idx);
+          d.style.background = i === idx ? laptopStages[i].accent : 'rgba(255,255,255,0.2)';
         });
       }
     });
@@ -2973,6 +3032,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         if (reelActiveIndicator) {
           reelActiveIndicator.textContent = `Frame ${reelFrames[activeFrameIdx].frame} / 0${totalFrames}A`;
+          reelActiveIndicator.style.color = reelFrames[activeFrameIdx].color || '#f59e0b';
         }
         if (reelProgressFill) {
           reelProgressFill.style.width = `${Math.max(0, self.progress * 100)}%`;
@@ -3153,6 +3213,6 @@ http.createServer((req, res) => {
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
 git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js server.js vercel.json
-git commit -m "feat: implement v9 refinements (WebGL stability fix, upward tilt & accurate anchors, 3 color chapters, Newsreader typography, minimalist contrasting project tabs with index lines)"
+git commit -m "feat: implement v10 refinements (restored vibrant colors, matte black laptop with upward tilt & dramatic disassembly, smaller project tabs with interactive ruler lines & 380ms dwell guard, Top 50 Finalist, right-aligned quote)"
 git push origin main
 ```
