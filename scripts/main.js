@@ -58,7 +58,7 @@ function runHeroTypewriter(firstName, lastName) {
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Loading Screen (~2.35s total — 1.7 seconds faster than v6)
+  // 0. Initial Loading Screen (~2.35s total)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
@@ -105,14 +105,8 @@ window.addEventListener('DOMContentLoaded', () => {
         <span class="subcard-meta">${c.meta}</span>
       </div>`).join('')}</div>` : '';
 
+    // Casual, low-key mention of English & Hindi alongside GitHub Contribution Graph + Badges (No big Languages heading!)
     const compactLangHtml = st.isCompactLanguages ? `
-      <div class="compact-lang-row">
-        ${st.spokenLanguages.map(l => `
-          <div class="compact-lang-item">
-            <strong>${l.name}</strong>
-            <span>${l.level}</span>
-          </div>`).join('')}
-      </div>
       <div class="github-contrib-card">
         <div class="github-contrib-header">
           <span>GitHub Contributions</span>
@@ -130,6 +124,29 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="badges-title">${st.badgesTitle || 'Badges'}</span>
           <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
         </div>
+        <div class="casual-lang-line">
+          <span>Spoken Languages</span>
+          <strong>${st.casualLanguagesText || 'English & Hindi'}</strong>
+        </div>
+      </div>
+    ` : '';
+
+    // Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes
+    const outsideQuoteHtml = st.outsideQuote ? `
+      <div class="stage-outside-quote-wrap">
+        <div class="quote-frame">
+          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+          </svg>
+          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
+          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+          </svg>
+        </div>
       </div>
     ` : '';
 
@@ -141,23 +158,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.5rem;color:${st.accent}">${st.pillsTitle}</p>
+        <p class="mono-tag" style="margin-bottom:0.4rem;color:${st.accent}">${st.pillsTitle}</p>
         <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
     section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
+    section.dataset.stageIndex = String(idx);
     section.innerHTML = `
       <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
         <span class="stage-part-chip">${st.partLabel}</span>
-        <h2 class="stage-title ${st.isCompactLanguages ? 'small-stage-title' : ''}">${st.title}</h2>
+        ${st.title ? `<h2 class="stage-title">${st.title}</h2>` : ''}
         ${paragraphsHtml}
         ${st.quote ? `<blockquote class="stage-quote">“${st.quote}”</blockquote>` : ''}
         ${cardsHtml}
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>`;
+      </article>
+      ${outsideQuoteHtml}`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -167,27 +186,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
-
-    // Insert the centered, large, bold "If it doesn't challenge you..." quote block right between Languages I Know and Courses & Achievements!
-    if (st.outsideQuote) {
-      const quoteBlock = document.createElement('div');
-      quoteBlock.className = 'challenge-quote-interlude';
-      quoteBlock.innerHTML = `
-        <div class="challenge-quote-box">
-          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-          </svg>
-          <blockquote class="challenge-quote-text">“${st.outsideQuote}”</blockquote>
-          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-          </svg>
-        </div>`;
-      stagesContainer.appendChild(quoteBlock);
-    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -225,17 +223,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.14 && progress < 0.81) {
+      if (progress >= 0.13 && progress < 0.82) {
         calloutEl.classList.add('visible');
-        const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
-        const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
+        const clampedX = Math.max(55, Math.min(window.innerWidth * 0.48, activeCoords.x));
+        const clampedY = Math.max(85, Math.min(window.innerHeight - 85, activeCoords.y));
         calloutEl.style.left = `${clampedX}px`;
         calloutEl.style.top = `${clampedY}px`;
       } else {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.81) {
+      if (progress >= 0.82) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -247,7 +245,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A stays stationary first so it is clearly visible before horizontal glide!)
+  // 3. Render 35mm Camera Reel (Hobbies — Martial Arts at 08A)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
@@ -265,7 +263,8 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Steeply Angled Horizontal Project Cards
+  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards (Template Repo Style:
+  //    All 6 Cards Animate to Center on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link!)
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
@@ -281,27 +280,38 @@ window.addEventListener('DOMContentLoaded', () => {
       card.className = 'stack-card active-project-card';
       card.innerHTML = `
         <div class="stack-card-top">
-          <div class="stack-card-title-wrap">
-            <h3 class="stack-card-title">${proj.title}</h3>
-            <p class="stack-card-subtitle">${proj.subtitle}</p>
-          </div>
+          <span class="stack-frame-label">PROJECT</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="56" height="56" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
+        <!-- Resting State: Project Photo Frame with SanitX Logo (Just like Template Repo Photo Frame) -->
+        <div class="project-photo-frame">
+          <svg width="92" height="92" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.14)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
-          <span class="project-logo-caption">View SanitX on GitHub ↗</span>
-        </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
-        <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+          <span class="photo-frame-title">${proj.title}</span>
+        </div>
+        <!-- Hover Pop-Up State: Project Details Card + GitHub Repo Link -->
+        <div class="project-hover-popup">
+          <div class="popup-header">
+            <div class="stack-card-top">
+              <h3>${proj.title}</h3>
+              <span class="stack-slot-num">${proj.slot}</span>
+            </div>
+            <p>${proj.subtitle}</p>
+          </div>
+          <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
+          <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+          <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="popup-github-btn">
+            <span>View on GitHub ↗</span>
+          </a>
+        </div>`;
     } else {
       card.className = 'stack-card grey-layer-card';
-      card.setAttribute('aria-hidden', 'true');
       card.innerHTML = `
         <div class="stack-card-top">
+          <span class="stack-frame-label">ARCHIVE</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <div class="grey-photo-frame">
@@ -315,7 +325,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
-  const activeSlot = allSlots[0];
 
   function focusCardToViewportCenter(targetIdx) {
     const targetSlot = allSlots[targetIdx];
@@ -330,7 +339,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
-    targetSlot.classList.add('slot-focused');
+    allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
 
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
@@ -355,26 +364,42 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (activeSlot) {
-    activeSlot.addEventListener('pointerenter', () => focusCardToViewportCenter(0));
-    activeSlot.addEventListener('pointerleave', resetProjectStack);
-  }
+  // Bind hover animation to ALL 6 cards so every card in the stack animates to the center on hover!
+  allSlots.forEach((slotEl, idx) => {
+    slotEl.addEventListener('pointerenter', () => focusCardToViewportCenter(idx));
+    slotEl.addEventListener('pointerleave', resetProjectStack);
+  });
 
-  // GSAP ScrollTrigger Animations
+  // GSAP ScrollTrigger Animations with Exact Viewport-Center Card Tracking (Zero Part-Highlight Glitch!)
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-    const stageEls = document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)');
+    const stageEls = Array.from(document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)'));
     const dotEls = document.querySelectorAll('.stage-dot');
+
+    function getActiveStageIndexFromViewport() {
+      const viewMid = window.innerHeight * 0.5;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      stageEls.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        const cardMid = rect.top + rect.height * 0.5;
+        const dist = Math.abs(cardMid - viewMid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      });
+      return bestIdx;
+    }
 
     ScrollTrigger.create({
       trigger: '#section-laptop',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.6,
+      scrub: 0.45,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.14) / 0.67));
-        const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
-        const activeStage = laptopStages[idx];
+        const idx = getActiveStageIndexFromViewport();
+        const activeStage = laptopStages[idx] || laptopStages[0];
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
@@ -388,25 +413,22 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Cards fade in quickly upon entering and remain at full opacity (1.0) through >3/4ths of their vertical stage scroll!
     stageEls.forEach((el) => {
       const panel = el.querySelector('.stage-bento-panel');
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0.15, y: 28 },
+          { opacity: 0.15, y: 24 },
           {
             opacity: 1,
             y: 0,
-            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 62%', scrub: true }
+            scrollTrigger: { trigger: el, start: 'top 86%', end: 'top 45%', scrub: true }
           }
         );
       }
     });
 
-    // Fixed ScrollTrigger Timing for 35mm Camera Reel:
-    // Pins at 'top top', holds horizontal position stationary for the first 15% of scroll so Card 01A lights up and is clearly visible,
-    // then glides smoothly across Cards 02A through 08A!
+    // Scroll-Driven 35mm Camera Reel Animation
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -416,9 +438,8 @@ window.addEventListener('DOMContentLoaded', () => {
       trigger: '#section-reel',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.5,
+      scrub: 0.45,
       onUpdate: (self) => {
-        // Hold horizontal movement at 0 for the first 15% of the pinned scroll so Card 01A is front-and-center after lighting up
         const holdEnd = 0.15;
         const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
         const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);

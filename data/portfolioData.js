@@ -31,8 +31,8 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections
-  // (Display -> Motherboard -> Keyboard -> RAM Sticks -> Storage, plus Touchpad at completion for Download CV)
+  // 5 Core Laptop Disassembly Sections — Ordered by Top-to-Bottom / Sideways Disassembly Visibility:
+  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Spoken Languages) -> 5. Storage (Courses & Achievements)
   laptopStages: [
     {
       id: "about",
@@ -69,16 +69,6 @@ export const PORTFOLIO_DATA = {
       ]
     },
     {
-      id: "mission",
-      partKey: "motherboard",
-      partLabel: "Motherboard",
-      title: "The Mission",
-      accent: "#a855f7",
-      quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
-      pillsTitle: "How I Work",
-      pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
-    },
-    {
       id: "skills",
       partKey: "keyboard",
       partLabel: "Keyboard",
@@ -93,16 +83,23 @@ export const PORTFOLIO_DATA = {
       ]
     },
     {
+      id: "mission",
+      partKey: "motherboard",
+      partLabel: "Motherboard",
+      title: "The Mission",
+      accent: "#a855f7",
+      quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
+      pillsTitle: "How I Work",
+      pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
+    },
+    {
       id: "languages",
       partKey: "ram",
       partLabel: "RAM Sticks",
-      title: "Languages I Know",
+      title: "",
       accent: "#f59e0b",
       isCompactLanguages: true,
-      spokenLanguages: [
-        { name: "English", level: "Full Professional & Academic Fluency" },
-        { name: "Hindi", level: "Native Fluency" }
-      ],
+      casualLanguagesText: "English & Hindi",
       githubUsername: "suyashcodemaster",
       badgesTitle: "Badges",
       badgesPlaceholder: "Yet to earn",
@@ -139,41 +136,39 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies & Aspirations (8 Frames)
+  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts shifted to the end: 08A)
   reelFrames: [
     { frame: "01A", title: "Building Human Connections", tag: "Community", color: "#f43f5e", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
     { frame: "02A", title: "Space & Aviation", tag: "Aerospace", color: "#38bdf8", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
     { frame: "03A", title: "Basketball & Sports", tag: "Sports", color: "#f59e0b", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
-    { frame: "04A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." },
-    { frame: "05A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
-    { frame: "06A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
-    { frame: "07A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
-    { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
+    { frame: "04A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
+    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
+    { frame: "06A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
+    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
+    { frame: "08A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center & blurs background)
+  // Section 4: 6 Horizontally Stacked Project Cards (Template Repo Style: All 6 Animate on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link)
   projects: [
     {
       slot: "01",
       isPlaceholder: false,
       title: "SanitX",
-      subtitle: "DevJams '26 Hackathon • Top 11 Finalist (Reached Review 3)",
+      subtitle: "DevJams '26 Hackathon • Top 11 Finalist",
       accent: "#10b981",
       githubUrl: "https://github.com/suyashcodemaster/SanitX",
       tech: ["Python", "FastAPI", "PyMuPDF", "Gemini API", "Next.js", "TypeScript", "Tailwind CSS"],
       bullets: [
-        "Built a document security tool with a team that detects prompt injection hidden inside PDF and Markdown files before they reach an AI system.",
-        "Worked on a two-layer pipeline: a rule-based scanner for tiny text, low-contrast text, and hidden content, followed by Gemini analysis deciding whether the document is safe.",
-        "Contributed across the stack: ideation, FastAPI backend, Next.js frontend, and designing and presenting the system architecture."
+        "Built a document security tool detecting prompt injection hidden inside PDF and Markdown files before reaching an AI system.",
+        "Two-layer pipeline: rule-based scanner for tiny/low-contrast/hidden text + Gemini safety analysis.",
+        "Contributed across ideation, FastAPI backend, Next.js frontend, and system architecture."
       ]
     },
     { slot: "02", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "03", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "04", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "05", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "07", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "08", isPlaceholder: true, emptyLabel: "yet to build😝" }
+    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
   // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)

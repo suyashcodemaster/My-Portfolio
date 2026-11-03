@@ -16,7 +16,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total — 1.7s Faster than v6)
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -84,7 +84,7 @@ body.is-loading { overflow: hidden; }
 
 .mono-tag {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -247,7 +247,7 @@ body.is-loading { overflow: hidden; }
    PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 3.4rem 5vw;
+  padding: 3.2rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -256,14 +256,12 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
-/* Compact spacing after the first quote so the 3D laptop appears right away */
 .quote-interlude.first-quote-interlude {
-  padding: 1.8rem 5vw 0.5rem;
+  padding: 1.8rem 5vw 0.4rem;
 }
 
-/* Minimal space beneath the Helen Keller quote */
 .quote-interlude.helen-keller-quote {
-  padding: 2.8rem 5vw 0.2rem;
+  padding: 2.6rem 5vw 0.2rem;
 }
 
 .quote-frame {
@@ -315,7 +313,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   2. 3D LAPTOP DISASSEMBLY SECTION (Proper Sticky Visibility & 3/4th Hold)
+   2. 3D LAPTOP DISASSEMBLY SECTION (Smaller Laptop & Cards, Smooth Scroll)
    ========================================================================== */
 .laptop-section {
   position: relative;
@@ -329,7 +327,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
+  background: radial-gradient(circle at 28% 58%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
 }
 
 #laptop-canvas {
@@ -346,7 +344,7 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
   z-index: 12;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.22s ease;
 }
 
 .part-link-callout.visible {
@@ -522,99 +520,61 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Lead-in stage MUST be >= 115vh because margin-top is -100vh:
-   First 100vh overlaps the initial sticky viewport right below Quote 1 (so zero blank space after Quote 1!),
-   and the remaining 22vh lets the pinned laptop open & glide left BEFORE About Me enters! */
+/* Lead-in stage covers initial -100vh overlap + 20vh opening runway */
 .laptop-stage.laptop-intro-stage {
-  min-height: 122vh;
+  min-height: 120vh;
   pointer-events: none;
 }
 
-/* Each content stage holds its card comfortably in the viewport through at least 3/4ths of the stage scroll */
+/* Smooth, natural scrolling stages (no conflicting CSS sticky inside stages!) */
 .laptop-stage {
-  min-height: 135vh;
+  min-height: 98vh;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-start;
-  padding: 12vh 4.5vw 20vh;
+  justify-content: center;
+  padding: 4rem 4.5vw;
+  gap: 1.5rem;
 }
 
 .laptop-stage.compact-stage {
-  min-height: 115vh;
-  padding: 12vh 4.5vw 16vh;
+  min-height: 78vh;
+  padding: 2.5rem 4.5vw;
 }
 
-/* Sticky behavior on each card so it stays locked in the lower 3/4ths of the screen while its stage scrolls! */
-.stage-bento-panel {
-  position: sticky;
-  top: 15vh;
-  pointer-events: auto;
-  width: min(50vw, 660px);
-  padding: 2.25rem;
-  border-radius: 22px;
-  background: var(--bg-panel);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--stage-accent, #38bdf8);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 36px color-mix(in srgb, var(--stage-accent, #38bdf8) 14%, transparent);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.15rem;
-}
-
-.stage-bento-panel.compact-panel {
-  top: 18vh;
-  padding: 1.7rem 2.05rem;
-  gap: 0.9rem;
-}
-
-/* Centered, Bold, Prominent Quote Between Languages I Know and Courses & Achievements */
-.challenge-quote-interlude {
-  width: 100%;
-  min-height: 46vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 5vw;
+.laptop-stage.final-disassembly-hold {
+  min-height: 105vh;
   pointer-events: none;
 }
 
-.challenge-quote-box {
-  display: inline-flex;
+/* Smaller, more refined section cards so the 3D laptop & its labels have plenty of open space */
+.stage-bento-panel {
+  pointer-events: auto;
+  width: min(41vw, 510px);
+  padding: 1.65rem 1.85rem;
+  border-radius: 20px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--stage-accent, #38bdf8);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px color-mix(in srgb, var(--stage-accent, #38bdf8) 13%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.95rem;
+}
+
+.stage-bento-panel.compact-panel {
+  padding: 1.4rem 1.65rem;
+  gap: 0.78rem;
+}
+
+/* Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes */
+.stage-outside-quote-wrap {
+  width: min(41vw, 510px);
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 2.2vw, 1.85rem);
-  padding: 1.35rem 2.25rem;
-  border-radius: 999px;
-  background: rgba(9, 9, 13, 0.78);
-  border: 1px solid rgba(245, 158, 11, 0.32);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
-}
-
-.challenge-leaf {
-  width: clamp(38px, 4.5vw, 54px);
-  height: auto;
-  flex-shrink: 0;
-  filter: drop-shadow(0 0 10px rgba(110, 231, 183, 0.25));
-}
-
-.challenge-quote-text {
-  font-family: var(--font-philo);
-  font-style: italic;
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  text-align: center;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-}
-
-/* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
-.laptop-stage.final-disassembly-hold {
-  min-height: 112vh;
+  padding: 0.5rem 0;
   pointer-events: none;
 }
 
@@ -622,36 +582,32 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0.26rem 0.72rem;
+  padding: 0.22rem 0.65rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--stage-accent, #38bdf8);
   font-family: var(--font-sans);
-  font-size: 0.73rem;
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--stage-accent, #38bdf8);
 }
 
 .stage-title {
   font-family: var(--font-display);
-  font-size: clamp(2.15rem, 3.5vw, 3.1rem);
+  font-size: clamp(1.75rem, 2.7vw, 2.35rem);
   font-weight: 400;
   line-height: 1.05;
-}
-
-.stage-title.small-stage-title {
-  font-size: clamp(1.4rem, 2.05vw, 1.8rem);
 }
 
 .stage-paragraphs {
   display: flex;
   flex-direction: column;
-  gap: 0.82rem;
+  gap: 0.65rem;
 }
 
 .stage-summary {
-  font-size: 0.96rem;
-  line-height: 1.64;
+  font-size: 0.88rem;
+  line-height: 1.58;
   color: #d1d5db;
 }
 
@@ -659,88 +615,61 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.15rem, 1.65vw, 1.38rem);
-  line-height: 1.52;
+  font-size: clamp(1.06rem, 1.45vw, 1.25rem);
+  line-height: 1.5;
   color: #e5e7eb;
   border-left: 2px solid var(--stage-accent);
-  padding-left: 1.1rem;
+  padding-left: 1rem;
 }
 
 .stage-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.82rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.68rem;
 }
 
 .stage-subcard {
-  padding: 0.95rem;
-  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .stage-subcard h4 {
-  font-size: 0.94rem;
+  font-size: 0.86rem;
   color: #fff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .stage-subcard p {
-  font-size: 0.83rem;
+  font-size: 0.76rem;
   color: #9ca3af;
-  line-height: 1.45;
+  line-height: 1.42;
 }
 
 .stage-subcard .subcard-meta {
   display: inline-block;
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
   font-family: var(--font-mono);
-  font-size: 0.69rem;
+  font-size: 0.65rem;
   color: var(--stage-accent);
 }
 
-.compact-lang-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-}
-
-.compact-lang-item {
-  flex: 1 1 170px;
-  padding: 0.65rem 0.95rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.compact-lang-item strong {
-  font-size: 0.92rem;
-  color: #fff;
-}
-
-.compact-lang-item span {
-  font-size: 0.78rem;
-  color: #9ca3af;
-}
-
 .github-contrib-card {
-  padding: 0.9rem 1.05rem;
-  border-radius: 14px;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
   background: rgba(9, 9, 13, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .github-contrib-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #cbd5e1;
 }
 
@@ -748,7 +677,7 @@ body.is-loading { overflow: hidden; }
   color: #f59e0b;
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
 }
 
 .github-contrib-header a:hover {
@@ -758,12 +687,12 @@ body.is-loading { overflow: hidden; }
 .github-chart-wrap {
   width: 100%;
   overflow-x: auto;
-  padding: 0.2rem 0;
+  padding: 0.15rem 0;
 }
 
 .github-chart-img {
   width: 100%;
-  min-width: 400px;
+  min-width: 360px;
   height: auto;
   display: block;
   filter: contrast(1.08);
@@ -773,56 +702,72 @@ body.is-loading { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.45rem;
+  padding-top: 0.4rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .badges-title {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: #cbd5e1;
 }
 
 .badges-placeholder {
   font-family: var(--font-mono);
-  font-size: 0.71rem;
+  font-size: 0.68rem;
   color: #9ca3af;
-  padding: 0.2rem 0.6rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
+/* Casual, understated one-line mention for English & Hindi */
+.casual-lang-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.76rem;
+  color: #9ca3af;
+}
+
+.casual-lang-line strong {
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
 .skill-groups-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.7rem;
 }
 
 .skill-group-row {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 
 .skill-group-label {
   font-family: var(--font-sans);
-  font-size: 0.77rem;
+  font-size: 0.73rem;
   font-weight: 600;
 }
 
 .pills-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.38rem;
 }
 
 .color-pill {
-  padding: 0.38rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.32rem 0.68rem;
+  border-radius: 7px;
   font-family: var(--font-sans);
-  font-size: 0.79rem;
+  font-size: 0.74rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--pill-color, #38bdf8);
   color: #fff;
@@ -838,7 +783,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES & ASPIRATIONS)
+   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES)
    ========================================================================== */
 .reel-scroll-section {
   position: relative;
@@ -1004,7 +949,8 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   4. STEEPLY ANGLED HORIZONTAL PROJECT STACK (Hover Pulls Card to Exact Center + Blurs Website)
+   4. TEMPLATE REPO 6-CARD PHOTO-FRAME STACK (All 6 Animate on Hover;
+      Card 01 Displays Logo Photo & Pops Up Project Card Details on Hover!)
    ========================================================================== */
 .projects-focus-backdrop {
   position: fixed;
@@ -1043,20 +989,21 @@ body.is-loading { overflow: hidden; }
 .template-horizontal-stack {
   position: relative;
   width: 100%;
-  min-height: 540px;
+  min-height: 520px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  perspective: 1500px;
+  perspective: 1600px;
   padding: 2rem 0;
 }
 
 .stack-card-slot {
   position: relative;
-  margin: 0 -118px;
+  margin: 0 -88px;
   flex-shrink: 0;
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .stack-card-slot.slot-focused::before {
@@ -1064,81 +1011,65 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   top: -30px;
   bottom: -30px;
-  left: -30px;
-  right: -520px;
+  left: -380px;
+  right: -380px;
   z-index: 1;
 }
 
 .stack-card {
-  width: clamp(285px, 30vw, 370px);
-  height: 465px;
-  border-radius: 18px;
+  width: clamp(270px, 27vw, 340px);
+  height: 430px;
+  border-radius: 16px;
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  transform: translate3d(0px, 0px, 0px) rotateY(-40deg) rotateX(4deg) scale(0.92);
-  transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, filter 0.45s ease, opacity 0.45s ease;
-  box-shadow: -22px 16px 42px rgba(0, 0, 0, 0.82);
+  background: linear-gradient(160deg, #1b1c24 0%, #121319 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translate3d(0px, 0px, 0px) rotateY(-38deg) rotateX(4deg) scale(0.93);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, filter 0.4s ease, opacity 0.4s ease, border-color 0.35s ease;
+  box-shadow: -20px 16px 40px rgba(0, 0, 0, 0.82);
 }
 
+.stack-card.active-project-card {
+  border-color: rgba(16, 185, 129, 0.55);
+}
+
+/* When ANY of the 6 cards is hovered, it glides forward to the exact center of the viewport! */
 .stack-card.is-centered {
-  transform: translate3d(var(--center-shift, 0px), -16px, 220px) rotateY(0deg) rotateX(0deg) scale(1.08);
-  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 48px rgba(16, 185, 129, 0.32);
+  transform: translate3d(var(--center-shift, 0px), -14px, 210px) rotateY(0deg) rotateX(0deg) scale(1.08);
+  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 42px rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
   filter: none !important;
   opacity: 1 !important;
 }
 
 .stack-card.blurred-left {
-  transform: translate3d(-150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  transform: translate3d(-140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
   filter: blur(6px) brightness(0.42);
   opacity: 0.55;
 }
 
 .stack-card.blurred-right {
-  transform: translate3d(150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  transform: translate3d(140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
   filter: blur(6px) brightness(0.42);
   opacity: 0.55;
-}
-
-.stack-card.active-project-card {
-  background: linear-gradient(155deg, rgba(16, 32, 28, 0.98), rgba(12, 13, 19, 0.99));
-  border: 1.5px solid #10b981;
-  padding: 1.4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.65rem;
-  cursor: pointer;
 }
 
 .stack-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
+  align-items: center;
 }
 
-.stack-card-title-wrap {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.stack-card-title {
-  font-family: var(--font-display);
-  font-size: 1.85rem;
-  font-weight: 400;
-  line-height: 1.05;
-  color: #ffffff;
-}
-
-.stack-card-subtitle {
+.stack-frame-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: #f59e0b;
-  margin-top: 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.72rem;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
 }
 
 .stack-slot-num {
@@ -1146,66 +1077,108 @@ body.is-loading { overflow: hidden; }
   font-size: 0.75rem;
   font-weight: 600;
   color: #10b981;
-  flex-shrink: 0;
-}
-
-.project-logo-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem;
-  border-radius: 12px;
-  background: rgba(9, 9, 13, 0.82);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  text-decoration: none;
-  color: #fff;
-  transition: border-color 0.25s, transform 0.25s;
-}
-
-.project-logo-link:hover {
-  border-color: #38bdf8;
-  transform: scale(1.02);
-}
-
-.project-logo-caption {
-  margin-top: 0.35rem;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: #10b981;
-}
-
-.project-bullets {
-  padding-left: 0.95rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  color: #d1d5db;
-  font-size: 0.73rem;
-  line-height: 1.36;
-  overflow: hidden;
-}
-
-.stack-card.grey-layer-card {
-  background: linear-gradient(160deg, #1a1b23 0%, #111218 100%);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  padding: 1.3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  pointer-events: none;
-  user-select: none;
 }
 
 .grey-layer-card .stack-slot-num {
   color: #71717a;
 }
 
+/* Resting Photo Frame inside Card 01 (Displays SanitX Logo Photo just like the template repo's photo frames) */
+.project-photo-frame {
+  flex: 1;
+  width: 100%;
+  margin-top: 0.65rem;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 42%, rgba(16, 185, 129, 0.18) 0%, #0d0f16 75%);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-frame-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: #f4f1ea;
+  letter-spacing: 0.02em;
+}
+
+/* Hover Pop-Up Project Card Overlay inside Card 01 (Appears when hovered in the center!) */
+.project-hover-popup {
+  position: absolute;
+  inset: 0;
+  padding: 1.35rem;
+  background: linear-gradient(160deg, rgba(13, 25, 22, 0.98) 0%, rgba(10, 11, 16, 0.99) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stack-card.is-centered .project-hover-popup {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.popup-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.popup-header p {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: #f59e0b;
+  margin-top: 0.2rem;
+}
+
+.project-bullets {
+  padding-left: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  color: #d1d5db;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+.popup-github-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  background: #10b981;
+  color: #09090d;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.popup-github-btn:hover {
+  background: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* Cards 02–06: Grey Photo Frame Cards with "yet to build😝" (Also animate on hover!) */
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.7rem;
+  margin-top: 0.65rem;
   border-radius: 12px;
   background: linear-gradient(145deg, #272832 0%, #1c1d25 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1219,9 +1192,9 @@ body.is-loading { overflow: hidden; }
 
 .yet-to-build-text {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: #8e929f;
-  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
   text-align: center;
 }
 
@@ -1348,8 +1321,8 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel { width: 92vw; }
+  .stage-bento-panel, .stage-outside-quote-wrap { width: 90vw; }
   .part-link-callout { display: none; }
-  .stack-card-slot { margin: 0 -100px; }
-  .stack-card { width: 265px; height: 445px; }
+  .stack-card-slot { margin: 0 -75px; }
+  .stack-card { width: 250px; height: 400px; }
 }

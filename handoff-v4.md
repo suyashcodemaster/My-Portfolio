@@ -1,30 +1,49 @@
-# Project Handoff Document v7.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
+# Project Handoff Document v8.0: Suyash Sharma — 3D Disassembling Laptop & Editorial Portfolio (`My-Portfolio`)
 
-**Document Name:** `handoff-v7.md`  
-**Version:** 7.0 (All 5 Final Scroll, 3D Geometry, Dome Curvature & Quote Centering Fixes Implemented)  
+**Document Name:** `handoff-v8.md`  
+**Version:** 8.0 (All 12 Final 3D Laptop, Scroll Sync, Casual Languages, Reel & 6-Card Template Stack Refinements Implemented)  
 **Repository:** `https://github.com/suyashcodemaster/My-Portfolio`  
 **Live Production URL:** `https://suyashcodemaster.vercel.app`  
 **Primary Working Directory:** `E:\Website Portfolio\My-Portfolio`
 
 ---
 
-## 1. Summary of All 5 Fixes in v7.0
+## 1. Summary of All 12 Refinements in v8.0
 
-1. **1.7 Seconds Faster Initial Loading Screen (`scripts/main.js`, `styles/main.css`)**:
-   - Reduced the loader tick interval from `36ms` (`~4.05s` total) down to `20ms` (`100 × 20ms = 2.0s` + `0.35s` hold = **`2.35s` total**, exactly 1.7 seconds faster).
-2. **Eliminated "See-Through / Mushed Together" Laptop Opening (`scripts/laptop3d.js`)**:
-   - Added a full-size solid opaque unibody palmrest/top-case deck (`topCasePalmrest`, `3.04 × 0.04 × 2.00`) under the keyboard and touchpad so internal components (`Motherboard`, `RAM Sticks`, `Storage`) are completely sealed inside an opaque chassis when the lid opens before disassembly begins.
-   - Added distinct vertical baseline planes (`display` at `+0.025`, `keyboard` at `0.00`, `motherboard` at `-0.14`, `storage` at `-0.26`) and `polygonOffset: true` on all matte materials so parts never Z-fight or mush together.
-3. **Fixed Laptop & Card Scroll Visibility (3/4th Vertical Hold), Closer Display Distance, True Dome Key Curvature & Continuous Right-to-Left Rotation (`styles/main.css`, `scripts/laptop3d.js`, `scripts/main.js`)**:
-   - **Scroll Visibility & 3/4th Vertical Hold**: Restored `.laptop-intro-stage` to `122vh` to match `margin-top: -100vh` on `.laptop-stages-container` so *About Me* never scrolls off early before the sticky viewport locks. Made each `.laptop-stage` `135vh` tall with `position: sticky; top: 15vh;` on `.stage-bento-panel` so *About Me* and all subsequent cards remain locked and clearly visible in the lower/middle 3/4ths of the screen until the stage ends.
-   - **Closer Display Distance**: Reduced the Display vertical disassembly offset from `1.18` down to `0.52` (`display.position.set(0, 0.025 + spread * 0.52, -1.00 - spread * 0.14)`) so the lid stays tight and cohesive with the rest of the laptop.
-   - **Keyboard Keys Follow Dome Curvature**: Applied true surface-normal tangent rotations (`mesh.rotation.x = +nz * keyDomeFactor * 0.58`, `mesh.rotation.z = -nx * keyDomeFactor * 0.52`) so the 44 keycaps tilt outward along the 3D dome's curvature rather than staying upright.
-   - **Continuous Unidirectional Rotation (Right Side → Left Side)**: Set `root.rotation.y = 0.62 - progress * 1.20` so the laptop starts facing the **right side** (`+0.62 rad`) and rotates continuously in one single direction to face the **left side** (`-0.58 rad`) at completion without ever reversing direction midway.
-4. **Fixed *Hobbies & Aspirations* (`#section-reel`) Scroll Timing & First Card Visibility (`scripts/main.js`, `styles/main.css`)**:
-   - Changed the ScrollTrigger start from `'top 65%'` back to `'top top'` so the reel does not start moving before the section pins.
-   - Added a `15%` initial stationary hold (`holdEnd = 0.15`, `shiftX = 0`) while Card `01A` (*Building Human Connections*) lights up at `progress >= 0.02`, giving Card `01A` full visibility before the film strip glides horizontally across Cards `02A`–`08A`.
-5. **Centered, Larger & Bolder *"If it doesn't challenge you, it won't change you."* Quote Between *Languages I Know* and *Courses & Achievements* (`scripts/main.js`, `styles/main.css`)**:
-   - Placed the quote in a full-width centered interlude stage (`.challenge-quote-interlude`, `width: 100%`, `justify-content: center`) directly between the *Languages I Know* stage and the *Courses & Achievements* stage, and increased its font size and weight to `clamp(1.5rem, 2.5vw, 2.2rem)` and `font-weight: 600`.
+1. **Seamless Single-Body Unibody Laptop (Eliminated the "2 Slabs" Gap) (`scripts/laptop3d.js`)**:
+   - Aligned `baseMesh` (`y = -0.045`, top face at `y = 0.00`) directly flush with `topCasePalmrest` (`y = +0.015`, bottom face at `y = 0.00`) and enclosed `motherboard`, `ram`, and `ssd` inside the single unibody base when assembled (`spread = 0`) so the laptop starts and opens as one seamless unibody machine rather than two floating slabs.
+2. **Authentic Tech-Teardown Keycap Wave Cascade (`scripts/laptop3d.js`)**:
+   - Replaced the dome tilt with an Apple/iFixit-style **precision diagonal wave cascade** where the 44 scissor-switch keycaps levitate cleanly and flatly above a glowing **emerald/cyan backlit switch matrix plate** (`backlightPlate`).
+3. **Lower Laptop Position & Smaller Model + Card Proportions (`scripts/laptop3d.js`, `styles/main.css`)**:
+   - Scaled the 3D laptop to `0.76x` and lowered its screen position (`root.position.y = -0.44`, `camera.position.set(0, 1.65, 6.8)`) so it aligns horizontally with the section cards and leaves generous space around all parts and labels.
+   - Reduced `.stage-bento-panel` width to `min(41vw, 510px)` with tighter padding (`1.65rem 1.85rem`) so the cards never crowd the 3D viewport.
+4. **Linear Sideways + Vertical Exploded Echelon & Visibility-Matched Stage Order (`scripts/laptop3d.js`, `data/portfolioData.js`)**:
+   - Fanned the disassembled subsystems out **linearly sideways as well as vertically** (`Keyboard` shifts left `-0.65 * spread`, `Motherboard` shifts right `+0.38 * spread`, `RAM Sticks` slide out laterally `±1.05 * ramOut`, `Storage` steps down-right) so no part ever blocks the one beneath it.
+   - Reordered the stages to match the exact order parts become uncovered and visible:
+     1. **About Me** → `Display`
+     2. **Technical Skills** → `Keyboard` (lifts & shifts left, uncovering the Motherboard!)
+     3. **The Mission** → `Motherboard` (now 100% uncovered and spotlighted on the right!)
+     4. **GitHub & Spoken Languages** → `RAM Sticks`
+     5. **Courses & Achievements** → `Storage`
+5. **Glitch-Free Viewport-Center Part Highlight & Scroll Synchronization (`scripts/main.js`, `styles/main.css`)**:
+   - Removed conflicting CSS `position: sticky` inside `.laptop-stage` and replaced approximate scroll math with `getActiveStageIndexFromViewport()` (measuring each card's real-time `getBoundingClientRect()` distance to `window.innerHeight * 0.5`) so the active 3D part highlight, callout label, and progress dot switch in exact lockstep with the card on screen.
+6. **Original Position & Matching Philosophical Style for *"If it doesn't challenge you, it won't change you."* (`scripts/main.js`, `styles/main.css`)**:
+   - Placed the quote back in its original position directly below the Stage 4 card and styled it with the exact same `.quote-frame` and `.interlude-text` (`'Cormorant Garamond'` italic `clamp(1.12rem, 1.72vw, 1.44rem)`, `font-weight: 300`, with left/right botanical leaves) as the other three quotes.
+7. **Updated Camera Reel Heading to *"Hobbies"* & Shifted *Martial Arts* to the End (`index.html`, `data/portfolioData.js`)**:
+   - Changed the section heading from *"Hobbies & Aspirations"* to **`Hobbies`** and moved **Martial Arts** to the final frame (`08A`).
+8. **Template Repository 6-Card Photo-Frame Project Stack (`data/portfolioData.js`, `scripts/main.js`, `styles/main.css`)**:
+   - Reduced the stack from 8 cards to **6 cards (`01`–`06`)**.
+   - In its resting angled state, Card `01` displays the **SanitX Logo** inside a clean photo frame (`.project-photo-frame`) just like the template repository.
+   - Hovering **Card `01`** animates it to the center and pops up the **SanitX project card overlay** (`.project-hover-popup`) with the clickable **`View on GitHub ↗`** button (`https://github.com/suyashcodemaster/SanitX`).
+   - Made **Cards `02`–`06` (`yet to build😝`)** interactive on hover as well so hovering any of the 6 cards animates it forward to the center.
+9. **Polished Whole-Website Scroll Cadence (`scripts/main.js`, `styles/main.css`)**:
+   - Tuned `scrub: 0.45` and natural stage heights across all sections for smooth, predictable scrolling.
+10. **Casual One-Line Mention of *English & Hindi* (`scripts/main.js`, `styles/main.css`, `data/portfolioData.js`)**:
+    - Removed the big *"Languages I Know"* heading and added a casual, understated one-line footer (`Spoken Languages: English & Hindi`) inside the compact GitHub Contributions & Badges card.
+11. **Full Visibility for All Laptop Parts & Labels (`scripts/laptop3d.js`, `scripts/main.js`)**:
+    - Adjusted anchor positions and screen-space clamping so every part and callout badge remains 100% inside the left viewport.
+12. **More Exquisite, Detailed 3D Laptop & Higher Isometric Tilt (`scripts/laptop3d.js`)**:
+    - Added glowing cyan/violet LED halo rings inside the dual spinning cooling fans, a secondary GPU die alongside the CPU die, a backlit LED switch matrix under the levitating keys, a 3-bank lithium power cell array, side USB-C/Thunderbolt port cutouts, and increased forward isometric pitch (`rotation.x` up to `0.44 rad`) plus active-part `+Z` spotlight stepping so all motherboard details and fans are richly visible.
 
 ---
 
@@ -65,8 +84,8 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // 5 Core Laptop Disassembly Sections
-  // (Display -> Motherboard -> Keyboard -> RAM Sticks -> Storage, plus Touchpad at completion for Download CV)
+  // 5 Core Laptop Disassembly Sections — Ordered by Top-to-Bottom / Sideways Disassembly Visibility:
+  // 1. Display (About Me) -> 2. Keyboard (Technical Skills) -> 3. Motherboard (The Mission) -> 4. RAM Sticks (GitHub & Spoken Languages) -> 5. Storage (Courses & Achievements)
   laptopStages: [
     {
       id: "about",
@@ -103,16 +122,6 @@ export const PORTFOLIO_DATA = {
       ]
     },
     {
-      id: "mission",
-      partKey: "motherboard",
-      partLabel: "Motherboard",
-      title: "The Mission",
-      accent: "#a855f7",
-      quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
-      pillsTitle: "How I Work",
-      pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
-    },
-    {
       id: "skills",
       partKey: "keyboard",
       partLabel: "Keyboard",
@@ -127,16 +136,23 @@ export const PORTFOLIO_DATA = {
       ]
     },
     {
+      id: "mission",
+      partKey: "motherboard",
+      partLabel: "Motherboard",
+      title: "The Mission",
+      accent: "#a855f7",
+      quote: "My goal is to pair hard work with smart planning to ensure my engineering efforts are highly targeted and deliver the best possible results. Whether managing a team or competing as a regional basketball player, I have learned to adapt quickly and view challenges from multiple perspectives. I am dedicated to bringing this adaptability and grassroots approach to every technical solution I build.",
+      pillsTitle: "How I Work",
+      pills: ["Smart Planning", "Fast Adaptation", "Team Mindset", "Grassroots Approach"]
+    },
+    {
       id: "languages",
       partKey: "ram",
       partLabel: "RAM Sticks",
-      title: "Languages I Know",
+      title: "",
       accent: "#f59e0b",
       isCompactLanguages: true,
-      spokenLanguages: [
-        { name: "English", level: "Full Professional & Academic Fluency" },
-        { name: "Hindi", level: "Native Fluency" }
-      ],
+      casualLanguagesText: "English & Hindi",
       githubUsername: "suyashcodemaster",
       badgesTitle: "Badges",
       badgesPlaceholder: "Yet to earn",
@@ -173,41 +189,39 @@ export const PORTFOLIO_DATA = {
     }
   ],
 
-  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies & Aspirations (8 Frames)
+  // Section 3: Scroll-Animated 35mm Camera Reel — Hobbies (Martial Arts shifted to the end: 08A)
   reelFrames: [
     { frame: "01A", title: "Building Human Connections", tag: "Community", color: "#f43f5e", desc: "Meeting new people, collaborating across diverse teams, and learning from different perspectives." },
     { frame: "02A", title: "Space & Aviation", tag: "Aerospace", color: "#38bdf8", desc: "Deep fascination with spacecraft, aircraft engineering, and how flight works." },
     { frame: "03A", title: "Basketball & Sports", tag: "Sports", color: "#f59e0b", desc: "District-level basketball player bringing court vision, composure, and teamwork to everything I do." },
-    { frame: "04A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." },
-    { frame: "05A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
-    { frame: "06A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
-    { frame: "07A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
-    { frame: "08A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." }
+    { frame: "04A", title: "Finance & Markets", tag: "Finance", color: "#a855f7", desc: "Exploring how markets work, personal finance, and strategic decision-making." },
+    { frame: "05A", title: "Nature, Animals & Travel", tag: "Outdoors", color: "#2dd4bf", desc: "Traveling to new places, spending time around animals, and appreciating nature." },
+    { frame: "06A", title: "Video Games", tag: "Gaming", color: "#fb7185", desc: "Unwinding with immersive strategy and story-driven games that spark creativity." },
+    { frame: "07A", title: "Learning About Tech & AI", tag: "Tech & AI", color: "#6366f1", desc: "Keeping up with how modern AI systems work and experimenting with new developer tools." },
+    { frame: "08A", title: "Martial Arts", tag: "Discipline", color: "#10b981", desc: "Practicing martial arts for focus, discipline, and staying calm under pressure." }
   ],
 
-  // Section 4: 8 Horizontally Stacked Project Layers (Hovering moves card to center & blurs background)
+  // Section 4: 6 Horizontally Stacked Project Cards (Template Repo Style: All 6 Animate on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link)
   projects: [
     {
       slot: "01",
       isPlaceholder: false,
       title: "SanitX",
-      subtitle: "DevJams '26 Hackathon • Top 11 Finalist (Reached Review 3)",
+      subtitle: "DevJams '26 Hackathon • Top 11 Finalist",
       accent: "#10b981",
       githubUrl: "https://github.com/suyashcodemaster/SanitX",
       tech: ["Python", "FastAPI", "PyMuPDF", "Gemini API", "Next.js", "TypeScript", "Tailwind CSS"],
       bullets: [
-        "Built a document security tool with a team that detects prompt injection hidden inside PDF and Markdown files before they reach an AI system.",
-        "Worked on a two-layer pipeline: a rule-based scanner for tiny text, low-contrast text, and hidden content, followed by Gemini analysis deciding whether the document is safe.",
-        "Contributed across the stack: ideation, FastAPI backend, Next.js frontend, and designing and presenting the system architecture."
+        "Built a document security tool detecting prompt injection hidden inside PDF and Markdown files before reaching an AI system.",
+        "Two-layer pipeline: rule-based scanner for tiny/low-contrast/hidden text + Gemini safety analysis.",
+        "Contributed across ideation, FastAPI backend, Next.js frontend, and system architecture."
       ]
     },
     { slot: "02", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "03", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "04", isPlaceholder: true, emptyLabel: "yet to build😝" },
     { slot: "05", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "07", isPlaceholder: true, emptyLabel: "yet to build😝" },
-    { slot: "08", isPlaceholder: true, emptyLabel: "yet to build😝" }
+    { slot: "06", isPlaceholder: true, emptyLabel: "yet to build😝" }
   ],
 
   // Section 5: Julian Garnier (juliangarnier.com) Auto-Typing Chat Bubbles (~6s total, no intro fluff, no phone)
@@ -240,7 +254,7 @@ export const PORTFOLIO_DATA = {
   <script type="module" src="./scripts/main.js" defer></script>
 </head>
 <body class="is-loading">
-  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (No Name on Loader, ~4.1s Smooth Duration) -->
+  <!-- INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Smooth Duration) -->
   <div id="loader-overlay" class="loader-overlay" aria-label="Loading portfolio">
     <div class="loader-inner">
       <div class="loader-counter-wrap">
@@ -282,7 +296,7 @@ export const PORTFOLIO_DATA = {
     </div>
   </section>
 
-  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 (Halved Bottom Space) -->
+  <!-- PHILOSOPHICAL QUOTE INTERLUDE 1 -->
   <div class="quote-interlude first-quote-interlude">
     <div class="quote-frame">
       <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -335,7 +349,7 @@ export const PORTFOLIO_DATA = {
       </div>
     </div>
 
-    <!-- Scroll Stages: Flush-Closed Lead-In -> 5 Info Stages -> Final Detached Touchpad Hold -->
+    <!-- Scroll Stages: Seamless Closed-to-Open Lead-In -> 5 Visibility-Ordered Stages -> Final Detached Touchpad Hold -->
     <div id="laptop-stages-container" class="laptop-stages-container"></div>
   </section>
 
@@ -362,12 +376,12 @@ export const PORTFOLIO_DATA = {
     </div>
   </div>
 
-  <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES & ASPIRATIONS) -->
+  <!-- 3. SCROLL-ANIMATED 35MM CAMERA REEL SECTION (HOBBIES — Heading without "Aspirations") -->
   <section id="section-reel" class="reel-scroll-section">
     <div class="reel-sticky-viewport">
       <div class="reel-top-bar">
         <div>
-          <h2 class="section-heading">Hobbies &amp; Aspirations</h2>
+          <h2 class="section-heading">Hobbies</h2>
         </div>
         <div class="reel-counter-box">
           <span id="reel-active-indicator" class="reel-counter-val">Frame 01A / 08A</span>
@@ -420,7 +434,7 @@ export const PORTFOLIO_DATA = {
     </div>
   </div>
 
-  <!-- 4. 8 HORIZONTALLY STACKED PROJECT CARDS (Steeper Angle + Hover Pulls Forward to Exact Center & Blurs Website) -->
+  <!-- 4. 6 HORIZONTALLY STACKED PHOTO-FRAME PROJECT CARDS (Template Repo Design: All 6 Animate on Hover!) -->
   <section id="section-projects" class="projects-section">
     <div class="section-header-wrap">
       <h2 class="section-heading">Projects</h2>
@@ -431,7 +445,7 @@ export const PORTFOLIO_DATA = {
   <!-- Seamless Visual Transition into Minimalist White Section -->
   <div class="dark-to-white-transition" aria-hidden="true"></div>
 
-  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION (~6s Slow Stream, No Buttons, No Phone) -->
+  <!-- 5. JULIAN GARNIER (juliangarnier.com) CHAT-FORM CONTACT ME SECTION -->
   <section id="section-contact" class="minimal-white-contact">
     <div class="minimal-contact-inner">
       <h2 class="contact-me-title">Contact Me</h2>
@@ -468,7 +482,7 @@ body { overflow-x: hidden; background: var(--bg-dark); }
 body.is-loading { overflow: hidden; }
 
 /* ==========================================================================
-   0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total — 1.7s Faster than v6)
+   0. INITIAL TEMPLATE REPO LOADING SCREEN (~2.35s Total)
    ========================================================================== */
 .loader-overlay {
   position: fixed;
@@ -536,7 +550,7 @@ body.is-loading { overflow: hidden; }
 
 .mono-tag {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -699,7 +713,7 @@ body.is-loading { overflow: hidden; }
    PHILOSOPHICAL QUOTES WITH PEACEFUL BOTANICAL LEAVES ON LEFT & RIGHT ENDS
    ========================================================================== */
 .quote-interlude {
-  padding: 3.4rem 5vw;
+  padding: 3.2rem 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -708,14 +722,12 @@ body.is-loading { overflow: hidden; }
   z-index: 5;
 }
 
-/* Compact spacing after the first quote so the 3D laptop appears right away */
 .quote-interlude.first-quote-interlude {
-  padding: 1.8rem 5vw 0.5rem;
+  padding: 1.8rem 5vw 0.4rem;
 }
 
-/* Minimal space beneath the Helen Keller quote */
 .quote-interlude.helen-keller-quote {
-  padding: 2.8rem 5vw 0.2rem;
+  padding: 2.6rem 5vw 0.2rem;
 }
 
 .quote-frame {
@@ -767,7 +779,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   2. 3D LAPTOP DISASSEMBLY SECTION (Proper Sticky Visibility & 3/4th Hold)
+   2. 3D LAPTOP DISASSEMBLY SECTION (Smaller Laptop & Cards, Smooth Scroll)
    ========================================================================== */
 .laptop-section {
   position: relative;
@@ -781,7 +793,7 @@ body.is-loading { overflow: hidden; }
   height: 100vh;
   overflow: hidden;
   z-index: 1;
-  background: radial-gradient(circle at 30% 52%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
+  background: radial-gradient(circle at 28% 58%, rgba(148, 163, 184, 0.15) 0%, rgba(30, 41, 59, 0.07) 42%, transparent 70%);
 }
 
 #laptop-canvas {
@@ -798,7 +810,7 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
   z-index: 12;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.22s ease;
 }
 
 .part-link-callout.visible {
@@ -974,99 +986,61 @@ body.is-loading { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Lead-in stage MUST be >= 115vh because margin-top is -100vh:
-   First 100vh overlaps the initial sticky viewport right below Quote 1 (so zero blank space after Quote 1!),
-   and the remaining 22vh lets the pinned laptop open & glide left BEFORE About Me enters! */
+/* Lead-in stage covers initial -100vh overlap + 20vh opening runway */
 .laptop-stage.laptop-intro-stage {
-  min-height: 122vh;
+  min-height: 120vh;
   pointer-events: none;
 }
 
-/* Each content stage holds its card comfortably in the viewport through at least 3/4ths of the stage scroll */
+/* Smooth, natural scrolling stages (no conflicting CSS sticky inside stages!) */
 .laptop-stage {
-  min-height: 135vh;
+  min-height: 98vh;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: flex-start;
-  padding: 12vh 4.5vw 20vh;
+  justify-content: center;
+  padding: 4rem 4.5vw;
+  gap: 1.5rem;
 }
 
 .laptop-stage.compact-stage {
-  min-height: 115vh;
-  padding: 12vh 4.5vw 16vh;
+  min-height: 78vh;
+  padding: 2.5rem 4.5vw;
 }
 
-/* Sticky behavior on each card so it stays locked in the lower 3/4ths of the screen while its stage scrolls! */
-.stage-bento-panel {
-  position: sticky;
-  top: 15vh;
-  pointer-events: auto;
-  width: min(50vw, 660px);
-  padding: 2.25rem;
-  border-radius: 22px;
-  background: var(--bg-panel);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--stage-accent, #38bdf8);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 36px color-mix(in srgb, var(--stage-accent, #38bdf8) 14%, transparent);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1.15rem;
-}
-
-.stage-bento-panel.compact-panel {
-  top: 18vh;
-  padding: 1.7rem 2.05rem;
-  gap: 0.9rem;
-}
-
-/* Centered, Bold, Prominent Quote Between Languages I Know and Courses & Achievements */
-.challenge-quote-interlude {
-  width: 100%;
-  min-height: 46vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 5vw;
+.laptop-stage.final-disassembly-hold {
+  min-height: 105vh;
   pointer-events: none;
 }
 
-.challenge-quote-box {
-  display: inline-flex;
+/* Smaller, more refined section cards so the 3D laptop & its labels have plenty of open space */
+.stage-bento-panel {
+  pointer-events: auto;
+  width: min(41vw, 510px);
+  padding: 1.65rem 1.85rem;
+  border-radius: 20px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--stage-accent, #38bdf8);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 30px color-mix(in srgb, var(--stage-accent, #38bdf8) 13%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.95rem;
+}
+
+.stage-bento-panel.compact-panel {
+  padding: 1.4rem 1.65rem;
+  gap: 0.78rem;
+}
+
+/* Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes */
+.stage-outside-quote-wrap {
+  width: min(41vw, 510px);
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 2.2vw, 1.85rem);
-  padding: 1.35rem 2.25rem;
-  border-radius: 999px;
-  background: rgba(9, 9, 13, 0.78);
-  border: 1px solid rgba(245, 158, 11, 0.32);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
-}
-
-.challenge-leaf {
-  width: clamp(38px, 4.5vw, 54px);
-  height: auto;
-  flex-shrink: 0;
-  filter: drop-shadow(0 0 10px rgba(110, 231, 183, 0.25));
-}
-
-.challenge-quote-text {
-  font-family: var(--font-philo);
-  font-style: italic;
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  text-align: center;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-}
-
-/* Final Disassembly Hold Stage for Unobstructed Touchpad CV */
-.laptop-stage.final-disassembly-hold {
-  min-height: 112vh;
+  padding: 0.5rem 0;
   pointer-events: none;
 }
 
@@ -1074,36 +1048,32 @@ body.is-loading { overflow: hidden; }
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0.26rem 0.72rem;
+  padding: 0.22rem 0.65rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--stage-accent, #38bdf8);
   font-family: var(--font-sans);
-  font-size: 0.73rem;
+  font-size: 0.7rem;
   font-weight: 500;
   color: var(--stage-accent, #38bdf8);
 }
 
 .stage-title {
   font-family: var(--font-display);
-  font-size: clamp(2.15rem, 3.5vw, 3.1rem);
+  font-size: clamp(1.75rem, 2.7vw, 2.35rem);
   font-weight: 400;
   line-height: 1.05;
-}
-
-.stage-title.small-stage-title {
-  font-size: clamp(1.4rem, 2.05vw, 1.8rem);
 }
 
 .stage-paragraphs {
   display: flex;
   flex-direction: column;
-  gap: 0.82rem;
+  gap: 0.65rem;
 }
 
 .stage-summary {
-  font-size: 0.96rem;
-  line-height: 1.64;
+  font-size: 0.88rem;
+  line-height: 1.58;
   color: #d1d5db;
 }
 
@@ -1111,88 +1081,61 @@ body.is-loading { overflow: hidden; }
   font-family: var(--font-philo);
   font-style: italic;
   font-weight: 300;
-  font-size: clamp(1.15rem, 1.65vw, 1.38rem);
-  line-height: 1.52;
+  font-size: clamp(1.06rem, 1.45vw, 1.25rem);
+  line-height: 1.5;
   color: #e5e7eb;
   border-left: 2px solid var(--stage-accent);
-  padding-left: 1.1rem;
+  padding-left: 1rem;
 }
 
 .stage-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.82rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.68rem;
 }
 
 .stage-subcard {
-  padding: 0.95rem;
-  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .stage-subcard h4 {
-  font-size: 0.94rem;
+  font-size: 0.86rem;
   color: #fff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .stage-subcard p {
-  font-size: 0.83rem;
+  font-size: 0.76rem;
   color: #9ca3af;
-  line-height: 1.45;
+  line-height: 1.42;
 }
 
 .stage-subcard .subcard-meta {
   display: inline-block;
-  margin-top: 0.45rem;
+  margin-top: 0.35rem;
   font-family: var(--font-mono);
-  font-size: 0.69rem;
+  font-size: 0.65rem;
   color: var(--stage-accent);
 }
 
-.compact-lang-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.7rem;
-}
-
-.compact-lang-item {
-  flex: 1 1 170px;
-  padding: 0.65rem 0.95rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.compact-lang-item strong {
-  font-size: 0.92rem;
-  color: #fff;
-}
-
-.compact-lang-item span {
-  font-size: 0.78rem;
-  color: #9ca3af;
-}
-
 .github-contrib-card {
-  padding: 0.9rem 1.05rem;
-  border-radius: 14px;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
   background: rgba(9, 9, 13, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .github-contrib-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #cbd5e1;
 }
 
@@ -1200,7 +1143,7 @@ body.is-loading { overflow: hidden; }
   color: #f59e0b;
   text-decoration: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
 }
 
 .github-contrib-header a:hover {
@@ -1210,12 +1153,12 @@ body.is-loading { overflow: hidden; }
 .github-chart-wrap {
   width: 100%;
   overflow-x: auto;
-  padding: 0.2rem 0;
+  padding: 0.15rem 0;
 }
 
 .github-chart-img {
   width: 100%;
-  min-width: 400px;
+  min-width: 360px;
   height: auto;
   display: block;
   filter: contrast(1.08);
@@ -1225,56 +1168,72 @@ body.is-loading { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 0.45rem;
+  padding-top: 0.4rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .badges-title {
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: #cbd5e1;
 }
 
 .badges-placeholder {
   font-family: var(--font-mono);
-  font-size: 0.71rem;
+  font-size: 0.68rem;
   color: #9ca3af;
-  padding: 0.2rem 0.6rem;
+  padding: 0.18rem 0.55rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px dashed rgba(255, 255, 255, 0.18);
 }
 
+/* Casual, understated one-line mention for English & Hindi */
+.casual-lang-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.76rem;
+  color: #9ca3af;
+}
+
+.casual-lang-line strong {
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
 .skill-groups-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.7rem;
 }
 
 .skill-group-row {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 
 .skill-group-label {
   font-family: var(--font-sans);
-  font-size: 0.77rem;
+  font-size: 0.73rem;
   font-weight: 600;
 }
 
 .pills-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.38rem;
 }
 
 .color-pill {
-  padding: 0.38rem 0.8rem;
-  border-radius: 8px;
+  padding: 0.32rem 0.68rem;
+  border-radius: 7px;
   font-family: var(--font-sans);
-  font-size: 0.79rem;
+  font-size: 0.74rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--pill-color, #38bdf8);
   color: #fff;
@@ -1290,7 +1249,7 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES & ASPIRATIONS)
+   3. SCROLL-ANIMATED 35MM CAMERA REEL (HOBBIES)
    ========================================================================== */
 .reel-scroll-section {
   position: relative;
@@ -1456,7 +1415,8 @@ body.is-loading { overflow: hidden; }
 }
 
 /* ==========================================================================
-   4. STEEPLY ANGLED HORIZONTAL PROJECT STACK (Hover Pulls Card to Exact Center + Blurs Website)
+   4. TEMPLATE REPO 6-CARD PHOTO-FRAME STACK (All 6 Animate on Hover;
+      Card 01 Displays Logo Photo & Pops Up Project Card Details on Hover!)
    ========================================================================== */
 .projects-focus-backdrop {
   position: fixed;
@@ -1495,20 +1455,21 @@ body.is-loading { overflow: hidden; }
 .template-horizontal-stack {
   position: relative;
   width: 100%;
-  min-height: 540px;
+  min-height: 520px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  perspective: 1500px;
+  perspective: 1600px;
   padding: 2rem 0;
 }
 
 .stack-card-slot {
   position: relative;
-  margin: 0 -118px;
+  margin: 0 -88px;
   flex-shrink: 0;
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .stack-card-slot.slot-focused::before {
@@ -1516,81 +1477,65 @@ body.is-loading { overflow: hidden; }
   position: absolute;
   top: -30px;
   bottom: -30px;
-  left: -30px;
-  right: -520px;
+  left: -380px;
+  right: -380px;
   z-index: 1;
 }
 
 .stack-card {
-  width: clamp(285px, 30vw, 370px);
-  height: 465px;
-  border-radius: 18px;
+  width: clamp(270px, 27vw, 340px);
+  height: 430px;
+  border-radius: 16px;
   position: relative;
   overflow: hidden;
   transform-style: preserve-3d;
-  transform: translate3d(0px, 0px, 0px) rotateY(-40deg) rotateX(4deg) scale(0.92);
-  transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease, filter 0.45s ease, opacity 0.45s ease;
-  box-shadow: -22px 16px 42px rgba(0, 0, 0, 0.82);
+  background: linear-gradient(160deg, #1b1c24 0%, #121319 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transform: translate3d(0px, 0px, 0px) rotateY(-38deg) rotateX(4deg) scale(0.93);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, filter 0.4s ease, opacity 0.4s ease, border-color 0.35s ease;
+  box-shadow: -20px 16px 40px rgba(0, 0, 0, 0.82);
 }
 
+.stack-card.active-project-card {
+  border-color: rgba(16, 185, 129, 0.55);
+}
+
+/* When ANY of the 6 cards is hovered, it glides forward to the exact center of the viewport! */
 .stack-card.is-centered {
-  transform: translate3d(var(--center-shift, 0px), -16px, 220px) rotateY(0deg) rotateX(0deg) scale(1.08);
-  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 48px rgba(16, 185, 129, 0.32);
+  transform: translate3d(var(--center-shift, 0px), -14px, 210px) rotateY(0deg) rotateX(0deg) scale(1.08);
+  box-shadow: 0 36px 85px rgba(0, 0, 0, 0.92), 0 0 42px rgba(16, 185, 129, 0.25);
+  border-color: #10b981;
   filter: none !important;
   opacity: 1 !important;
 }
 
 .stack-card.blurred-left {
-  transform: translate3d(-150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  transform: translate3d(-140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
   filter: blur(6px) brightness(0.42);
   opacity: 0.55;
 }
 
 .stack-card.blurred-right {
-  transform: translate3d(150px, 0px, -60px) rotateY(-44deg) rotateX(4deg) scale(0.86);
+  transform: translate3d(140px, 0px, -55px) rotateY(-42deg) rotateX(4deg) scale(0.86);
   filter: blur(6px) brightness(0.42);
   opacity: 0.55;
-}
-
-.stack-card.active-project-card {
-  background: linear-gradient(155deg, rgba(16, 32, 28, 0.98), rgba(12, 13, 19, 0.99));
-  border: 1.5px solid #10b981;
-  padding: 1.4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.65rem;
-  cursor: pointer;
 }
 
 .stack-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
+  align-items: center;
 }
 
-.stack-card-title-wrap {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.stack-card-title {
-  font-family: var(--font-display);
-  font-size: 1.85rem;
-  font-weight: 400;
-  line-height: 1.05;
-  color: #ffffff;
-}
-
-.stack-card-subtitle {
+.stack-frame-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: #f59e0b;
-  margin-top: 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.72rem;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
 }
 
 .stack-slot-num {
@@ -1598,66 +1543,108 @@ body.is-loading { overflow: hidden; }
   font-size: 0.75rem;
   font-weight: 600;
   color: #10b981;
-  flex-shrink: 0;
-}
-
-.project-logo-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem;
-  border-radius: 12px;
-  background: rgba(9, 9, 13, 0.82);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  text-decoration: none;
-  color: #fff;
-  transition: border-color 0.25s, transform 0.25s;
-}
-
-.project-logo-link:hover {
-  border-color: #38bdf8;
-  transform: scale(1.02);
-}
-
-.project-logo-caption {
-  margin-top: 0.35rem;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: #10b981;
-}
-
-.project-bullets {
-  padding-left: 0.95rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.28rem;
-  color: #d1d5db;
-  font-size: 0.73rem;
-  line-height: 1.36;
-  overflow: hidden;
-}
-
-.stack-card.grey-layer-card {
-  background: linear-gradient(160deg, #1a1b23 0%, #111218 100%);
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  padding: 1.3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  pointer-events: none;
-  user-select: none;
 }
 
 .grey-layer-card .stack-slot-num {
   color: #71717a;
 }
 
+/* Resting Photo Frame inside Card 01 (Displays SanitX Logo Photo just like the template repo's photo frames) */
+.project-photo-frame {
+  flex: 1;
+  width: 100%;
+  margin-top: 0.65rem;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 42%, rgba(16, 185, 129, 0.18) 0%, #0d0f16 75%);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-frame-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: #f4f1ea;
+  letter-spacing: 0.02em;
+}
+
+/* Hover Pop-Up Project Card Overlay inside Card 01 (Appears when hovered in the center!) */
+.project-hover-popup {
+  position: absolute;
+  inset: 0;
+  padding: 1.35rem;
+  background: linear-gradient(160deg, rgba(13, 25, 22, 0.98) 0%, rgba(10, 11, 16, 0.99) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stack-card.is-centered .project-hover-popup {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.popup-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.popup-header p {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: #f59e0b;
+  margin-top: 0.2rem;
+}
+
+.project-bullets {
+  padding-left: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  color: #d1d5db;
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+.popup-github-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  background: #10b981;
+  color: #09090d;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.popup-github-btn:hover {
+  background: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* Cards 02–06: Grey Photo Frame Cards with "yet to build😝" (Also animate on hover!) */
 .grey-photo-frame {
   flex: 1;
   width: 100%;
-  margin-top: 0.7rem;
+  margin-top: 0.65rem;
   border-radius: 12px;
   background: linear-gradient(145deg, #272832 0%, #1c1d25 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1671,9 +1658,9 @@ body.is-loading { overflow: hidden; }
 
 .yet-to-build-text {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: #8e929f;
-  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  letter-spacing: 0.05em;
   text-align: center;
 }
 
@@ -1800,10 +1787,10 @@ body.is-loading { overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  .stage-bento-panel { width: 92vw; }
+  .stage-bento-panel, .stage-outside-quote-wrap { width: 90vw; }
   .part-link-callout { display: none; }
-  .stack-card-slot { margin: 0 -100px; }
-  .stack-card { width: 265px; height: 445px; }
+  .stack-card-slot { margin: 0 -75px; }
+  .stack-card { width: 250px; height: 400px; }
 }
 ```
 
@@ -1811,34 +1798,35 @@ body.is-loading { overflow: hidden; }
 ```javascript
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.55, 6.2);
-  camera.lookAt(0, 0.08, 0);
+  const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 1.65, 6.8);
+  camera.lookAt(0, 0.05, 0);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.22;
+  renderer.toneMappingExposure = 1.25;
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.92);
-  const keyLight = new THREE.DirectionalLight(0xffffff, 2.15);
+  // Multi-Point Studio Lighting for Exquisite Matte Stealth Finish
+  const ambient = new THREE.AmbientLight(0xffffff, 0.94);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
   keyLight.position.set(4, 7, 6);
-  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.75);
+  const rimLight = new THREE.DirectionalLight(0x94a3b8, 1.8);
   rimLight.position.set(-5, 4, -4);
-  const bottomFill = new THREE.DirectionalLight(0x475569, 1.05);
+  const bottomFill = new THREE.DirectionalLight(0x475569, 1.1);
   bottomFill.position.set(0, -5, 4);
-  const accentLight = new THREE.PointLight(0x38bdf8, 1.85, 16);
-  accentLight.position.set(-2.0, 2.2, 4.2);
+  const accentLight = new THREE.PointLight(0x38bdf8, 2.0, 16);
+  accentLight.position.set(-1.8, 2.0, 4.2);
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  root.position.set(0, -0.08, 0);
-  // Starts facing the RIGHT side (+0.62 rad) and rotates continuously in one direction to the LEFT side (-0.58 rad)
-  root.rotation.set(0.24, 0.62, 0);
+  // Smaller scale (0.76x) and lower screen position (y = -0.44) so it aligns with cards and never clips
+  root.scale.setScalar(0.76);
+  root.position.set(0, -0.44, 0);
+  root.rotation.set(0.28, 0.64, 0);
   scene.add(root);
 
-  // Opaque Deep Matte Stealth Carbon Materials with polygonOffset so solid surfaces NEVER look see-through or Z-fight!
   function makeMatteMaterial(opts) {
     return new THREE.MeshStandardMaterial({
       ...opts,
@@ -1851,20 +1839,22 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     });
   }
 
-  const matOuterChassis = makeMatteMaterial({ color: 0x151821, metalness: 0.22, roughness: 0.82 });
-  const matBezel = makeMatteMaterial({ color: 0x0c0e14, metalness: 0.15, roughness: 0.86 });
-  const matScreenPanel = makeMatteMaterial({ color: 0x0a0f1d, emissive: 0x172554, emissiveIntensity: 0.45, roughness: 0.38 });
-  const matMotherboardPcb = makeMatteMaterial({ color: 0x10141d, metalness: 0.25, roughness: 0.78 });
-  const matCpuPackage = makeMatteMaterial({ color: 0x252a38, emissive: 0x1e293b, emissiveIntensity: 0.3, metalness: 0.45, roughness: 0.55 });
-  const matCopperPipe = makeMatteMaterial({ color: 0x92400e, emissive: 0x451a03, emissiveIntensity: 0.2, metalness: 0.55, roughness: 0.48 });
-  const matGoldContacts = makeMatteMaterial({ color: 0xd97706, emissive: 0x92400e, emissiveIntensity: 0.25, metalness: 0.65, roughness: 0.4 });
-  const matKeyDeck = makeMatteMaterial({ color: 0x141720, metalness: 0.2, roughness: 0.84 });
-  const matKeyCap = makeMatteMaterial({ color: 0x0b0d13, metalness: 0.12, roughness: 0.88 });
-  const matRamSpreader = makeMatteMaterial({ color: 0x181c26, emissive: 0x0f172a, emissiveIntensity: 0.25, metalness: 0.35, roughness: 0.72 });
-  const matRamChip = makeMatteMaterial({ color: 0x0a0c10, metalness: 0.2, roughness: 0.82 });
-  const matStoragePcb = makeMatteMaterial({ color: 0x121622, metalness: 0.28, roughness: 0.76 });
-  const matStorageSink = makeMatteMaterial({ color: 0x1e2332, metalness: 0.38, roughness: 0.68 });
-  const matTouchpadSurface = makeMatteMaterial({ color: 0x161a24, emissive: 0x1e293b, emissiveIntensity: 0.32, roughness: 0.65, metalness: 0.25 });
+  const matOuterChassis = makeMatteMaterial({ color: 0x141720, metalness: 0.22, roughness: 0.82 });
+  const matBezel = makeMatteMaterial({ color: 0x0b0d13, metalness: 0.15, roughness: 0.86 });
+  const matScreenPanel = makeMatteMaterial({ color: 0x090e1a, emissive: 0x172554, emissiveIntensity: 0.48, roughness: 0.35 });
+  const matMotherboardPcb = makeMatteMaterial({ color: 0x0f131c, metalness: 0.25, roughness: 0.78 });
+  const matCpuPackage = makeMatteMaterial({ color: 0x242938, emissive: 0x1e293b, emissiveIntensity: 0.35, metalness: 0.48, roughness: 0.52 });
+  const matCopperPipe = makeMatteMaterial({ color: 0xb45309, emissive: 0x451a03, emissiveIntensity: 0.24, metalness: 0.58, roughness: 0.44 });
+  const matGoldContacts = makeMatteMaterial({ color: 0xf59e0b, emissive: 0x92400e, emissiveIntensity: 0.28, metalness: 0.68, roughness: 0.38 });
+  const matKeyDeck = makeMatteMaterial({ color: 0x12151e, metalness: 0.2, roughness: 0.84 });
+  const matKeyCap = makeMatteMaterial({ color: 0x0a0c12, metalness: 0.12, roughness: 0.88 });
+  const matBacklightMatrix = makeMatteMaterial({ color: 0x0d2822, emissive: 0x10b981, emissiveIntensity: 0.42, roughness: 0.4 });
+  const matRamSpreader = makeMatteMaterial({ color: 0x171b26, emissive: 0x0f172a, emissiveIntensity: 0.28, metalness: 0.36, roughness: 0.70 });
+  const matRamChip = makeMatteMaterial({ color: 0x090b10, metalness: 0.2, roughness: 0.82 });
+  const matStoragePcb = makeMatteMaterial({ color: 0x111520, metalness: 0.28, roughness: 0.76 });
+  const matStorageSink = makeMatteMaterial({ color: 0x1e2332, metalness: 0.40, roughness: 0.66 });
+  const matBatteryCell = makeMatteMaterial({ color: 0x131622, emissive: 0x1e1b4b, emissiveIntensity: 0.25, metalness: 0.3, roughness: 0.75 });
+  const matTouchpadSurface = makeMatteMaterial({ color: 0x151923, emissive: 0x1e293b, emissiveIntensity: 0.35, roughness: 0.64, metalness: 0.26 });
 
   const pickableMeshes = [];
   const partEdgeLines = {};
@@ -1886,14 +1876,13 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   }
 
   // =========================================================================
-  // 1. DISPLAY (Stays much closer to the laptop during disassembly!)
-  //    Base y = +0.025, z = -1.00
+  // 1. DISPLAY (Rests seamlessly at y = +0.03 when closed on top of the single unibody base!)
   // =========================================================================
   const display = new THREE.Group();
-  display.position.set(0, 0.025, -1.00);
+  display.position.set(0, 0.03, -1.00);
 
-  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.06), matOuterChassis);
-  lidMesh.position.set(0, 1.00, -0.03);
+  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 2.00, 0.055), matOuterChassis);
+  lidMesh.position.set(0, 1.00, -0.028);
   addCrispEdges(lidMesh, 'display', 0xe2e8f0, 0.94);
 
   const bezelMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.94, 1.88), matBezel);
@@ -1901,168 +1890,196 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   const lcdMesh = new THREE.Mesh(new THREE.PlaneGeometry(2.78, 1.70), matScreenPanel);
   lcdMesh.position.set(0, 1.00, 0.004);
-  addCrispEdges(lcdMesh, 'display', 0x94a3b8, 0.78);
+  addCrispEdges(lcdMesh, 'display', 0x38bdf8, 0.82);
 
-  const uiBarMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.38 });
-  for (let i = 0; i < 5; i++) {
-    const barW = 0.8 + (i % 3) * 0.45;
-    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.042), uiBarMat);
-    bar.position.set(-1.1 + barW / 2, 1.44 - i * 0.16, 0.006);
+  // Camera Notch & Glowing IDE Telemetry Bars on Display
+  const camNotch = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.05), matBezel);
+  camNotch.position.set(0, 1.82, 0.006);
+  display.add(camNotch);
+
+  const uiColors = [0x38bdf8, 0x10b981, 0xa855f7, 0xf59e0b, 0xec4899];
+  for (let i = 0; i < 6; i++) {
+    const barW = 0.65 + (i % 3) * 0.45;
+    const barMat = new THREE.MeshBasicMaterial({ color: uiColors[i % uiColors.length], transparent: true, opacity: 0.45 });
+    const bar = new THREE.Mesh(new THREE.PlaneGeometry(barW, 0.038), barMat);
+    bar.position.set(-1.15 + barW / 2, 1.48 - i * 0.15, 0.006);
     display.add(bar);
   }
 
-  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 16), matOuterChassis);
+  const hingeL = new THREE.Mesh(new THREE.CylinderGeometry(0.032, 0.032, 0.42, 16), matOuterChassis);
   hingeL.rotation.z = Math.PI / 2;
-  hingeL.position.set(-0.85, 0, -0.03);
+  hingeL.position.set(-0.85, 0, -0.025);
   addCrispEdges(hingeL, 'display', 0x94a3b8, 0.72);
   const hingeR = hingeL.clone();
-  hingeR.position.set(0.85, 0, -0.03);
+  hingeR.position.set(0.85, 0, -0.025);
 
   const displayAnchor = new THREE.Object3D();
-  displayAnchor.position.set(0, 1.00, 0.01);
+  displayAnchor.position.set(-0.9, 1.15, 0.02);
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. KEYBOARD & FULL OPAQUE TOP-CASE PALMREST DECK
-  //    (Covers 3.04 x 2.00 so internal parts are NEVER seen through the deck when opening!)
+  // 2. KEYBOARD & TOP-CASE PALMREST DECK
+  //    When assembled (spread = 0), sits at y = +0.015 directly touching baseMesh (y = 0.00)
+  //    so the entire laptop is ONE SEAMLESS UNIBODY (never 2 separate slabs!)
   // =========================================================================
   const keyboard = new THREE.Group();
-  // Full-size opaque palmrest / top-case deck plate sealing the top of the laptop base
-  const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.04, 2.00), matOuterChassis);
-  topCasePalmrest.position.set(0, -0.005, 0);
-  addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.9);
+  const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.03, 2.00), matOuterChassis);
+  topCasePalmrest.position.set(0, 0.015, 0);
+  addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.92);
   keyboard.add(topCasePalmrest);
 
-  const keyWellPlate = new THREE.Mesh(new THREE.BoxGeometry(2.68, 0.02, 1.12), matKeyDeck);
-  keyWellPlate.position.set(0, 0.012, -0.18);
-  addCrispEdges(keyWellPlate, 'keyboard', 0x94a3b8, 0.8);
-  keyboard.add(keyWellPlate);
+  // Glowing Backlit Switch Matrix Plate under the keys (revealed when keys cascade upward)
+  const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.016, 1.10), matBacklightMatrix);
+  backlightPlate.position.set(0, 0.026, -0.18);
+  addCrispEdges(backlightPlate, 'keyboard', 0x10b981, 0.85);
+  keyboard.add(backlightPlate);
 
-  const domeKeys = [];
+  // Precision Scissor-Switch Keycap Matrix (Animates in a clean Teardown Wave Cascade!)
+  const cascadeKeys = [];
   const rows = 4;
   const cols = 11;
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.034, 0.185), matKeyCap);
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.185, 0.028, 0.185), matKeyCap);
       const baseX = -1.0 + c * 0.2;
-      const baseY = 0.024;
+      const baseY = 0.034;
       const baseZ = -0.54 + r * 0.24;
       key.position.set(baseX, baseY, baseZ);
-      addCrispEdges(key, 'keyboard', 0xcbd5e1, 0.82);
+      addCrispEdges(key, 'keyboard', 0xcbd5e1, 0.84);
       keyboard.add(key);
 
-      // Normalized (-1..1) coordinates for true spherical dome curvature & surface normal tilt
-      const nx = (c - (cols - 1) / 2) / ((cols - 1) / 2);
-      const nz = (r - (rows - 1) / 2) / ((rows - 1) / 2);
-      const rSq = nx * nx * 0.65 + nz * nz * 0.65;
-      const domeHeight = Math.max(0, 1 - rSq);
-      domeKeys.push({ mesh: key, baseX, baseY, baseZ, nx, nz, domeHeight });
+      // Wave delay across diagonal (0.0 -> 1.0) for smooth engineering teardown cascade
+      const wavePhase = (c / (cols - 1)) * 0.65 + (r / (rows - 1)) * 0.35;
+      cascadeKeys.push({ mesh: key, baseX, baseY, baseZ, wavePhase });
     }
   }
   const keyboardAnchor = new THREE.Object3D();
-  keyboardAnchor.position.set(0, 0.15, -0.18);
+  keyboardAnchor.position.set(-0.85, 0.12, -0.18);
   keyboard.add(keyboardAnchor);
 
   // =========================================================================
-  // 3. MOTHERBOARD (Separated cleanly below the keyboard at y = -0.14 so parts never mush together!)
+  // 3. MOTHERBOARD (Ultra-Detailed with Dual Spinning LED Fans, Copper Heatpipes,
+  //    CPU + GPU Dies, VRM Banks, Capacitors & Gold PCB Circuit Traces)
   // =========================================================================
   const motherboard = new THREE.Group();
-  motherboard.position.set(0, -0.14, 0);
+  // Tucked inside the unibody at y = -0.02 when closed
+  motherboard.position.set(0, -0.02, 0);
 
-  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.045, 1.58), matMotherboardPcb);
-  addCrispEdges(pcb, 'motherboard', 0xcbd5e1, 0.92);
+  const pcb = new THREE.Mesh(new THREE.BoxGeometry(2.66, 0.042, 1.60), matMotherboardPcb);
+  addCrispEdges(pcb, 'motherboard', 0xcbd5e1, 0.94);
   motherboard.add(pcb);
 
-  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.05, 0.76), matOuterChassis);
-  cpuSocket.position.set(0, 0.025, -0.08);
-  addCrispEdges(cpuSocket, 'motherboard', 0x94a3b8, 0.8);
-  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.07, 0.54), matCpuPackage);
-  cpuDie.position.set(0, 0.038, -0.08);
-  addCrispEdges(cpuDie, 'motherboard', 0xf8fafc, 0.96);
-  motherboard.add(cpuSocket, cpuDie);
+  // Central CPU Die + Secondary GPU Die
+  const cpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.05, 0.68), matOuterChassis);
+  cpuSocket.position.set(-0.22, 0.025, -0.06);
+  addCrispEdges(cpuSocket, 'motherboard', 0x94a3b8, 0.82);
+  const cpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.068, 0.46), matCpuPackage);
+  cpuDie.position.set(-0.22, 0.038, -0.06);
+  addCrispEdges(cpuDie, 'motherboard', 0xa855f7, 0.98);
 
-  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.026, 0.11), matCopperPipe);
-  pipe1.position.set(0, 0.045, -0.42);
-  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.026, 0.08), matCopperPipe);
-  pipe2.position.set(0, 0.045, -0.26);
-  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.85);
-  addCrispEdges(pipe2, 'motherboard', 0xf59e0b, 0.75);
+  const gpuSocket = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.048, 0.56), matOuterChassis);
+  gpuSocket.position.set(0.38, 0.024, -0.06);
+  addCrispEdges(gpuSocket, 'motherboard', 0x94a3b8, 0.8);
+  const gpuDie = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.064, 0.38), matCpuPackage);
+  gpuDie.position.set(0.38, 0.036, -0.06);
+  addCrispEdges(gpuDie, 'motherboard', 0x38bdf8, 0.95);
+  motherboard.add(cpuSocket, cpuDie, gpuSocket, gpuDie);
+
+  // Twin Copper Thermal Heatpipes
+  const pipe1 = new THREE.Mesh(new THREE.BoxGeometry(2.12, 0.026, 0.10), matCopperPipe);
+  pipe1.position.set(0, 0.046, -0.42);
+  const pipe2 = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.026, 0.08), matCopperPipe);
+  pipe2.position.set(0, 0.046, -0.26);
+  addCrispEdges(pipe1, 'motherboard', 0xf59e0b, 0.88);
+  addCrispEdges(pipe2, 'motherboard', 0xf59e0b, 0.8);
   motherboard.add(pipe1, pipe2);
 
-  function createCoolingFan(xPos) {
+  // Dual Multi-Blade Spinning Cooling Fans with Glowing LED Halo Rings
+  function createCoolingFan(xPos, ringColor) {
     const fanGroup = new THREE.Group();
-    fanGroup.position.set(xPos, 0.035, -0.38);
-    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.045, 24), matOuterChassis);
-    addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.9);
-    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.055, 16), matCpuPackage);
-    addCrispEdges(hub, 'motherboard', 0xcbd5e1, 0.85);
-    fanGroup.add(shroud, hub);
-    for (let b = 0; b < 8; b++) {
-      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.03, 0.03), matKeyCap);
-      const angle = (b / 8) * Math.PI * 2;
+    fanGroup.position.set(xPos, 0.034, -0.38);
+    const shroud = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.37, 0.046, 24), matOuterChassis);
+    addCrispEdges(shroud, 'motherboard', 0xe2e8f0, 0.92);
+
+    // Glowing LED Halo Ring inside fan shroud
+    const ringGeo = new THREE.RingGeometry(0.30, 0.34, 28);
+    const ringMat = new THREE.MeshBasicMaterial({ color: ringColor, side: THREE.DoubleSide, transparent: true, opacity: 0.85 });
+    const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = -Math.PI / 2;
+    ringMesh.position.y = 0.024;
+
+    const hub = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.056, 16), matCpuPackage);
+    addCrispEdges(hub, 'motherboard', 0xcbd5e1, 0.88);
+    fanGroup.add(shroud, ringMesh, hub);
+
+    const rotorGroup = new THREE.Group();
+    for (let b = 0; b < 9; b++) {
+      const blade = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.028, 0.03), matKeyCap);
+      const angle = (b / 9) * Math.PI * 2;
       blade.position.set(Math.cos(angle) * 0.18, 0.01, Math.sin(angle) * 0.18);
-      blade.rotation.y = -angle + 0.4;
-      addCrispEdges(blade, 'motherboard', 0x94a3b8, 0.65);
-      fanGroup.add(blade);
+      blade.rotation.y = -angle + 0.42;
+      addCrispEdges(blade, 'motherboard', 0x94a3b8, 0.7);
+      rotorGroup.add(blade);
     }
+    fanGroup.add(rotorGroup);
+    fanGroup.userData.rotor = rotorGroup;
     return fanGroup;
   }
-  const fanL = createCoolingFan(-0.82);
-  const fanR = createCoolingFan(0.82);
+  const fanL = createCoolingFan(-0.84, 0x38bdf8);
+  const fanR = createCoolingFan(0.84, 0xa855f7);
   motherboard.add(fanL, fanR);
 
-  for (let v = 0; v < 6; v++) {
-    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.055, 0.11), matStorageSink);
-    vrm.position.set(-0.38 + v * 0.15, 0.032, -0.62);
-    addCrispEdges(vrm, 'motherboard', 0xcbd5e1, 0.8);
+  // VRM Choke Coils & Solid-State Capacitors
+  for (let v = 0; v < 7; v++) {
+    const vrm = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.052, 0.10), matStorageSink);
+    vrm.position.set(-0.45 + v * 0.15, 0.032, -0.62);
+    addCrispEdges(vrm, 'motherboard', 0xcbd5e1, 0.82);
     motherboard.add(vrm);
   }
-  for (let c = 0; c < 5; c++) {
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.055, 12), matGoldContacts);
-    cap.position.set(-1.12, 0.032, -0.2 + c * 0.16);
-    addCrispEdges(cap, 'motherboard', 0xf59e0b, 0.75);
+  for (let c = 0; c < 6; c++) {
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.036, 0.052, 12), matGoldContacts);
+    cap.position.set(-1.14, 0.032, -0.25 + c * 0.15);
+    addCrispEdges(cap, 'motherboard', 0xf59e0b, 0.8);
     motherboard.add(cap);
   }
 
   // Embedded Flat PCB Line Wiring Traces
   const tracePoints = [];
   const traceCoords = [
-    [-1.15, 0.025, 0.56, -0.38, 0.025, 0.56],
-    [-0.38, 0.025, 0.56, -0.14, 0.025, 0.24],
-    [1.15, 0.025, 0.56, 0.38, 0.025, 0.56],
-    [0.38, 0.025, 0.56, 0.14, 0.025, 0.24],
-    [-1.05, 0.025, 0.42, -0.32, 0.025, 0.42],
-    [-0.32, 0.025, 0.42, -0.08, 0.025, 0.22],
-    [1.05, 0.025, 0.42, 0.32, 0.025, 0.42],
-    [0.32, 0.025, 0.42, 0.08, 0.025, 0.22],
-    [-0.95, 0.025, 0.28, -0.35, 0.025, 0.28],
-    [0.95, 0.025, 0.28, 0.35, 0.025, 0.28],
-    [-0.32, 0.025, 0.68, 0.32, 0.025, 0.68],
-    [-0.62, 0.025, -0.08, -0.38, 0.025, -0.08],
-    [0.38, 0.025, -0.08, 0.62, 0.025, -0.08],
-    [0, 0.025, 0.24, 0, 0.025, 0.72],
-    [-0.18, 0.025, -0.46, -0.18, 0.025, -0.72],
-    [0.18, 0.025, -0.46, 0.18, 0.025, -0.72]
+    [-1.15, 0.024, 0.56, -0.38, 0.024, 0.56],
+    [-0.38, 0.024, 0.56, -0.14, 0.024, 0.24],
+    [1.15, 0.024, 0.56, 0.38, 0.024, 0.56],
+    [0.38, 0.024, 0.56, 0.14, 0.024, 0.24],
+    [-1.05, 0.024, 0.42, -0.32, 0.024, 0.42],
+    [-0.32, 0.024, 0.42, -0.08, 0.024, 0.22],
+    [1.05, 0.024, 0.42, 0.32, 0.024, 0.42],
+    [0.32, 0.024, 0.42, 0.08, 0.024, 0.22],
+    [-0.95, 0.024, 0.28, -0.35, 0.024, 0.28],
+    [0.95, 0.024, 0.28, 0.35, 0.024, 0.28],
+    [-0.32, 0.024, 0.68, 0.32, 0.024, 0.68],
+    [-0.62, 0.024, -0.06, -0.38, 0.024, -0.06],
+    [0.38, 0.024, -0.06, 0.68, 0.024, -0.06],
+    [0, 0.024, 0.24, 0, 0.024, 0.72]
   ];
   traceCoords.forEach(([x1, y1, z1, x2, y2, z2]) => {
     tracePoints.push(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2));
   });
   const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePoints);
-  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.88, depthTest: true });
+  const traceMat = new THREE.LineBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.9, depthTest: true });
   motherboard.add(new THREE.LineSegments(traceGeo, traceMat));
 
   const motherboardAnchor = new THREE.Object3D();
-  motherboardAnchor.position.set(0, 0.05, 0);
+  motherboardAnchor.position.set(0.25, 0.06, -0.06);
   motherboard.add(motherboardAnchor);
 
   // =========================================================================
-  // 4. RAM STICKS (Seated on Motherboard plane and slide outward cleanly)
+  // 4. RAM STICKS (Dual DDR5 Modules Ejecting Linearly Sideways)
   // =========================================================================
   const ram = new THREE.Group();
   function createRamStick(side) {
     const stickGroup = new THREE.Group();
     const board = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.038, 0.32), matRamSpreader);
-    addCrispEdges(board, 'ram', 0xf59e0b, 0.92);
+    addCrispEdges(board, 'ram', 0xf59e0b, 0.94);
     stickGroup.add(board);
 
     const goldStrip = new THREE.Mesh(new THREE.BoxGeometry(0.74, 0.04, 0.045), matGoldContacts);
@@ -2072,15 +2089,15 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     for (let m = 0; m < 4; m++) {
       const chip = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.05, 0.16), matRamChip);
       chip.position.set(-0.255 + m * 0.17, 0.008, 0);
-      addCrispEdges(chip, 'ram', 0xcbd5e1, 0.85);
+      addCrispEdges(chip, 'ram', 0xcbd5e1, 0.86);
       stickGroup.add(chip);
     }
     return stickGroup;
   }
   const ramL = createRamStick(-1);
   const ramR = createRamStick(1);
-  ramL.position.set(-0.62, -0.10, 0.22);
-  ramR.position.set(0.62, -0.10, 0.22);
+  ramL.position.set(-0.62, -0.02, 0.24);
+  ramR.position.set(0.62, -0.02, 0.24);
 
   const ramAnchor = new THREE.Object3D();
   ramAnchor.position.set(0, 0.04, 0);
@@ -2088,21 +2105,41 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   ram.add(ramL, ramR);
 
   // =========================================================================
-  // 5. STORAGE (NVMe M.2 Solid-State Array & Lower Unibody Base)
+  // 5. STORAGE & UNIBODY CHASSIS
+  //    When assembled (spread = 0), baseMesh sits at y = -0.045 (top face at y = 0.00)
+  //    so it meets topCasePalmrest (bottom face at y = 0.00) seamlessly!
   // =========================================================================
   const storage = new THREE.Group();
-  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.10, 2.00), matOuterChassis);
-  baseMesh.position.set(0, -0.26, 0);
+  const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.09, 2.00), matOuterChassis);
+  baseMesh.position.set(0, -0.045, 0);
   addCrispEdges(baseMesh, 'storage', 0xe2e8f0, 0.92);
 
+  // Side USB-C / Thunderbolt I/O Port Cutouts on Unibody Base
+  for (let p = 0; p < 2; p++) {
+    const portL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.026, 0.12), matGoldContacts);
+    portL.position.set(-1.525, -0.035, -0.45 + p * 0.24);
+    const portR = portL.clone();
+    portR.position.x = 1.525;
+    baseMesh.add(portL, portR);
+  }
+
+  // Multi-Cell Lithium Power Array in Rear Bay of Unibody
+  for (let cell = 0; cell < 3; cell++) {
+    const batCell = new THREE.Mesh(new THREE.BoxGeometry(0.82, 0.045, 0.48), matBatteryCell);
+    batCell.position.set(-0.88 + cell * 0.88, 0.035, -0.42);
+    addCrispEdges(batCell, 'storage', 0x6366f1, 0.78);
+    baseMesh.add(batCell);
+  }
+
+  // Dual NVMe M.2 Solid-State Storage Drives with Finned Thermal Heatsinks
   function createNvmeSsd(xOffset) {
     const ssdGroup = new THREE.Group();
-    ssdGroup.position.set(xOffset, -0.19, 0.38);
+    ssdGroup.position.set(xOffset, -0.01, 0.38);
     const ssdPcb = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.04, 0.42), matStoragePcb);
-    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.92);
-    const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.06, 0.36), matStorageSink);
-    heatsink.position.set(-0.06, 0.015, 0);
-    addCrispEdges(heatsink, 'storage', 0xe2e8f0, 0.9);
+    addCrispEdges(ssdPcb, 'storage', 0x818cf8, 0.94);
+    const heatsink = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.062, 0.36), matStorageSink);
+    heatsink.position.set(-0.06, 0.016, 0);
+    addCrispEdges(heatsink, 'storage', 0xe2e8f0, 0.92);
     const connector = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.042, 0.34), matGoldContacts);
     connector.position.set(0.48, 0, 0);
     ssdGroup.add(ssdPcb, heatsink, connector);
@@ -2111,7 +2148,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   const ssd1 = createNvmeSsd(-0.64);
   const ssd2 = createNvmeSsd(0.64);
   const storageAnchor = new THREE.Object3D();
-  storageAnchor.position.set(0, -0.18, 0.38);
+  storageAnchor.position.set(0.55, 0.02, 0.38);
   storage.add(baseMesh, ssd1, ssd2, storageAnchor);
 
   // =========================================================================
@@ -2119,23 +2156,23 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   // =========================================================================
   const touchpad = new THREE.Group();
   const padRim = new THREE.Mesh(
-    new THREE.BoxGeometry(1.08, 0.028, 0.64),
+    new THREE.BoxGeometry(1.06, 0.024, 0.62),
     makeMatteMaterial({ color: 0x262b38, metalness: 0.35, roughness: 0.68 })
   );
-  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.02, 0.034, 0.58), matTouchpadSurface);
+  const padMesh = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.030, 0.56), matTouchpadSurface);
   padRim.position.set(0, 0.022, 0.62);
-  padMesh.position.set(0, 0.026, 0.62);
-  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.95);
+  padMesh.position.set(0, 0.025, 0.62);
+  addCrispEdges(padMesh, 'touchpad', 0xf472b6, 0.96);
   padMesh.userData.isTouchpad = true;
   const touchpadAnchor = new THREE.Object3D();
   touchpadAnchor.position.set(0, 0.04, 0.62);
   touchpad.add(padRim, padMesh, touchpadAnchor);
 
-  const parts = { display, motherboard, keyboard, ram, touchpad, storage };
+  const parts = { display, keyboard, motherboard, ram, touchpad, storage };
   const anchors = {
     display: displayAnchor,
-    motherboard: motherboardAnchor,
     keyboard: keyboardAnchor,
+    motherboard: motherboardAnchor,
     ram: ramAnchor,
     touchpad: touchpadAnchor,
     storage: storageAnchor
@@ -2143,8 +2180,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   const partLabels = {
     display: "Display",
-    motherboard: "Motherboard",
     keyboard: "Keyboard",
+    motherboard: "Motherboard",
     ram: "RAM Sticks",
     storage: "Storage",
     touchpad: "Touchpad — Click to Download CV"
@@ -2161,7 +2198,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     root.add(group);
   });
 
-  // Start 100% closed with internal boards hidden inside the sealed body until separation begins
+  // Start 100% seamless & closed with internal boards hidden inside the unibody until separation begins
   display.rotation.x = Math.PI / 2;
   motherboard.visible = false;
   ram.visible = false;
@@ -2229,76 +2266,96 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     currentProgress = progress;
     currentActiveKey = activeKey;
 
-    // 1. Lid Hinge Opening (0.00 -> 0.14): Opens from closed flat (Math.PI / 2) to open viewing angle (-0.18)
-    const openRatio = Math.min(1, progress / 0.14);
+    // 1. Seamless Unibody Lid Hinge Opening (0.00 -> 0.13)
+    const openRatio = Math.min(1, progress / 0.13);
     const smoothOpen = 1 - Math.pow(1 - openRatio, 2.4);
     const closedAngle = Math.PI / 2;
     const openAngle = -0.18;
 
-    // 2. Disassembly Spread (0.11 -> 0.80): Only reveal internal boards once separation starts so they NEVER show through the solid top deck!
+    // 2. Linear Sideways + Vertical Exploded Echelon Spread (0.11 -> 0.80)
     const rawSpread = Math.max(0, Math.min(1, (progress - 0.11) / 0.69));
-    const spread = 1 - Math.pow(1 - rawSpread, 1.8);
+    const spread = 1 - Math.pow(1 - rawSpread, 1.85);
 
-    const showInternals = rawSpread > 0.02;
+    const showInternals = rawSpread > 0.015;
     motherboard.visible = showInternals;
     ram.visible = showInternals;
     ssd1.visible = showInternals;
     ssd2.visible = showInternals;
 
-    // 3. Smooth shift to left as About Me arrives (0.06 -> 0.16)
-    const leftShift = Math.max(0, Math.min(1, (progress - 0.06) / 0.10));
+    // 3. Smooth shift to left as About Me arrives (0.05 -> 0.15)
+    const leftShift = Math.max(0, Math.min(1, (progress - 0.05) / 0.10));
     const smoothLeft = 1 - Math.pow(1 - leftShift, 2.2);
 
-    // 4. Final Touchpad Detach stage (progress >= 0.81)
-    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.81) / 0.16));
+    // 4. Final Touchpad Detach stage (progress >= 0.82)
+    const touchpadDetach = Math.max(0, Math.min(1, (progress - 0.82) / 0.15));
 
-    // Display stays close and cohesive above the keyboard (no excessive gap!)
-    display.position.set(0, 0.025 + spread * 0.52, -1.00 - spread * 0.14);
+    // Active-part spotlight nudge (+Z toward viewer when that part's stage is active)
+    const activeNudge = (key) => (leftShift >= 0.8 && touchpadDetach <= 0.45 && activeKey === key ? 0.18 : 0);
+
+    // Display opens and steps slightly up & back-left
+    display.position.set(
+      -0.30 * spread,
+      0.03 + spread * 0.56,
+      -1.00 - spread * 0.18 + activeNudge('display')
+    );
     display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08) * smoothOpen;
 
-    // Keyboard Deck rises slightly while keys form a true curved 3D dome with tangent surface-normal tilts!
-    keyboard.position.set(0, spread * 0.42, spread * 0.04);
-    const keyDomeFactor = Math.max(0, Math.min(1, (progress - 0.14) / 0.45));
-    domeKeys.forEach(({ mesh, baseX, baseY, baseZ, nx, nz, domeHeight }) => {
+    // Keyboard Deck lifts up and shifts sideways to the LEFT (-0.65 * spread) so Motherboard beneath/beside it is 100% uncovered!
+    keyboard.position.set(
+      -0.65 * spread,
+      spread * 0.40,
+      spread * 0.14 + activeNudge('keyboard')
+    );
+
+    // Authentic Tech-Teardown Keycap Wave Cascade (Keys rise flat & crisp above glowing LED switch plate!)
+    const keyCascadeProgress = Math.max(0, Math.min(1, (progress - 0.13) / 0.35));
+    cascadeKeys.forEach(({ mesh, baseX, baseY, baseZ, wavePhase }) => {
+      const localWave = Math.max(0, Math.min(1, (keyCascadeProgress * 1.6) - wavePhase * 0.6));
+      const smoothWave = Math.sin(localWave * Math.PI * 0.5);
       mesh.position.set(
-        baseX + nx * keyDomeFactor * 0.18,
-        baseY + keyDomeFactor * (0.06 + domeHeight * 0.36),
-        baseZ + nz * keyDomeFactor * 0.14
+        baseX,
+        baseY + smoothWave * 0.16,
+        baseZ
       );
-      // True dome surface normal curvature: front keys (+nz) tilt forward (+X rot), right keys (+nx) tilt right (-Z rot)
-      mesh.rotation.x = nz * keyDomeFactor * 0.58;
-      mesh.rotation.z = -nx * keyDomeFactor * 0.52;
+      mesh.rotation.set(0, 0, 0);
     });
 
-    // Motherboard stays cleanly separated in the middle plane (y = -0.05)
-    motherboard.position.set(0, -0.14 + spread * 0.09, 0);
-
-    // RAM Sticks slide/eject outward from the motherboard slots
-    const ramOut = Math.max(0, Math.min(1, (progress - 0.14) / 0.50));
-    ramL.position.set(-0.62 - ramOut * 1.15, -0.10 + spread * 0.14, 0.22 + ramOut * 0.18);
-    ramR.position.set(0.62 + ramOut * 1.15, -0.10 + spread * 0.14, 0.22 + ramOut * 0.18);
-    ramL.rotation.z = ramOut * 0.14;
-    ramR.rotation.z = -ramOut * 0.14;
-
-    // Storage & Lower Base separate cleanly downward so there is clear air space below Motherboard
-    storage.position.set(0, -0.02 - spread * 0.52, 0);
-    ssd1.position.y = -0.19 + spread * 0.18;
-    ssd2.position.y = -0.19 + spread * 0.18;
-
-    // Touchpad rises with keyboard and detaches forward at scroll completion
-    touchpad.position.set(
-      touchpadDetach * 0.28,
-      spread * 0.42 - touchpadDetach * 0.12,
-      spread * 0.25 + touchpadDetach * 1.15
+    // Motherboard steps sideways to the RIGHT (+0.38 * spread) into full unobstructed view!
+    motherboard.position.set(
+      0.38 * spread,
+      -0.02 + spread * 0.04,
+      activeNudge('motherboard')
     );
-    touchpad.rotation.x = touchpadDetach * 0.26;
 
-    // Continuous, Unidirectional Rotation:
-    // Starts facing the RIGHT side (+0.62 rad) and rotates continuously in one single direction to face the LEFT side (-0.58 rad) at the end!
-    root.position.x = -1.32 * smoothLeft + touchpadDetach * 0.78;
-    root.position.y = -0.08;
-    root.rotation.y = 0.62 - progress * 1.20;
-    root.rotation.x = 0.24 + spread * 0.08;
+    // RAM Sticks eject linearly sideways from the Motherboard
+    const ramOut = Math.max(0, Math.min(1, (progress - 0.16) / 0.48));
+    ram.position.set(0.38 * spread, 0, activeNudge('ram'));
+    ramL.position.set(-0.62 - ramOut * 0.95, -0.02 + spread * 0.18, 0.24 + ramOut * 0.15);
+    ramR.position.set(0.62 + ramOut * 1.05, -0.02 + spread * 0.18, 0.24 + ramOut * 0.15);
+
+    // Storage & Unibody Base step downward & slightly right-forward
+    storage.position.set(
+      0.18 * spread,
+      -spread * 0.46,
+      spread * 0.08 + activeNudge('storage')
+    );
+    ssd1.position.set(-0.64 - spread * 0.22, -0.01 + spread * 0.22, 0.38 + spread * 0.16);
+    ssd2.position.set(0.64 + spread * 0.22, -0.01 + spread * 0.22, 0.38 + spread * 0.16);
+
+    // Touchpad moves with keyboard then detaches forward into front spotlight at scroll end
+    touchpad.position.set(
+      -0.65 * spread * (1 - touchpadDetach) + touchpadDetach * 0.22,
+      spread * 0.40 - touchpadDetach * 0.22,
+      spread * 0.18 + touchpadDetach * 1.15
+    );
+    touchpad.rotation.x = touchpadDetach * 0.28;
+
+    // Continuous, Unidirectional Rotation (Starts facing RIGHT +0.64 rad -> Ends facing LEFT -0.56 rad)
+    // Plus higher isometric tilt (rotation.x up to 0.44 rad) so all internal fans, chips & parts are richly visible!
+    root.position.x = -1.28 * smoothLeft + touchpadDetach * 0.72;
+    root.position.y = -0.44;
+    root.rotation.y = 0.64 - progress * 1.20;
+    root.rotation.x = 0.26 + spread * 0.18;
 
     if (hexAccent) accentLight.color.set(hexAccent);
 
@@ -2308,7 +2365,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
         lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
-        lMat.opacity = isFocused ? 1.0 : 0.78;
+        lMat.opacity = isFocused ? 1.0 : 0.76;
       });
     });
   }
@@ -2321,8 +2378,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
 
   function animate() {
     requestAnimationFrame(animate);
-    fanL.rotation.y += 0.028;
-    fanR.rotation.y -= 0.028;
+    if (fanL.userData.rotor) fanL.userData.rotor.rotation.y += 0.04;
+    if (fanR.userData.rotor) fanR.userData.rotor.rotation.y -= 0.04;
 
     renderer.render(scene, camera);
     scene.updateMatrixWorld(true);
@@ -2406,7 +2463,7 @@ function runHeroTypewriter(firstName, lastName) {
 window.addEventListener('DOMContentLoaded', () => {
   const { profile, laptopStages, reelFrames, projects, contactMessages } = PORTFOLIO_DATA;
 
-  // 0. Initial Loading Screen (~2.35s total — 1.7 seconds faster than v6)
+  // 0. Initial Loading Screen (~2.35s total)
   const loaderOverlay = document.getElementById('loader-overlay');
   const loaderCount = document.getElementById('loader-count');
   const loaderBarFill = document.getElementById('loader-bar-fill');
@@ -2453,14 +2510,8 @@ window.addEventListener('DOMContentLoaded', () => {
         <span class="subcard-meta">${c.meta}</span>
       </div>`).join('')}</div>` : '';
 
+    // Casual, low-key mention of English & Hindi alongside GitHub Contribution Graph + Badges (No big Languages heading!)
     const compactLangHtml = st.isCompactLanguages ? `
-      <div class="compact-lang-row">
-        ${st.spokenLanguages.map(l => `
-          <div class="compact-lang-item">
-            <strong>${l.name}</strong>
-            <span>${l.level}</span>
-          </div>`).join('')}
-      </div>
       <div class="github-contrib-card">
         <div class="github-contrib-header">
           <span>GitHub Contributions</span>
@@ -2478,6 +2529,29 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="badges-title">${st.badgesTitle || 'Badges'}</span>
           <span class="badges-placeholder">${st.badgesPlaceholder || 'Yet to earn'}</span>
         </div>
+        <div class="casual-lang-line">
+          <span>Spoken Languages</span>
+          <strong>${st.casualLanguagesText || 'English & Hindi'}</strong>
+        </div>
+      </div>
+    ` : '';
+
+    // Original position right below the Stage 4 card, in the exact same philosophical style as the other quotes
+    const outsideQuoteHtml = st.outsideQuote ? `
+      <div class="stage-outside-quote-wrap">
+        <div class="quote-frame">
+          <svg class="quote-leaf leaf-left" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+          </svg>
+          <blockquote class="interlude-text">“${st.outsideQuote}”</blockquote>
+          <svg class="quote-leaf leaf-right" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.18)" stroke="#6ee7b7" stroke-width="1.2"/>
+          </svg>
+        </div>
       </div>
     ` : '';
 
@@ -2489,23 +2563,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const pillsHtml = st.pills ? `
       <div>
-        <p class="mono-tag" style="margin-bottom:0.5rem;color:${st.accent}">${st.pillsTitle}</p>
+        <p class="mono-tag" style="margin-bottom:0.4rem;color:${st.accent}">${st.pillsTitle}</p>
         <div class="pills-wrap">${st.pills.map(p => `<span class="color-pill" style="--pill-color:${st.accent}">${p}</span>`).join('')}</div>
       </div>` : '';
 
     const section = document.createElement('div');
     section.className = `laptop-stage ${st.isCompactLanguages ? 'compact-stage' : ''}`;
+    section.dataset.stageIndex = String(idx);
     section.innerHTML = `
       <article class="stage-bento-panel ${st.isCompactLanguages ? 'compact-panel' : ''}" style="--stage-accent:${st.accent}">
         <span class="stage-part-chip">${st.partLabel}</span>
-        <h2 class="stage-title ${st.isCompactLanguages ? 'small-stage-title' : ''}">${st.title}</h2>
+        ${st.title ? `<h2 class="stage-title">${st.title}</h2>` : ''}
         ${paragraphsHtml}
         ${st.quote ? `<blockquote class="stage-quote">“${st.quote}”</blockquote>` : ''}
         ${cardsHtml}
         ${compactLangHtml}
         ${skillsHtml}
         ${pillsHtml}
-      </article>`;
+      </article>
+      ${outsideQuoteHtml}`;
 
     const chartImg = section.querySelector('.github-chart-img');
     if (chartImg) {
@@ -2515,27 +2591,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     stagesContainer.appendChild(section);
-
-    // Insert the centered, large, bold "If it doesn't challenge you..." quote block right between Languages I Know and Courses & Achievements!
-    if (st.outsideQuote) {
-      const quoteBlock = document.createElement('div');
-      quoteBlock.className = 'challenge-quote-interlude';
-      quoteBlock.innerHTML = `
-        <div class="challenge-quote-box">
-          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M58 34C42 32 24 24 8 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M44 31C42 22 34 18 28 20C30 27 37 31 44 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-            <path d="M30 24C28 15 20 11 14 13C16 20 23 24 30 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-          </svg>
-          <blockquote class="challenge-quote-text">“${st.outsideQuote}”</blockquote>
-          <svg class="challenge-leaf" viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M6 34C22 32 40 24 56 8" stroke="#6ee7b7" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M20 31C22 22 30 18 36 20C34 27 27 31 20 31Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-            <path d="M34 24C36 15 44 11 50 13C48 20 41 24 34 24Z" fill="rgba(110,231,183,0.22)" stroke="#6ee7b7" stroke-width="1.3"/>
-          </svg>
-        </div>`;
-      stagesContainer.appendChild(quoteBlock);
-    }
   });
 
   const finalHoldStage = document.createElement('div');
@@ -2573,17 +2628,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     },
     ({ activeCoords, touchpadCoords, progress }) => {
-      if (progress >= 0.14 && progress < 0.81) {
+      if (progress >= 0.13 && progress < 0.82) {
         calloutEl.classList.add('visible');
-        const clampedX = Math.max(40, Math.min(window.innerWidth * 0.46, activeCoords.x));
-        const clampedY = Math.max(60, Math.min(window.innerHeight - 60, activeCoords.y));
+        const clampedX = Math.max(55, Math.min(window.innerWidth * 0.48, activeCoords.x));
+        const clampedY = Math.max(85, Math.min(window.innerHeight - 85, activeCoords.y));
         calloutEl.style.left = `${clampedX}px`;
         calloutEl.style.top = `${clampedY}px`;
       } else {
         calloutEl.classList.remove('visible');
       }
 
-      if (progress >= 0.81) {
+      if (progress >= 0.82) {
         touchpadOverlay.classList.add('visible');
         const padX = Math.max(120, Math.min(window.innerWidth - 120, touchpadCoords.x));
         const padY = Math.max(100, Math.min(window.innerHeight - 80, touchpadCoords.y));
@@ -2595,7 +2650,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (All 8 cards start unlit; Card 01A stays stationary first so it is clearly visible before horizontal glide!)
+  // 3. Render 35mm Camera Reel (Hobbies — Martial Arts at 08A)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
@@ -2613,7 +2668,8 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 8 Steeply Angled Horizontal Project Cards
+  // 4. Render 6 Horizontally Stacked Photo-Frame Project Cards (Template Repo Style:
+  //    All 6 Cards Animate to Center on Hover; Card 01 Shows Logo Photo & Pops Up Project Details + GitHub Link!)
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const focusBackdrop = document.getElementById('projects-focus-backdrop');
@@ -2629,27 +2685,38 @@ window.addEventListener('DOMContentLoaded', () => {
       card.className = 'stack-card active-project-card';
       card.innerHTML = `
         <div class="stack-card-top">
-          <div class="stack-card-title-wrap">
-            <h3 class="stack-card-title">${proj.title}</h3>
-            <p class="stack-card-subtitle">${proj.subtitle}</p>
-          </div>
+          <span class="stack-frame-label">PROJECT</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
-        <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-logo-link" title="Open SanitX GitHub Repository">
-          <svg width="56" height="56" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.12)"/>
+        <!-- Resting State: Project Photo Frame with SanitX Logo (Just like Template Repo Photo Frame) -->
+        <div class="project-photo-frame">
+          <svg width="92" height="92" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="4" fill="rgba(16,185,129,0.14)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="3"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
           </svg>
-          <span class="project-logo-caption">View SanitX on GitHub ↗</span>
-        </a>
-        <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
-        <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+          <span class="photo-frame-title">${proj.title}</span>
+        </div>
+        <!-- Hover Pop-Up State: Project Details Card + GitHub Repo Link -->
+        <div class="project-hover-popup">
+          <div class="popup-header">
+            <div class="stack-card-top">
+              <h3>${proj.title}</h3>
+              <span class="stack-slot-num">${proj.slot}</span>
+            </div>
+            <p>${proj.subtitle}</p>
+          </div>
+          <div class="pills-wrap">${proj.tech.map(t => `<span class="color-pill" style="--pill-color:${proj.accent};font-size:0.68rem;padding:0.22rem 0.5rem">${t}</span>`).join('')}</div>
+          <ul class="project-bullets">${proj.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+          <a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" class="popup-github-btn">
+            <span>View on GitHub ↗</span>
+          </a>
+        </div>`;
     } else {
       card.className = 'stack-card grey-layer-card';
-      card.setAttribute('aria-hidden', 'true');
       card.innerHTML = `
         <div class="stack-card-top">
+          <span class="stack-frame-label">ARCHIVE</span>
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <div class="grey-photo-frame">
@@ -2663,7 +2730,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allSlots = projectsStack.querySelectorAll('.stack-card-slot');
   const allStackCards = projectsStack.querySelectorAll('.stack-card');
-  const activeSlot = allSlots[0];
 
   function focusCardToViewportCenter(targetIdx) {
     const targetSlot = allSlots[targetIdx];
@@ -2678,7 +2744,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
-    targetSlot.classList.add('slot-focused');
+    allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
 
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
@@ -2703,26 +2769,42 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (activeSlot) {
-    activeSlot.addEventListener('pointerenter', () => focusCardToViewportCenter(0));
-    activeSlot.addEventListener('pointerleave', resetProjectStack);
-  }
+  // Bind hover animation to ALL 6 cards so every card in the stack animates to the center on hover!
+  allSlots.forEach((slotEl, idx) => {
+    slotEl.addEventListener('pointerenter', () => focusCardToViewportCenter(idx));
+    slotEl.addEventListener('pointerleave', resetProjectStack);
+  });
 
-  // GSAP ScrollTrigger Animations
+  // GSAP ScrollTrigger Animations with Exact Viewport-Center Card Tracking (Zero Part-Highlight Glitch!)
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
-    const stageEls = document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)');
+    const stageEls = Array.from(document.querySelectorAll('.laptop-stage:not(.laptop-intro-stage):not(.final-disassembly-hold)'));
     const dotEls = document.querySelectorAll('.stage-dot');
+
+    function getActiveStageIndexFromViewport() {
+      const viewMid = window.innerHeight * 0.5;
+      let bestIdx = 0;
+      let bestDist = Infinity;
+      stageEls.forEach((el, i) => {
+        const rect = el.getBoundingClientRect();
+        const cardMid = rect.top + rect.height * 0.5;
+        const dist = Math.abs(cardMid - viewMid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIdx = i;
+        }
+      });
+      return bestIdx;
+    }
 
     ScrollTrigger.create({
       trigger: '#section-laptop',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.6,
+      scrub: 0.45,
       onUpdate: (self) => {
-        const contentSpan = Math.max(0, Math.min(0.999, (self.progress - 0.14) / 0.67));
-        const idx = Math.min(laptopStages.length - 1, Math.floor(contentSpan * laptopStages.length));
-        const activeStage = laptopStages[idx];
+        const idx = getActiveStageIndexFromViewport();
+        const activeStage = laptopStages[idx] || laptopStages[0];
 
         laptop3D.setDisassemblyState(self.progress, activeStage.partKey, activeStage.accent);
 
@@ -2736,25 +2818,22 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Cards fade in quickly upon entering and remain at full opacity (1.0) through >3/4ths of their vertical stage scroll!
     stageEls.forEach((el) => {
       const panel = el.querySelector('.stage-bento-panel');
       if (panel) {
         gsap.fromTo(
           panel,
-          { opacity: 0.15, y: 28 },
+          { opacity: 0.15, y: 24 },
           {
             opacity: 1,
             y: 0,
-            scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 62%', scrub: true }
+            scrollTrigger: { trigger: el, start: 'top 86%', end: 'top 45%', scrub: true }
           }
         );
       }
     });
 
-    // Fixed ScrollTrigger Timing for 35mm Camera Reel:
-    // Pins at 'top top', holds horizontal position stationary for the first 15% of scroll so Card 01A lights up and is clearly visible,
-    // then glides smoothly across Cards 02A through 08A!
+    // Scroll-Driven 35mm Camera Reel Animation
     const filmStripWrapper = document.getElementById('film-strip-wrapper');
     const reelCards = document.querySelectorAll('.reel-card');
     const reelActiveIndicator = document.getElementById('reel-active-indicator');
@@ -2764,9 +2843,8 @@ window.addEventListener('DOMContentLoaded', () => {
       trigger: '#section-reel',
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.5,
+      scrub: 0.45,
       onUpdate: (self) => {
-        // Hold horizontal movement at 0 for the first 15% of the pinned scroll so Card 01A is front-and-center after lighting up
         const holdEnd = 0.15;
         const horizProgress = Math.max(0, (self.progress - holdEnd) / (1 - holdEnd));
         const maxShift = Math.max(0, filmStripWrapper.scrollWidth - window.innerWidth + 100);
@@ -2968,6 +3046,6 @@ http.createServer((req, res) => {
 ```bash
 cd "E:\Website Portfolio\My-Portfolio"
 git add data/portfolioData.js index.html styles/main.css scripts/laptop3d.js scripts/main.js server.js vercel.json
-git commit -m "feat: implement v7 fixes (1.7s faster loader, solid opaque laptop deck, 3/4th sticky card visibility, closer display, tangent dome keys, continuous right-to-left rotation, fixed reel timing, centered bold quote)"
+git commit -m "feat: implement v8 refinements (seamless unibody laptop, sideways echelon teardown, visibility stage order, casual languages, Hobbies reel, 6-card template stack)"
 git push origin main
 ```
