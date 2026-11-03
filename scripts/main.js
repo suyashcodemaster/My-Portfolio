@@ -77,7 +77,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }, 20);
 
-  // 2. Render Laptop Disassembly Stages (With Restored Vibrant Color Accents)
+  // 2. Render Laptop Disassembly Stages
   const stagesContainer = document.getElementById('laptop-stages-container');
   const dotsContainer = document.getElementById('stage-dots');
 
@@ -165,7 +165,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     stagesContainer.appendChild(section);
 
-    // Shifted to the RIGHT & Vertically Centered Between the 2 Cards with High Text Visibility
     if (st.outsideQuote) {
       const betweenQuote = document.createElement('div');
       betweenQuote.className = 'between-stages-quote';
@@ -244,7 +243,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   );
 
-  // 3. Render 35mm Camera Reel (Hobbies — With Vibrant Frame Colors)
+  // 3. Render 35mm Camera Reel (Hobbies)
   const reelTrack = document.getElementById('reel-track');
   reelFrames.forEach((rf) => {
     const card = document.createElement('article');
@@ -262,7 +261,7 @@ window.addEventListener('DOMContentLoaded', () => {
     reelTrack.appendChild(card);
   });
 
-  // 4. Render 6 Smaller, Steeply Angled Project Cards + Extended Template Repo Ruler Lines Underneath
+  // 4. Render 6 Horizontally Stacked Landscape Project Cards + Single Long Non-Clashing Ruler Line Per Card
   const projectsSection = document.getElementById('section-projects');
   const projectsStack = document.getElementById('projects-stack');
   const indexLinesContainer = document.getElementById('projects-index-lines');
@@ -272,6 +271,7 @@ window.addEventListener('DOMContentLoaded', () => {
   projects.forEach((proj, idx) => {
     const slot = document.createElement('div');
     slot.className = 'stack-card-slot';
+    slot.dataset.slotIndex = String(idx);
     slot.style.zIndex = String(totalLayers - idx);
 
     const card = document.createElement('article');
@@ -283,7 +283,7 @@ window.addEventListener('DOMContentLoaded', () => {
           <span class="stack-slot-num">${proj.slot}</span>
         </div>
         <div class="project-photo-frame">
-          <svg width="62" height="62" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="48" height="48" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M48 8L16 22V46C16 67.2 29.6 86.8 48 92C66.4 86.8 80 67.2 80 46V22L48 8Z" stroke="#10b981" stroke-width="3.5" fill="rgba(16,185,129,0.14)"/>
             <rect x="34" y="28" width="28" height="36" rx="4" stroke="#38bdf8" stroke-width="2.8"/>
             <path d="M41 40H55M41 48H55M41 56H49" stroke="#f59e0b" stroke-width="2.8" stroke-linecap="round"/>
@@ -319,17 +319,13 @@ window.addEventListener('DOMContentLoaded', () => {
     slot.appendChild(card);
     projectsStack.appendChild(slot);
 
-    // Extended Template Repository Ruler / Tick Lines Beneath Each Tab (Also Interactive on Hover!)
     if (indexLinesContainer) {
       const tickGroup = document.createElement('div');
       tickGroup.className = 'index-tick-group';
       tickGroup.dataset.tickIndex = String(idx);
       tickGroup.innerHTML = `
-        <span class="index-tick"></span>
-        <span class="index-tick mid-tick"></span>
-        <span class="index-tick major-tick" data-slot="${proj.slot}"></span>
-        <span class="index-tick mid-tick"></span>
-        <span class="index-tick"></span>`;
+        <span class="index-tick major-tick"></span>
+        <span class="index-tick-num">${proj.slot}</span>`;
       indexLinesContainer.appendChild(tickGroup);
     }
   });
@@ -340,15 +336,39 @@ window.addEventListener('DOMContentLoaded', () => {
   const allMajorTicks = indexLinesContainer ? indexLinesContainer.querySelectorAll('.major-tick') : [];
 
   let currentFocusedIdx = -1;
-  let hoverDwellTimer = null;
-  let closeGraceTimer = null;
+  let hoverOpenTimer = null;
+  let hoverCloseTimer = null;
+  let hoveredCandidateIdx = -1;
+  let hasEnteredCenteredCard = false;
+  let openedScrollY = 0;
+  let triggerOriginRect = null;
 
-  function focusCardToViewportCenter(targetIdx) {
-    clearTimeout(closeGraceTimer);
+  function isPointInRect(x, y, rect, pad = 6) {
+    if (!rect) return false;
+    return (
+      x >= rect.left - pad &&
+      x <= rect.right + pad &&
+      y >= rect.top - pad &&
+      y <= rect.bottom + pad
+    );
+  }
+
+  function focusCardToViewportCenter(targetIdx, sourceEl) {
+    clearTimeout(hoverOpenTimer);
+    hoverOpenTimer = null;
+    clearTimeout(hoverCloseTimer);
+    hoverCloseTimer = null;
+
     currentFocusedIdx = targetIdx;
+    hasEnteredCenteredCard = false;
+    openedScrollY = window.scrollY;
+
     const targetSlot = allSlots[targetIdx];
     const targetCard = allStackCards[targetIdx];
     if (!targetSlot || !targetCard) return;
+
+    // Record the trigger rectangle where the user held the mouse for 0.8s
+    triggerOriginRect = (sourceEl || targetSlot).getBoundingClientRect();
 
     const slotRect = targetSlot.getBoundingClientRect();
     const slotCenterX = slotRect.left + slotRect.width / 2;
@@ -359,6 +379,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (focusBackdrop) focusBackdrop.classList.add('active');
     if (projectsSection) projectsSection.classList.add('has-focused-card');
     allSlots.forEach((s, i) => s.classList.toggle('slot-focused', i === targetIdx));
+    allTickGroups.forEach((g, i) => g.classList.toggle('active', i === targetIdx));
     allMajorTicks.forEach((t, i) => t.classList.toggle('active', i === targetIdx));
 
     allStackCards.forEach((c, i) => {
@@ -375,11 +396,19 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetProjectStack() {
-    clearTimeout(hoverDwellTimer);
+    clearTimeout(hoverOpenTimer);
+    hoverOpenTimer = null;
+    clearTimeout(hoverCloseTimer);
+    hoverCloseTimer = null;
     currentFocusedIdx = -1;
+    hoveredCandidateIdx = -1;
+    hasEnteredCenteredCard = false;
+    triggerOriginRect = null;
+
     if (focusBackdrop) focusBackdrop.classList.remove('active');
     if (projectsSection) projectsSection.classList.remove('has-focused-card');
     allSlots.forEach((s) => s.classList.remove('slot-focused'));
+    allTickGroups.forEach((g) => g.classList.remove('active'));
     allMajorTicks.forEach((t) => t.classList.remove('active'));
     allStackCards.forEach((c, i) => {
       c.classList.remove('is-centered', 'blurred-left', 'blurred-right');
@@ -387,35 +416,113 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Deliberate 380ms Dwell Requirement so a 1ms accidental hover NEVER pops up a card!
-  // Works on BOTH the card tabs AND the extended ruler lines underneath!
-  function scheduleHoverOpen(idx) {
-    clearTimeout(closeGraceTimer);
-    clearTimeout(hoverDwellTimer);
-    if (currentFocusedIdx === idx) return;
-    const delay = currentFocusedIdx !== -1 ? 180 : 380;
-    hoverDwellTimer = setTimeout(() => {
-      focusCardToViewportCenter(idx);
-    }, delay);
+  // Open Delay = 0.8s (800ms) continuous hover on a card or its single vertical line
+  function startOpenTimer(idx, sourceEl) {
+    if (currentFocusedIdx !== -1) return;
+    hoveredCandidateIdx = idx;
+    clearTimeout(hoverOpenTimer);
+    hoverOpenTimer = setTimeout(() => {
+      if (hoveredCandidateIdx === idx && currentFocusedIdx === -1) {
+        focusCardToViewportCenter(idx, sourceEl);
+      }
+    }, 800);
   }
 
-  function scheduleHoverClose() {
-    clearTimeout(hoverDwellTimer);
-    clearTimeout(closeGraceTimer);
-    closeGraceTimer = setTimeout(() => {
-      resetProjectStack();
-    }, 110);
+  function cancelOpenTimer(idx) {
+    if (hoveredCandidateIdx === idx) {
+      hoveredCandidateIdx = -1;
+      clearTimeout(hoverOpenTimer);
+      hoverOpenTimer = null;
+    }
+  }
+
+  // Close Delay = 0.9s (900ms) when mouse is NOT on the active card
+  function ensureCloseTimerRunning() {
+    if (hoverCloseTimer) return;
+    hoverCloseTimer = setTimeout(() => {
+      hoverCloseTimer = null;
+      if (currentFocusedIdx !== -1) {
+        resetProjectStack();
+      }
+    }, 900);
+  }
+
+  function cancelCloseTimer() {
+    if (hoverCloseTimer) {
+      clearTimeout(hoverCloseTimer);
+      hoverCloseTimer = null;
+    }
   }
 
   allStackCards.forEach((cardEl, idx) => {
-    cardEl.addEventListener('pointerenter', () => scheduleHoverOpen(idx));
-    cardEl.addEventListener('pointerleave', scheduleHoverClose);
+    cardEl.addEventListener('pointerenter', () => {
+      if (currentFocusedIdx === -1) {
+        startOpenTimer(idx, cardEl);
+      } else if (currentFocusedIdx === idx) {
+        hasEnteredCenteredCard = true;
+        cancelCloseTimer();
+      }
+    });
+    cardEl.addEventListener('pointerleave', () => {
+      if (currentFocusedIdx === -1) {
+        cancelOpenTimer(idx);
+      } else if (currentFocusedIdx === idx) {
+        ensureCloseTimerRunning();
+      }
+    });
   });
 
   allTickGroups.forEach((tickGroupEl, idx) => {
-    tickGroupEl.addEventListener('pointerenter', () => scheduleHoverOpen(idx));
-    tickGroupEl.addEventListener('pointerleave', scheduleHoverClose);
+    tickGroupEl.addEventListener('pointerenter', () => {
+      if (currentFocusedIdx === -1) {
+        startOpenTimer(idx, tickGroupEl);
+      }
+    });
+    tickGroupEl.addEventListener('pointerleave', () => {
+      if (currentFocusedIdx === -1) {
+        cancelOpenTimer(idx);
+      }
+    });
   });
+
+  // Track pointer position while a card is focused so removing the mouse from the card ALWAYS starts the 0.9s close timer!
+  window.addEventListener('pointermove', (e) => {
+    if (currentFocusedIdx === -1) return;
+    const activeCard = allStackCards[currentFocusedIdx];
+    if (!activeCard) return;
+
+    const cardRect = activeCard.getBoundingClientRect();
+    const onCenteredCard = isPointInRect(e.clientX, e.clientY, cardRect, 8);
+
+    if (onCenteredCard) {
+      hasEnteredCenteredCard = true;
+      cancelCloseTimer();
+      return;
+    }
+
+    // If the user hasn't moved their cursor onto the centered card yet, allow holding on the exact spot that triggered it;
+    // the moment they move off that spot (or off the centered card), run the 0.9s close timer!
+    if (!hasEnteredCenteredCard && isPointInRect(e.clientX, e.clientY, triggerOriginRect, 10)) {
+      cancelCloseTimer();
+      return;
+    }
+
+    ensureCloseTimerRunning();
+  }, { passive: true });
+
+  if (focusBackdrop) {
+    focusBackdrop.addEventListener('click', resetProjectStack);
+  }
+
+  // Close open card automatically if the user scrolls past the Projects section (or scrolls > 160px away)
+  window.addEventListener('scroll', () => {
+    if (currentFocusedIdx === -1 || !projectsSection) return;
+    const rect = projectsSection.getBoundingClientRect();
+    const scrolledDistance = Math.abs(window.scrollY - openedScrollY);
+    if (rect.bottom < window.innerHeight * 0.25 || rect.top > window.innerHeight * 0.75 || scrolledDistance > 160) {
+      resetProjectStack();
+    }
+  }, { passive: true });
 
   // GSAP ScrollTrigger Animations
   if (window.gsap && window.ScrollTrigger) {

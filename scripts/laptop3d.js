@@ -1,8 +1,9 @@
 export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProjectUpdate) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 1.42, 6.35);
-  camera.lookAt(0, 0.05, 0);
+  // Framed back at z = 6.9 so the entire laptop and all ejected parts stay 100% inside the viewport at all times!
+  camera.position.set(0, 1.62, 6.65);
+  camera.lookAt(0, -0.02, 0);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -23,7 +24,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     renderer.render(scene, camera);
   }, false);
 
-  // Sculpted Studio Lighting for Deep Matte Black Finish (No washed-out front white glare!)
   const ambient = new THREE.AmbientLight(0xffffff, 0.52);
   const keyLight = new THREE.DirectionalLight(0xe2e8f0, 1.25);
   keyLight.position.set(3.5, 6.5, 4.5);
@@ -36,9 +36,8 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   scene.add(ambient, keyLight, rimLight, bottomFill, accentLight);
 
   const root = new THREE.Group();
-  root.scale.setScalar(0.88);
+  root.scale.setScalar(0.86);
   root.position.set(0, -0.36, 0);
-  // Starts rotated further to the right (+0.96 rad) so it rotates across a wider, more dramatic arc!
   root.rotation.set(0.24, 0.96, 0);
   scene.add(root);
 
@@ -54,7 +53,6 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     });
   }
 
-  // Deep Stealth Matte Black Materials (High Roughness 0.88–0.94, Low Metalness)
   const matOuterChassis = makeMatteMaterial({ color: 0x090a0f, metalness: 0.16, roughness: 0.90 });
   const matBezel = makeMatteMaterial({ color: 0x050608, metalness: 0.10, roughness: 0.94 });
   const matScreenPanel = makeMatteMaterial({ color: 0x070b14, emissive: 0x0f172a, emissiveIntensity: 0.42, roughness: 0.45 });
@@ -130,7 +128,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   display.add(lidMesh, bezelMesh, lcdMesh, hingeL, hingeR, displayAnchor);
 
   // =========================================================================
-  // 2. KEYBOARD & TOP-CASE PALMREST DECK
+  // 2. KEYBOARD DECK, OUTLINED & LETTER-IMPRINTED KEYCAPS + INTERMEDIATE SURFACE
   // =========================================================================
   const keyboard = new THREE.Group();
   const topCasePalmrest = new THREE.Mesh(new THREE.BoxGeometry(3.04, 0.03, 2.00), matOuterChassis);
@@ -138,18 +136,104 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   addCrispEdges(topCasePalmrest, 'keyboard', 0xe2e8f0, 0.92);
   keyboard.add(topCasePalmrest);
 
-  const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.64, 0.014, 1.02), matBacklightMatrix);
-  backlightPlate.position.set(0, 0.024, -0.26);
+  // Separate Intermediate Surface between the Keyboard and the Motherboard (EMI / Backlight Matrix Shield)
+  // Tilts and separates independently when Motherboard & lower components are revealed!
+  const midSurface = new THREE.Group();
+  const backlightPlate = new THREE.Mesh(new THREE.BoxGeometry(2.68, 0.016, 1.18), matBacklightMatrix);
+  backlightPlate.position.set(0, 0, -0.18);
   addCrispEdges(backlightPlate, 'keyboard', 0x10b981, 0.85);
-  keyboard.add(backlightPlate);
+  // Subtle grid ribs on the intermediate surface between keyboard and motherboard
+  const midRibGeo = new THREE.BoxGeometry(2.56, 0.020, 0.025);
+  for (let r = -2; r <= 2; r++) {
+    const rib = new THREE.Mesh(midRibGeo, matOuterChassis);
+    rib.position.set(0, 0.004, -0.18 + r * 0.22);
+    midSurface.add(rib);
+  }
+  midSurface.add(backlightPlate);
+  midSurface.position.set(0, 0.002, 0);
+  root.add(midSurface);
 
-  const sharedKeyGeo = new THREE.BoxGeometry(0.185, 0.028, 0.175);
-  const cascadeKeys = [];
+  // Build a single 512x256 CanvasTexture atlas for subtle laser-imprinted QWERTY key legends
   const rows = 4;
   const cols = 11;
+  const keyLegends = [
+    ['ESC', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '⌫'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '↵'],
+    ['⇧', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', 'FN']
+  ];
+
+  const atlasCanvas = document.createElement('canvas');
+  atlasCanvas.width = 512;
+  atlasCanvas.height = 256;
+  const ctx = atlasCanvas.getContext('2d');
+  ctx.fillStyle = '#0e1017';
+  ctx.fillRect(0, 0, 512, 256);
+
+  const cellW = 512 / cols;
+  const cellH = 256 / rows;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const key = new THREE.Mesh(sharedKeyGeo, matKeyCap);
+      const cx = (c + 0.5) * cellW;
+      const cy = (r + 0.5) * cellH;
+      const label = keyLegends[r][c];
+      // Subtle recessed keycap top bevel imprint
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.14)';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(c * cellW + 5, r * cellH + 5, cellW - 10, cellH - 10);
+      // Subtle laser-etched letter imprint (not overly bright, realistic dark-matte keycap imprint)
+      ctx.font = label.length > 1 ? '600 13px "JetBrains Mono", monospace' : '600 18px "JetBrains Mono", monospace';
+      ctx.fillStyle = 'rgba(203, 213, 225, 0.38)';
+      ctx.fillText(label, cx, cy + 1);
+    }
+  }
+
+  const keyAtlasTex = new THREE.CanvasTexture(atlasCanvas);
+  keyAtlasTex.anisotropy = 4;
+  const matImprintedKeyCap = makeMatteMaterial({
+    color: 0xffffff,
+    map: keyAtlasTex,
+    metalness: 0.14,
+    roughness: 0.88
+  });
+
+  const baseKeyGeo = new THREE.BoxGeometry(0.182, 0.028, 0.172);
+  const sharedKeyEdgesGeo = new THREE.EdgesGeometry(baseKeyGeo);
+  const keyOutlineMat = new THREE.LineBasicMaterial({
+    color: 0x94a3b8,
+    transparent: true,
+    opacity: 0.62
+  });
+  if (!partEdgeLines['keyboard']) partEdgeLines['keyboard'] = [];
+  partEdgeLines['keyboard'].push(keyOutlineMat);
+
+  const cascadeKeys = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const keyGeo = baseKeyGeo.clone();
+      const uvAttr = keyGeo.attributes.uv;
+      const u0 = c / cols;
+      const u1 = (c + 1) / cols;
+      const v1 = 1 - (r / rows);
+      const v0 = 1 - ((r + 1) / rows);
+      // Map all faces to a dark corner of cell (0,0) first, then map Top Face (+Y, vertices 8..11) to cell (c, r)
+      for (let i = 0; i < uvAttr.count; i++) {
+        uvAttr.setXY(i, 0.005, 0.995);
+      }
+      uvAttr.setXY(8, u0, v1);
+      uvAttr.setXY(9, u1, v1);
+      uvAttr.setXY(10, u0, v0);
+      uvAttr.setXY(11, u1, v0);
+      uvAttr.needsUpdate = true;
+
+      const key = new THREE.Mesh(keyGeo, matImprintedKeyCap);
+      // Attach crisp outline to each keycap using the shared EdgesGeometry and shared LineBasicMaterial
+      const keyOutline = new THREE.LineSegments(sharedKeyEdgesGeo, keyOutlineMat);
+      key.add(keyOutline);
+
       const baseX = -1.0 + c * 0.2;
       const baseY = 0.032;
       const baseZ = -0.60 + r * 0.22;
@@ -382,6 +466,7 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
   Object.values(topLevelGroups).forEach((g) => root.add(g));
 
   display.rotation.x = Math.PI / 2;
+  midSurface.visible = false;
   motherboard.visible = false;
   ram.visible = false;
   ssd1.visible = false;
@@ -455,12 +540,16 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     const closedAngle = Math.PI / 2;
     const openAngle = -0.18;
 
-    // 2. Extensive, Dramatic Disassembly Spread (0.11 -> 0.80):
-    //    Parts shift MORE UPWARDS so the lower parts (Motherboard, RAM, Storage) get full visibility at the end!
+    // 2. Disassembly Spread (0.11 -> 0.80)
     const rawSpread = Math.max(0, Math.min(1, (progress - 0.11) / 0.69));
     const spread = 1 - Math.pow(1 - rawSpread, 1.85);
 
+    // Extra separation & tilt window when Motherboard, RAM Sticks, and Storage are being showcased (0.25 -> 0.78)
+    const rawLowerReveal = Math.max(0, Math.min(1, (progress - 0.25) / 0.24));
+    const lowerReveal = rawLowerReveal * rawLowerReveal * (3 - 2 * rawLowerReveal);
+
     const showInternals = rawSpread > 0.015;
+    midSurface.visible = showInternals;
     motherboard.visible = showInternals;
     ram.visible = showInternals;
     ssd1.visible = showInternals;
@@ -473,14 +562,36 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     // 4. End-of-Animation Centering (progress >= 0.81)
     const endCenterRatio = Math.max(0, Math.min(1, (progress - 0.81) / 0.16));
     const smoothEndCenter = 1 - Math.pow(1 - endCenterRatio, 2.2);
+    const activeLowerReveal = lowerReveal * (1 - smoothEndCenter * 0.75);
 
-    // Extensive, Dramatic Upward Disassembly so Lower Parts Have Maximum Visibility!
-    display.position.set(0, 0.03 + spread * 1.05, -1.00 - spread * 0.16);
-    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08) * smoothOpen;
+    // Display lifts higher when lower parts are showcased so nothing feels cramped
+    display.position.set(
+      0,
+      0.03 + spread * 1.08 + activeLowerReveal * 0.34,
+      -1.00 - spread * 0.16 - activeLowerReveal * 0.12
+    );
+    display.rotation.x = closedAngle * (1 - smoothOpen) + (openAngle - spread * 0.08 - activeLowerReveal * 0.06) * smoothOpen;
 
-    keyboard.position.set(0, spread * 0.66, 0);
+    // Keyboard lifts high (+0.68 * spread + 0.36 * activeLowerReveal = +1.04) AND tilts when Motherboard/RAM/Storage
+    // are active so both the imprinted Keyboard keys AND the Motherboard beneath have a wide-open viewing window!
+    keyboard.position.set(
+      0,
+      spread * 0.68 + activeLowerReveal * 0.36,
+      -activeLowerReveal * 0.10
+    );
+    // During Keyboard stage (before lowerReveal), slight forward tilt (+0.08 * spread) shows off the key outlines & letters;
+    // then tilts upward (-0.16 * activeLowerReveal) to open up the view of the intermediate surface & Motherboard below!
+    keyboard.rotation.x = spread * 0.08 * (1 - activeLowerReveal) - activeLowerReveal * 0.15 + smoothEndCenter * 0.10;
 
-    // Dramatic Keycap Wave Cascade
+    // Intermediate Surface between Keyboard and Motherboard separates into the middle gap and tilts cleanly
+    midSurface.position.set(
+      0,
+      spread * 0.40 + activeLowerReveal * 0.22,
+      -activeLowerReveal * 0.06
+    );
+    midSurface.rotation.x = -activeLowerReveal * 0.08;
+
+    // Dramatic Keycap Wave Cascade (follows dome arc + shows off key outlines and imprinted letters!)
     const keyCascadeProgress = Math.max(0, Math.min(1, (progress - 0.13) / 0.35));
     cascadeKeys.forEach(({ mesh, baseX, baseY, baseZ, wavePhase }) => {
       const localWave = Math.max(0, Math.min(1, (keyCascadeProgress * 1.6) - wavePhase * 0.6));
@@ -491,28 +602,33 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
     // Touchpad stays attached to the front palmrest of the keyboard
     touchpad.position.set(0, smoothEndCenter * 0.045, smoothEndCenter * 0.06);
 
-    // Motherboard shifts upward (+0.18 * spread) so it sits high and clear above Storage!
-    motherboard.position.set(0, -0.02 + spread * 0.18, 0);
+    // Motherboard sits with wide vertical separation below midSurface and tilts slightly toward the camera (+0.12 rad)
+    // so the CPU/GPU dies, copper heatpipes, dual spinning fans, VRM bank, and gold traces get full visual recognition!
+    motherboard.position.set(0, -0.02 + spread * 0.08 - activeLowerReveal * 0.04, 0);
+    motherboard.rotation.x = activeLowerReveal * 0.12;
 
-    // RAM Sticks eject extensively outward (±1.18 units) from the Motherboard slots
+    // RAM Sticks eject outward from the Motherboard slots and match the Motherboard showcase tilt
     const ramOut = Math.max(0, Math.min(1, (progress - 0.16) / 0.48));
-    ram.position.set(0, -0.02 + spread * 0.18, 0);
-    ramL.position.set(-0.62 - ramOut * 1.18, 0, 0.24);
-    ramR.position.set(0.62 + ramOut * 1.18, 0, 0.24);
+    ram.position.set(0, -0.02 + spread * 0.08 - activeLowerReveal * 0.04, 0);
+    ram.rotation.x = activeLowerReveal * 0.12;
+    ramL.position.set(-0.62 - ramOut * 0.96, 0, 0.24);
+    ramR.position.set(0.62 + ramOut * 0.96, 0, 0.24);
 
-    // Storage & Lower Unibody separate below Motherboard while the whole root lifts upward so Storage is in full view!
-    storage.position.set(0, -spread * 0.30, 0);
-    ssd1.position.set(-0.64 - spread * 0.16, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
-    ssd2.position.set(0.64 + spread * 0.16, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
+    // Storage & Lower Unibody separate further down (-0.34 * spread - 0.16 * activeLowerReveal = -0.50) and tilt toward camera
+    storage.position.set(0, -spread * 0.34 - activeLowerReveal * 0.16, 0);
+    storage.rotation.x = activeLowerReveal * 0.14;
+    ssd1.position.set(-0.64 - spread * 0.14, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
+    ssd2.position.set(0.64 + spread * 0.14, -0.01 + spread * 0.18, 0.38 + spread * 0.18);
 
-    // Root shifts upward as spread increases (-0.36 -> +0.08) so all lower parts get prime visibility!
-    root.position.x = -1.22 * smoothLeft * (1 - smoothEndCenter);
-    root.position.y = -0.36 + spread * 0.44 - smoothEndCenter * 0.22;
+    // Keep laptop well inside the left viewport (-1.02) and balanced vertically
+    root.position.x = -1.02 * smoothLeft * (1 - smoothEndCenter);
+    root.position.y = -0.34 + spread * 0.24 - smoothEndCenter * 0.16;
 
-    // Tilt Laptop MORE UPWARDS (rotation.x tilts up from +0.24 to -0.06 rad!)
-    root.rotation.x = 0.24 - spread * 0.30 + smoothEndCenter * 0.22;
+    // Tilt 2x more downward than v12's step from v10:
+    // (v10 reached -0.06 rad; v12 added +0.08 rad -> +0.02 rad; now 2x more (+0.16 rad more) -> +0.18 rad!)
+    root.rotation.x = 0.24 - spread * 0.06 + smoothEndCenter * 0.14;
 
-    // Wider Continuous Rotation: Starts further rotated (+0.96 rad) and sweeps 1.82 rad to -0.86 rad, easing to center at final touchpad stage
+    // Continuous Yaw Rotation from Right (+0.96 rad) to Left (-0.86 rad), easing to center at final touchpad stage
     const mainYaw = 0.96 - progress * 1.82;
     root.rotation.y = mainYaw * (1 - smoothEndCenter * 0.72);
 
@@ -522,8 +638,13 @@ export function initLaptop3D(canvas, onTouchpadClick, onPartHover, onScreenProje
       const isFocused = (smoothEndCenter > 0.45 && key === 'touchpad') || (leftShift >= 0.8 && smoothEndCenter <= 0.45 && key === activeKey);
       const lines = partEdgeLines[key] || [];
       lines.forEach((lMat) => {
-        lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
-        lMat.opacity = isFocused ? 1.0 : 0.72;
+        if (lMat === keyOutlineMat) {
+          lMat.color.set(isFocused ? (hexAccent || '#10b981') : '#94a3b8');
+          lMat.opacity = isFocused ? 0.92 : 0.58;
+        } else {
+          lMat.color.set(isFocused ? (hexAccent || '#38bdf8') : '#cbd5e1');
+          lMat.opacity = isFocused ? 1.0 : 0.72;
+        }
       });
     });
   }
