@@ -1,7 +1,11 @@
+# Dependencies
 node_modules/
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # OS Files
 .DS_Store
@@ -11,8 +15,15 @@ desktop.ini
 # Environment and IDE
 .env
 .env.local
+.env.*.local
 .vscode/
 .idea/
 
+# Vercel & Deployments
 .vercel
+
+# Archives & Temporary Files
 *.zip
+*.tar.gz
+*.rar
+*.log
